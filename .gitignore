@@ -1,0 +1,32 @@
+# Secrets, signing keys, and environment variables (NEVER commit)
+*.jks
+*.keystore
+keystore.properties
+.env
+.env.*
+*.pem
+*.p12
+
+# Dependencies
+node_modules/
+
+# Desktop build & release artifacts
+apps/desktop/release/
+apps/desktop/dist/
+apps/desktop/dist-electron/
+
+# Android Gradle & local build artifacts
+apps/android/.gradle/
+apps/android/build/
+apps/android/app/build/
+apps/android/local.properties
+apps/android/.idea/
+
+# Compiled Android packages (distributed via releases / hosting, not git)
+*.apk
+*.aab
+
+# Tooling & OS noise
+.vercel/
+.DS_Store
+*.log

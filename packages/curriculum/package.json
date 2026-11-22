@@ -1,0 +1,19 @@
+{
+  "name": "@marain/curriculum",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Shared Marain beginner-friendly AI curriculum, TypeScript schema, build exporter, and validation suite.",
+  "exports": {
+    ".": "./src/index.ts",
+    "./schema": "./src/schema.ts",
+    "./json": "./dist/curriculum.json"
+  },
+  "scripts": {
+    "build": "node scripts/build.ts",
+    "test": "node test/validate.mjs"
+  },
+  "engines": {
+    "node": ">=22.18.0"
+  }
+}

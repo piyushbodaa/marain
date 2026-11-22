@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Crisp minimalist geometric "M" monogram centered in adaptive safe zone -->
+    <path
+        android:fillColor="#FAF9F5"
+        android:pathData="M31,73 L31,35 L39.5,35 L54,55.5 L68.5,35 L77,35 L77,73 L69,73 L69,48.5 L56.2,66.2 L51.8,66.2 L39,48.5 L39,73 Z" />
+    <!-- Warm burnished gold editorial baseline accent -->
+    <path
+        android:fillColor="#D98A1C"
+        android:pathData="M43,78.5 L65,78.5 C66.4,78.5 67.5,79.6 67.5,81 C67.5,82.4 66.4,83.5 65,83.5 L43,83.5 C41.6,83.5 40.5,82.4 40.5,81 C40.5,79.6 41.6,78.5 43,78.5 Z" />
+</vector>

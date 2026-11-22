@@ -1,0 +1,16 @@
+{
+  "name": "zero2ai-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Zero2AI — Duolingo x Zerodha Varsity for AI (Shared Curriculum + Android Varsity App + Linux Desktop Studio)",
+  "scripts": {
+    "build:curriculum": "npm --prefix packages/curriculum run build",
+    "test:curriculum": "npm --prefix packages/curriculum test",
+    "sync:curriculum": "npm --prefix apps/desktop run sync-curriculum",
+    "dev:desktop": "npm --prefix apps/desktop run dev",
+    "dev:desktop:web": "npm --prefix apps/desktop run dev:web",
+    "build:desktop": "npm --prefix apps/desktop run build",
+    "package:linux": "npm --prefix apps/desktop run package:linux",
+    "typecheck:desktop": "npm --prefix apps/desktop run typecheck"
+  }
+}

@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Marain — Learn the Language of AI (Android v1.1.0)</title>
+    <meta
+      name="description"
+      content="Download Marain v1.1.0 for Android. Learn AI from zero to fluent (A1 to C2) through calm editorial lessons, tactile practice drills, and a 50-term phrasebook — 100% offline."
+    />
+    <meta name="theme-color" content="#FAF9F5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 108 108'%3E%3Cpath fill='%2311352A' d='M0,0h108v108h-108z'/%3E%3Cpath fill='%231B4D3E' d='M0,0 L108,0 L108,70 L0,92 Z'/%3E%3Cpath fill='%23FAF9F5' d='M31,73 L31,35 L39.5,35 L54,55.5 L68.5,35 L77,35 L77,73 L69,73 L69,48.5 L56.2,66.2 L51.8,66.2 L39,48.5 L39,73 Z'/%3E%3Cpath fill='%23D98A1C' d='M43,78.5 L65,78.5 C66.4,78.5 67.5,79.6 67.5,81 C67.5,82.4 66.4,83.5 65,83.5 L43,83.5 C41.6,83.5 40.5,82.4 40.5,81 C40.5,79.6 41.6,78.5 43,78.5 Z'/%3E%3C/svg%3E"
+    />
+    <style>
+      :root {
+        --bg: #faf9f5;
+        --surface: #ffffff;
+        --surface-muted: #f1eee8;
+        --hairline: #e6e3dc;
+        --lip: #dad6ce;
+        --ink: #141413;
+        --ink-secondary: #5e5c56;
+        --ink-muted: #8e8b82;
+        --forest: #1b4d3e;
+        --forest-lip: #11352a;
+        --forest-wash: #eaf2ef;
+        --gold: #d98a1c;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+          sans-serif;
+        -webkit-font-smoothing: antialiased;
+        line-height: 1.6;
+      }
+
+      .serif {
+        font-family: 'Lora', Georgia, Cambria, serif;
+      }
+
+      .wrap {
+        max-width: 640px;
+        margin: 0 auto;
+        padding: 28px 20px 64px;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 18px;
+        margin-bottom: 28px;
+        border-bottom: 1px solid var(--hairline);
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+        color: var(--ink);
+      }
+
+      .brand-name {
+        font-family: 'Lora', Georgia, serif;
+        font-size: 1.25rem;
+        font-weight: 700;
+        letter-spacing: -0.025em;
+        line-height: 1.1;
+      }
+
+      .brand-sub {
+        font-size: 0.72rem;
+        color: var(--ink-secondary);
+        font-weight: 600;
+        letter-spacing: 0.02em;
+      }
+
+      .version-tag {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 0.74rem;
+        font-weight: 700;
+        color: var(--forest);
+        border: 1px solid var(--hairline);
+        background: var(--surface);
+      }
+
+      .hero {
+        background: var(--surface);
+        border: 1px solid var(--hairline);
+        border-radius: 20px;
+        padding: 32px 26px 28px;
+      }
+
+      .hero-mark {
+        width: 64px;
+        height: 64px;
+        border-radius: 16px;
+        overflow: hidden;
+        margin-bottom: 20px;
+        border: 1px solid rgba(17, 53, 42, 0.14);
+      }
+
+      .kicker {
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+        color: var(--forest);
+        margin: 0 0 8px;
+      }
+
+      h1 {
+        margin: 0;
+        font-family: 'Lora', Georgia, serif;
+        font-size: clamp(1.8rem, 6vw, 2.35rem);
+        line-height: 1.16;
+        letter-spacing: -0.025em;
+        font-weight: 700;
+        color: var(--ink);
+      }
+
+      .lead {
+        margin: 14px 0 24px;
+        color: var(--ink-secondary);
+        font-size: 0.98rem;
+      }
+
+      .cta {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+        padding: 15px 22px;
+        border-radius: 14px;
+        background: var(--forest);
+        color: #faf9f5;
+        font-size: 1rem;
+        font-weight: 700;
+        text-decoration: none;
+        letter-spacing: -0.01em;
+        box-shadow: 0 4px 0 var(--forest-lip);
+        transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.15s ease;
+      }
+
+      .cta:hover {
+        background: #164033;
+      }
+
+      .cta:active {
+        transform: translateY(3px);
+        box-shadow: 0 1px 0 var(--forest-lip);
+      }
+
+      .meta-bar {
+        margin-top: 18px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 6px 14px;
+        font-size: 0.78rem;
+        color: var(--ink-secondary);
+        font-weight: 500;
+      }
+
+      .meta-code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        color: var(--ink);
+        background: var(--surface-muted);
+        padding: 1px 7px;
+        border-radius: 5px;
+      }
+
+      .section {
+        margin-top: 20px;
+        background: var(--surface);
+        border: 1px solid var(--hairline);
+        border-radius: 18px;
+        padding: 22px 24px;
+      }
+
+      .section h2 {
+        margin: 0 0 14px;
+        font-family: 'Lora', Georgia, serif;
+        font-size: 1.08rem;
+        font-weight: 700;
+        color: var(--ink);
+      }
+
+      .steps {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        gap: 14px;
+      }
+
+      .step {
+        display: grid;
+        grid-template-columns: 28px 1fr;
+        gap: 12px;
+        align-items: start;
+      }
+
+      .step-num {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        background: var(--forest-wash);
+        color: var(--forest);
+        font-size: 0.82rem;
+        font-weight: 800;
+        display: grid;
+        place-items: center;
+      }
+
+      .step-title {
+        font-size: 0.92rem;
+        font-weight: 700;
+        color: var(--ink);
+        margin: 0 0 2px;
+      }
+
+      .step-desc {
+        font-size: 0.85rem;
+        color: var(--ink-secondary);
+        margin: 0;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      @media (max-width: 520px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        .hero,
+        .section {
+          padding: 22px 18px;
+        }
+      }
+
+      .feat {
+        background: var(--bg);
+        border: 1px solid var(--hairline);
+        border-radius: 12px;
+        padding: 14px;
+      }
+
+      .feat strong {
+        display: block;
+        font-size: 0.87rem;
+        color: var(--ink);
+        margin-bottom: 4px;
+      }
+
+      .feat span {
+        display: block;
+        font-size: 0.8rem;
+        color: var(--ink-secondary);
+        line-height: 1.48;
+      }
+
+      .footer {
+        margin-top: 28px;
+        text-align: center;
+        font-size: 0.78rem;
+        color: var(--ink-muted);
+      }
+
+      .footer a {
+        color: var(--forest);
+        font-weight: 600;
+        text-decoration: none;
+      }
+
+      .footer a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="wrap">
+      <header class="topbar">
+        <a class="brand" href="/marain" aria-label="Marain Home">
+          <svg width="38" height="38" viewBox="0 0 108 108" style="border-radius:10px;display:block;flex-shrink:0;" aria-hidden="true">
+            <path fill="#11352A" d="M0,0h108v108h-108z" />
+            <path fill="#1B4D3E" d="M0,0 L108,0 L108,70 L0,92 Z" />
+            <path fill="#FAF9F5" d="M31,73 L31,35 L39.5,35 L54,55.5 L68.5,35 L77,35 L77,73 L69,73 L69,48.5 L56.2,66.2 L51.8,66.2 L39,48.5 L39,73 Z" />
+            <path fill="#D98A1C" d="M43,78.5 L65,78.5 C66.4,78.5 67.5,79.6 67.5,81 C67.5,82.4 66.4,83.5 65,83.5 L43,83.5 C41.6,83.5 40.5,82.4 40.5,81 C40.5,79.6 41.6,78.5 43,78.5 Z" />
+          </svg>
+          <span>
+            <span class="brand-name" style="display:block;">Marain</span>
+            <span class="brand-sub" style="display:block;">The Language of AI</span>
+          </span>
+        </a>
+        <span class="version-tag">v1.1.0 &middot; Android</span>
+      </header>
+
+      <section class="hero">
+        <div class="hero-mark" aria-hidden="true">
+          <svg width="64" height="64" viewBox="0 0 108 108" style="display:block;">
+            <path fill="#11352A" d="M0,0h108v108h-108z" />
+            <path fill="#1B4D3E" d="M0,0 L108,0 L108,70 L0,92 Z" />
+            <path fill="#FAF9F5" d="M31,73 L31,35 L39.5,35 L54,55.5 L68.5,35 L77,35 L77,73 L69,73 L69,48.5 L56.2,66.2 L51.8,66.2 L39,48.5 L39,73 Z" />
+            <path fill="#D98A1C" d="M43,78.5 L65,78.5 C66.4,78.5 67.5,79.6 67.5,81 C67.5,82.4 66.4,83.5 65,83.5 L43,83.5 C41.6,83.5 40.5,82.4 40.5,81 C40.5,79.6 41.6,78.5 43,78.5 Z" />
+          </svg>
+        </div>
+
+        <p class="kicker">Zero to Fluent · A1 &rarr; C2</p>
+        <h1>Learn Marain — The Language of AI</h1>
+        <p class="lead">
+          Understand AI from first principles through calm editorial chapters, tactile practice
+          drills, daily XP streaks, and a 50-term phrasebook. No sign-up, no ads, 100% offline.
+        </p>
+
+        <a class="cta" href="/marain/marain-1.1.0.apk" download="marain-1.1.0.apk">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+          Download Marain v1.1.0 (2.1 MB)
+        </a>
+
+        <div class="meta-bar" aria-label="Package metadata">
+          <span class="meta-code">app.marain.learn</span>
+          <span>Android 8.0+ (API 26)</span>
+          <span>2.1 MB APK</span>
+          <span>100% Offline</span>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="install-heading">
+        <h2 id="install-heading">Quick 3-Step Install on Android</h2>
+        <ol class="steps">
+          <li class="step">
+            <span class="step-num">1</span>
+            <div>
+              <p class="step-title">Download the APK</p>
+              <p class="step-desc">
+                Tap the button above to save <strong>marain-1.1.0.apk</strong> directly to your
+                phone.
+              </p>
+            </div>
+          </li>
+          <li class="step">
+            <span class="step-num">2</span>
+            <div>
+              <p class="step-title">Allow browser installs once</p>
+              <p class="step-desc">
+                Open the downloaded file from your notification shade or Files app. If Android
+                prompts, tap <strong>Settings &rarr; Allow from this source</strong>, then return.
+              </p>
+            </div>
+          </li>
+          <li class="step">
+            <span class="step-num">3</span>
+            <div>
+              <p class="step-title">Install &amp; begin Unit 1</p>
+              <p class="step-desc">
+                Tap <strong>Install</strong>, open Marain, and start your first 4-minute lesson —
+                everything runs completely offline.
+              </p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section class="section" aria-labelledby="inside-heading">
+        <h2 id="inside-heading">What’s Inside v1.1.0</h2>
+        <div class="grid">
+          <div class="feat">
+            <strong>7 Fluency Units (A1 &rarr; C2)</strong>
+            <span>28 plain-English lessons from LLMs and tokens to agents, CLIs, and shipping apps.</span>
+          </div>
+          <div class="feat">
+            <strong>Tactile Practice Drills</strong>
+            <span>Daily 50 XP goals, 5 hearts, combo streaks, and instant explanations on every question.</span>
+          </div>
+          <div class="feat">
+            <strong>50-Term AI Phrasebook</strong>
+            <span>Searchable dictionary with everyday analogies plus tap-to-flip mastery flashcards.</span>
+          </div>
+          <div class="feat">
+            <strong>Editorial Reading Comfort</strong>
+            <span>Lora serif &amp; Plus Jakarta Sans typography in Light Paper, Warm Sepia, and Dark Obsidian.</span>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        Direct APK: <a href="/marain/marain-1.1.0.apk">/marain/marain-1.1.0.apk</a> &middot;
+        <a href="/marain/privacy">Privacy Policy</a> &middot; Built by
+        <a href="https://www.piyushbodaa.com/">Piyush Bodaa</a>
+      </footer>
+    </main>
+  </body>
+</html>

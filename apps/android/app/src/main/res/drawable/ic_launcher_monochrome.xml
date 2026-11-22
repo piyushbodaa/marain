@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Monochrome geometric "M" monogram for Material You themed icons -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M31,73 L31,35 L39.5,35 L54,55.5 L68.5,35 L77,35 L77,73 L69,73 L69,48.5 L56.2,66.2 L51.8,66.2 L39,48.5 L39,73 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M43,78 L65,78 C66.4,78 67.5,79.1 67.5,80.5 C67.5,81.9 66.4,83 65,83 L43,83 C41.6,83 40.5,81.9 40.5,80.5 C40.5,79.1 41.6,78 43,78 Z" />
+</vector>
