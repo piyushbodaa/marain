@@ -105,7 +105,10 @@ class PrivacyAndStorageTest {
     assertTrue(combined.contains("cloud backup", ignoreCase = true))
     assertTrue(combined.contains("device-to-device", ignoreCase = true))
     assertTrue(combined.contains("android.permission.INTERNET"))
-    assertTrue(combined.contains("https://piyushbodaa.com/marain/privacy"))
+    assertEquals("https://marain.fun", PrivacyPolicyContent.WEBSITE_URL)
+    assertEquals("https://marain.fun/privacy", PrivacyPolicyContent.WEB_URL)
+    assertTrue(combined.contains("https://marain.fun/privacy"))
+    assertFalse("Must not reference legacy privacy URL", combined.contains("piyushbodaa.com/marain"))
     assertFalse("Must not reference legacy brand", combined.contains("zero2ai", ignoreCase = true))
   }
 }

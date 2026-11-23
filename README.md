@@ -1,8 +1,12 @@
-# Zero2AI — From Zero to Building with AI
+# Marain — The Language of AI
 
-**Zero2AI** is an interactive learning suite inspired by **Zerodha Varsity** (warm, editorial, jargon-free chapters) and **Duolingo** (streaks, XP, bite-sized quizzes, and hands-on practice) — designed for complete beginners with **zero coding background**.
+**Marain** is a mastery-first, offline-first AI learning suite inspired by **Zerodha Varsity** (calm, editorial, jargon-free chapters) and **Duolingo** (practice drills, daily XP goals, and streaks) — built for complete beginners with **zero coding background**.
 
-Go from *"What even is an LLM?"* to understanding tokens, AI credits, API keys, harnesses, Claude Code CLI, and **building and exporting your first real Website and App with AI**.
+Go from *"What even is an LLM?"* to understanding tokens, context windows, AI credits, API keys, harnesses, MCP, terminal AI, and **building and shipping your first real Website and App with AI** (CEFR A1 → C2).
+
+- **Website:** [https://marain.fun](https://marain.fun) *(Android currently in internal testing)*
+- **Privacy Policy:** [https://marain.fun/privacy](https://marain.fun/privacy)
+- **Repository:** [https://github.com/piyushbodaa/marain](https://github.com/piyushbodaa/marain) (MIT License)
 
 ---
 
@@ -10,16 +14,17 @@ Go from *"What even is an LLM?"* to understanding tokens, AI credits, API keys, 
 
 ```text
 .
-├── packages/curriculum/   # Single source of truth: 7 modules, 28 chapters, quizzes, 40+ glossary terms
-├── apps/desktop/          # Zero2AI Studio — Linux Desktop App (Electron + React + TS + Vite + Tailwind)
-└── apps/android/          # Zero2AI Varsity — Native Android App (Kotlin + Jetpack Compose + Material 3)
+├── packages/curriculum/   # Single source of truth: 7 units, 28 chapters, 84 drills, 7 Unit Mastery Checks, 50 Phrasebook terms
+├── apps/android/          # Marain Android App (app.marain.learn) — Kotlin + Jetpack Compose + Material 3 (100% offline)
+├── apps/marain-web/       # Official public website & Privacy Policy deployed to https://marain.fun
+└── apps/desktop/          # Zero2AI Studio — Desktop Companion (Electron + React + TS + Vite + Tailwind) with 6 hands-on labs
 ```
 
-### 7 Zero-to-One Curriculum Modules
+### 7 Fluency Units (A1 → C2)
 
-| # | Module | Key Concepts | Hands-On Desktop Lab |
-|---|--------|--------------|----------------------|
-| 01 | **What Even Is AI?** | AI vs regular software, LLMs & next-token prediction, model families (Claude, Gemini, GPT, open-weights), chat apps vs raw models | Tokenizer & Context Desk |
+| # | Unit | Key Concepts | Hands-On Desktop Lab |
+|---|------|--------------|----------------------|
+| 01 | **What Even Is AI?** | 5-minute phone-only intro: AI vs regular software, LLMs & next-token prediction, model families (Claude, Gemini, GPT, open weights), chat apps vs raw models | Tokenizer & Context Desk |
 | 02 | **Tokens, Context & Talking to AI** | Subword tokens, context window ("working desk"), system prompts & temperature, hallucinations & verification | Tokenizer & Context Desk |
 | 03 | **AI Credits, Pricing & API Keys** | $20 chat subscriptions vs pay-as-you-go API credits, API keys, `.env` safety, free local models (Ollama) | API Keys & Credits Lab |
 | 04 | **AI Harnesses, Tools & Agents** | Model vs Harness ("engine vs car"), tool calling & MCP, agent loops, `CLAUDE.md` rules & skills | Harness & Agent Simulator |
@@ -29,9 +34,49 @@ Go from *"What even is an LLM?"* to understanding tokens, AI credits, API keys, 
 
 ---
 
-## 1. Linux Desktop App — Zero2AI Studio (`apps/desktop/`)
+## 1. Android Mobile App — Marain (`apps/android/`)
 
-**Zero2AI Studio** combines the full Varsity Reader + Duolingo Quizzes + AI Glossary with **6 interactive Try & Build Labs**:
+**Marain** (`app.marain.learn`, v1.2.0) is a native, **100% offline** Android app built with **Kotlin, Jetpack Compose, and Material 3**:
+
+- **Mastery-First Learning**: Crisp 5-minute phone-only Unit 1 plus practical **Unit Mastery Checks** across all 7 units.
+- **CEFR A1 → C2 Unlocked by Mastery**: Fluency milestones unlock when you prove understanding, while XP, daily 50 XP goals, and streaks track daily practice.
+- **84 Balanced Practice Drills & 50-Term Phrasebook**: Instant plain-English explanations, searchable AI dictionary, and tap-to-flip flashcards.
+- **WCAG AA Editorial Reading Themes**: Lora serif & Plus Jakarta Sans typography in Light Paper, Warm Sepia, and Dark Obsidian with S / M / L font sizing.
+- **Private by Design**: Zero `INTERNET` permission, zero ads, zero trackers, local-only `SharedPreferences` storage, and disabled Android cloud/device-to-device backups (`allowBackup="false"`). See [Privacy Policy](https://marain.fun/privacy).
+
+### Build & Test the Android App Locally
+
+Marain for Android is currently in internal testing (see [https://marain.fun](https://marain.fun)). To build and test locally:
+
+```bash
+# Sync latest shared curriculum JSON into Android assets
+cd apps/android
+./sync-curriculum.sh
+
+# Run JVM unit tests & assemble debug APK
+./gradlew testDebugUnitTest assembleDebug --no-daemon
+
+# Install onto a connected Android device or emulator
+adb install -r app/build/outputs/apk/debug/app-debug.apk
+```
+
+See [apps/android/PLAY_CONSOLE_UPLOAD.md](apps/android/PLAY_CONSOLE_UPLOAD.md) for signed release builds and Google Play Console upload steps.
+
+---
+
+## 2. Official Website (`apps/marain-web/`)
+
+Static site auto-deployed on Vercel from `main` to **[https://marain.fun](https://marain.fun)**:
+
+- `/` (`index.html`) — Public Marain landing page (no test APKs published)
+- `/privacy` (`privacy.html`) — Public Privacy Policy aligned with the in-app offline Privacy Policy
+- Legacy routes `/marain`, `/marain/index.html`, `/marain/privacy`, and `/marain/privacy.html` permanently redirect (`301`) to `/` and `/privacy`.
+
+---
+
+## 3. Linux Desktop App — Zero2AI Studio (`apps/desktop/`)
+
+**Zero2AI Studio** combines the full editorial Reader + Quizzes + AI Glossary with **6 interactive Try & Build Labs**:
 
 1. **Tokenizer & Context Window Lab** — Live BPE-like token visualizer & visual context "working desk" slider.
 2. **API Keys & AI Credits Lab** — Interactive model pricing calculator, Spot-the-Leaked-Key game, and live/simulated API call inspector.
@@ -41,27 +86,6 @@ Go from *"What even is an LLM?"* to understanding tokens, AI credits, API keys, 
 6. **App Builder Studio** — Build interactive stateful mini-apps, try the "Debug Like a Pro" bug-fix challenge, and export standalone working apps to disk.
 
 > **100% Free Practice Mode by default**: No API key or credit card required. You can optionally switch to **Real AI Mode (BYOK)** in **API & Mode Settings** using Google Gemini, Anthropic Claude, OpenAI, or free local **Ollama**. Your keys stay strictly on your own computer.
-
-### Download / Run Pre-Built Linux Artifacts
-
-Packaged Linux artifacts are built into `apps/desktop/release/`:
-
-- **AppImage (portable single-file executable):**
-  ```bash
-  chmod +x "apps/desktop/release/Zero2AI Studio-1.0.0.AppImage"
-  "./apps/desktop/release/Zero2AI Studio-1.0.0.AppImage"
-  ```
-- **Tarball archive (`tar.gz`):**
-  ```bash
-  mkdir -p /tmp/zero2ai-studio
-  tar -xzf "apps/desktop/release/zero2ai-studio-1.0.0.tar.gz" -C /tmp/zero2ai-studio
-  /tmp/zero2ai-studio/zero2ai-studio-1.0.0/zero2ai-studio
-  ```
-- **Unpacked Linux binary (for quick local testing):**
-  ```bash
-  ./apps/desktop/release/linux-unpacked/zero2ai-studio
-  ```
-  *(If running inside a restricted container/sandbox without kernel user namespaces, pass `--no-sandbox`.)*
 
 ### Build & Develop the Desktop App from Source
 
@@ -92,7 +116,7 @@ npm run package:linux
 
 #### macOS & Windows Packaging Readiness
 
-`apps/desktop/package.json` already configures `electron-builder` targets for macOS (`dmg`, `zip`) and Windows (`nsis`, `portable`). On a macOS or Windows host, run:
+`apps/desktop/package.json` configures `electron-builder` targets for macOS (`dmg`, `zip`) and Windows (`nsis`, `portable`). On a macOS or Windows host, run:
 ```bash
 npx electron-builder --mac
 npx electron-builder --win
@@ -100,42 +124,14 @@ npx electron-builder --win
 
 ---
 
-## 2. Android Mobile App — Zero2AI Varsity (`apps/android/`)
-
-**Zero2AI Varsity** is a native offline-first Android companion built with **Kotlin, Jetpack Compose, and Material 3**:
-
-- Clean **Varsity Editorial Reader** with Light, Warm Sepia, and Dark themes + adjustable font sizes.
-- Interactive **Duolingo-style Chapter Quizzes** with instant plain-English explanations, XP, levels, and daily streaks.
-- Searchable **AI Glossary** with category chips and inline tap-to-define bottom sheets.
-- Offline **Saved Bookmarks** and local progress persistence.
-
-### Build, Test & Install the Android APK
-
-```bash
-# Sync latest shared curriculum JSON into Android assets
-cd apps/android
-./sync-curriculum.sh
-
-# Run JVM unit tests & assemble debug APK
-./gradlew testDebugUnitTest assembleDebug
-
-# Install onto a connected Android device or emulator
-adb install -r app/build/outputs/apk/debug/app-debug.apk
-```
-
-Compiled debug APK path:
-`apps/android/app/build/outputs/apk/debug/app-debug.apk`
-
----
-
-## 3. Shared Curriculum Package (`packages/curriculum/`)
+## 4. Shared Curriculum Package (`packages/curriculum/`)
 
 All educational content is authored once in `packages/curriculum/` and compiled to `packages/curriculum/dist/curriculum.json`.
 
 ```bash
 cd packages/curriculum
 npm run build   # Generates dist/curriculum.json
-npm test        # Validates 7 modules, >=28 chapters, quizzes, >=40 glossary terms, and 6 lab links
+npm test        # Validates 7 modules, >=28 chapters, quizzes, mastery checks, glossary terms, and 6 lab links
 ```
 
 ---
@@ -143,4 +139,3 @@ npm test        # Validates 7 modules, >=28 chapters, quizzes, >=40 glossary ter
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
-

@@ -1,40 +1,26 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
-  "headers": [
+  "redirects": [
     {
-      "source": "/marain/marain-1.1.0.apk",
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "application/vnd.android.package-archive"
-        },
-        {
-          "key": "Content-Disposition",
-          "value": "attachment; filename=\"marain-1.1.0.apk\""
-        },
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=300"
-        }
-      ]
+      "source": "/marain",
+      "destination": "/",
+      "statusCode": 301
     },
     {
-      "source": "/marain/marain-1.0.0.apk",
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "application/vnd.android.package-archive"
-        },
-        {
-          "key": "Content-Disposition",
-          "value": "attachment; filename=\"marain-1.0.0.apk\""
-        },
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=300"
-        }
-      ]
+      "source": "/marain/index.html",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
+      "source": "/marain/privacy",
+      "destination": "/privacy",
+      "statusCode": 301
+    },
+    {
+      "source": "/marain/privacy.html",
+      "destination": "/privacy",
+      "statusCode": 301
     }
   ]
 }

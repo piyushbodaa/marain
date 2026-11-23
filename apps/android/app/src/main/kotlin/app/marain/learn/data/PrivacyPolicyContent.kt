@@ -7,15 +7,16 @@ data class PrivacyPolicySection(
 )
 
 /**
- * Offline in-app Privacy Policy content aligned with https://piyushbodaa.com/marain/privacy
- * and accurately describing Marain v1.1.1's local-only storage & disabled cloud/D2D backups.
+ * Offline in-app Privacy Policy content aligned with https://marain.fun/privacy
+ * and accurately describing Marain's local-only storage & disabled cloud/D2D backups.
  */
 object PrivacyPolicyContent {
   const val TITLE = "Privacy Policy for Marain"
   const val EFFECTIVE_DATE = "November 23, 2026"
   const val PACKAGE_ID = "app.marain.learn"
   const val DEVELOPER = "Piyush Bodaa"
-  const val WEB_URL = "https://piyushbodaa.com/marain/privacy"
+  const val WEBSITE_URL = "https://marain.fun"
+  const val WEB_URL = "https://marain.fun/privacy"
   const val DEVELOPER_URL = "https://piyushbodaa.com"
 
   const val SUMMARY =
@@ -69,7 +70,7 @@ object PrivacyPolicyContent {
       heading = "6. Policy Updates & Contact",
       paragraphs = listOf(
         "If Marain ever introduces optional online features in a future release, this Privacy Policy will be updated clearly before those changes take effect, along with a new effective date.",
-        "Questions about Marain (app.marain.learn)? Reach developer Piyush Bodaa via https://piyushbodaa.com. Online copy: https://piyushbodaa.com/marain/privacy.",
+        "Questions about Marain (app.marain.learn)? Reach developer Piyush Bodaa via https://piyushbodaa.com. Website: https://marain.fun · Online copy: https://marain.fun/privacy.",
       ),
     ),
   )

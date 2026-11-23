@@ -2,14 +2,432 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="refresh" content="0;url=/marain" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Marain — The Language of AI</title>
-    <script>
-      window.location.replace('/marain');
-    </script>
+    <title>Marain — Learn the Language of AI</title>
+    <meta
+      name="description"
+      content="Learn AI with Marain for Android through mastery-first plain-English lessons, Unit Mastery Checks, a 50-term phrasebook, and WCAG AA reading themes — 100% offline and MIT open-source. Currently in internal testing."
+    />
+    <link rel="canonical" href="https://marain.fun" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Marain" />
+    <meta property="og:url" content="https://marain.fun" />
+    <meta property="og:title" content="Marain — Learn the Language of AI" />
+    <meta
+      property="og:description"
+      content="Mastery-first AI learning from A1 to C2 with a 5-minute phone-only Unit 1, Unit Mastery Checks, a 50-term phrasebook, and WCAG AA Light/Sepia/Dark themes. 100% offline and MIT open-source."
+    />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Marain — Learn the Language of AI" />
+    <meta
+      name="twitter:description"
+      content="Mastery-first AI learning from A1 to C2 for Android. 100% offline, zero sign-up, zero ads, MIT open-source. Currently in internal testing."
+    />
+    <meta name="theme-color" content="#FAF9F5" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 108 108'%3E%3Cpath fill='%2311352A' d='M0,0h108v108h-108z'/%3E%3Cpath fill='%231B4D3E' d='M0,0 L108,0 L108,70 L0,92 Z'/%3E%3Cpath fill='%23FAF9F5' d='M31,73 L31,35 L39.5,35 L54,55.5 L68.5,35 L77,35 L77,73 L69,73 L69,48.5 L56.2,66.2 L51.8,66.2 L39,48.5 L39,73 Z'/%3E%3Cpath fill='%23D98A1C' d='M43,78.5 L65,78.5 C66.4,78.5 67.5,79.6 67.5,81 C67.5,82.4 66.4,83.5 65,83.5 L43,83.5 C41.6,83.5 40.5,82.4 40.5,81 C40.5,79.6 41.6,78.5 43,78.5 Z'/%3E%3C/svg%3E"
+    />
+    <style>
+      :root {
+        --bg: #faf9f5;
+        --surface: #ffffff;
+        --surface-muted: #f1eee8;
+        --hairline: #e6e3dc;
+        --lip: #dad6ce;
+        --ink: #141413;
+        --ink-secondary: #5e5c56;
+        --ink-muted: #76736b;
+        --forest: #1b4d3e;
+        --forest-lip: #11352a;
+        --forest-wash: #eaf2ef;
+        --gold: #d98a1c;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+          sans-serif;
+        -webkit-font-smoothing: antialiased;
+        line-height: 1.6;
+      }
+
+      .serif {
+        font-family: 'Lora', Georgia, Cambria, serif;
+      }
+
+      .wrap {
+        max-width: 660px;
+        margin: 0 auto;
+        padding: 28px 20px 64px;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding-bottom: 18px;
+        margin-bottom: 28px;
+        border-bottom: 1px solid var(--hairline);
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+        color: var(--ink);
+      }
+
+      .brand-name {
+        font-family: 'Lora', Georgia, serif;
+        font-size: 1.25rem;
+        font-weight: 700;
+        letter-spacing: -0.025em;
+        line-height: 1.1;
+      }
+
+      .brand-sub {
+        font-size: 0.72rem;
+        color: var(--ink-secondary);
+        font-weight: 600;
+        letter-spacing: 0.02em;
+      }
+
+      .version-tag {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 0.74rem;
+        font-weight: 700;
+        color: var(--forest);
+        border: 1px solid var(--hairline);
+        background: var(--surface);
+      }
+
+      .hero {
+        background: var(--surface);
+        border: 1px solid var(--hairline);
+        border-radius: 20px;
+        padding: 32px 26px 28px;
+      }
+
+      .hero-mark {
+        width: 64px;
+        height: 64px;
+        border-radius: 16px;
+        overflow: hidden;
+        margin-bottom: 20px;
+        border: 1px solid rgba(17, 53, 42, 0.14);
+      }
+
+      .kicker {
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+        color: var(--forest);
+        margin: 0 0 8px;
+      }
+
+      h1 {
+        margin: 0;
+        font-family: 'Lora', Georgia, serif;
+        font-size: clamp(1.8rem, 6vw, 2.35rem);
+        line-height: 1.16;
+        letter-spacing: -0.025em;
+        font-weight: 700;
+        color: var(--ink);
+      }
+
+      .lead {
+        margin: 14px 0 24px;
+        color: var(--ink-secondary);
+        font-size: 0.98rem;
+      }
+
+      .cta {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+        padding: 15px 22px;
+        border-radius: 14px;
+        background: var(--forest);
+        color: #faf9f5;
+        font-size: 1rem;
+        font-weight: 700;
+        text-decoration: none;
+        letter-spacing: -0.01em;
+        box-shadow: 0 4px 0 var(--forest-lip);
+        transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.15s ease;
+      }
+
+      .cta:hover {
+        background: #164033;
+      }
+
+      .cta:active {
+        transform: translateY(3px);
+        box-shadow: 0 1px 0 var(--forest-lip);
+      }
+
+      .secondary-links {
+        margin-top: 14px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      .pill-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 13px;
+        border-radius: 10px;
+        border: 1px solid var(--hairline);
+        background: var(--bg);
+        color: var(--forest);
+        font-size: 0.82rem;
+        font-weight: 700;
+        text-decoration: none;
+        transition: background 0.15s ease, border-color 0.15s ease;
+      }
+
+      .pill-link:hover {
+        background: var(--forest-wash);
+        border-color: rgba(27, 77, 62, 0.25);
+      }
+
+      .meta-bar {
+        margin-top: 18px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 6px 14px;
+        font-size: 0.78rem;
+        color: var(--ink-secondary);
+        font-weight: 500;
+      }
+
+      .meta-code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        color: var(--ink);
+        background: var(--surface-muted);
+        padding: 1px 7px;
+        border-radius: 5px;
+      }
+
+      .section {
+        margin-top: 20px;
+        background: var(--surface);
+        border: 1px solid var(--hairline);
+        border-radius: 18px;
+        padding: 22px 24px;
+      }
+
+      .section h2 {
+        margin: 0 0 12px;
+        font-family: 'Lora', Georgia, serif;
+        font-size: 1.08rem;
+        font-weight: 700;
+        color: var(--ink);
+      }
+
+      .section p {
+        margin: 0;
+        font-size: 0.9rem;
+        color: var(--ink-secondary);
+      }
+
+      .section a {
+        color: var(--forest);
+        font-weight: 600;
+        text-decoration: none;
+      }
+
+      .section a:hover {
+        text-decoration: underline;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      @media (max-width: 520px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        .hero,
+        .section {
+          padding: 22px 18px;
+        }
+      }
+
+      .feat {
+        background: var(--bg);
+        border: 1px solid var(--hairline);
+        border-radius: 12px;
+        padding: 14px;
+      }
+
+      .feat strong {
+        display: block;
+        font-size: 0.87rem;
+        color: var(--ink);
+        margin-bottom: 4px;
+      }
+
+      .feat span {
+        display: block;
+        font-size: 0.8rem;
+        color: var(--ink-secondary);
+        line-height: 1.48;
+      }
+
+      .footer {
+        margin-top: 28px;
+        text-align: center;
+        font-size: 0.78rem;
+        color: var(--ink-muted);
+        line-height: 1.8;
+      }
+
+      .footer a {
+        color: var(--forest);
+        font-weight: 600;
+        text-decoration: none;
+      }
+
+      .footer a:hover {
+        text-decoration: underline;
+      }
+    </style>
   </head>
-  <body style="margin:0;background:#FAF9F5;color:#141413;font-family:Georgia,serif;display:grid;place-items:center;min-height:100vh;">
-    <p>Redirecting to <a href="/marain" style="color:#1B4D3E;font-weight:700;">/marain</a>…</p>
+  <body>
+    <main class="wrap">
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="Marain Home">
+          <svg width="38" height="38" viewBox="0 0 108 108" style="border-radius:10px;display:block;flex-shrink:0;" aria-hidden="true">
+            <path fill="#11352A" d="M0,0h108v108h-108z" />
+            <path fill="#1B4D3E" d="M0,0 L108,0 L108,70 L0,92 Z" />
+            <path fill="#FAF9F5" d="M31,73 L31,35 L39.5,35 L54,55.5 L68.5,35 L77,35 L77,73 L69,73 L69,48.5 L56.2,66.2 L51.8,66.2 L39,48.5 L39,73 Z" />
+            <path fill="#D98A1C" d="M43,78.5 L65,78.5 C66.4,78.5 67.5,79.6 67.5,81 C67.5,82.4 66.4,83.5 65,83.5 L43,83.5 C41.6,83.5 40.5,82.4 40.5,81 C40.5,79.6 41.6,78.5 43,78.5 Z" />
+          </svg>
+          <span>
+            <span class="brand-name" style="display:block;">Marain</span>
+            <span class="brand-sub" style="display:block;">The Language of AI</span>
+          </span>
+        </a>
+        <span class="version-tag">Android &middot; Internal testing</span>
+      </header>
+
+      <section class="hero">
+        <div class="hero-mark" aria-hidden="true">
+          <svg width="64" height="64" viewBox="0 0 108 108" style="display:block;">
+            <path fill="#11352A" d="M0,0h108v108h-108z" />
+            <path fill="#1B4D3E" d="M0,0 L108,0 L108,70 L0,92 Z" />
+            <path fill="#FAF9F5" d="M31,73 L31,35 L39.5,35 L54,55.5 L68.5,35 L77,35 L77,73 L69,73 L69,48.5 L56.2,66.2 L51.8,66.2 L39,48.5 L39,73 Z" />
+            <path fill="#D98A1C" d="M43,78.5 L65,78.5 C66.4,78.5 67.5,79.6 67.5,81 C67.5,82.4 66.4,83.5 65,83.5 L43,83.5 C41.6,83.5 40.5,82.4 40.5,81 C40.5,79.6 41.6,78.5 43,78.5 Z" />
+          </svg>
+        </div>
+
+        <p class="kicker">Mastery-First &middot; CEFR A1 &rarr; C2</p>
+        <h1>Learn Marain — The Language of AI</h1>
+        <p class="lead">
+          Understand AI from first principles with a crisp 5-minute phone-only Unit 1, practical
+          Unit Mastery Checks, and a 50-term phrasebook. Unlock CEFR A1&ndash;C2 by real mastery
+          while XP tracks daily practice. 100% offline, MIT open-source, no sign-up, no ads.
+        </p>
+
+        <a class="cta" href="#inside-heading">Explore what you&rsquo;ll learn</a>
+
+        <div class="secondary-links">
+          <a
+            class="pill-link"
+            href="https://github.com/piyushbodaa/marain"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Source code on GitHub (MIT)
+          </a>
+          <a class="pill-link" href="/privacy">Privacy Policy</a>
+        </div>
+
+        <div class="meta-bar" aria-label="Package metadata">
+          <span class="meta-code">app.marain.learn</span>
+          <span>Android 8.0+ (API 26)</span>
+          <span>100% Offline</span>
+          <span>MIT Open Source</span>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="availability-heading">
+        <h2 id="availability-heading">Android availability</h2>
+        <p>
+          Marain v1.2.0 is currently in internal testing. A public Android download isn&rsquo;t
+          available yet &mdash; you can inspect the open-source Android app and shared curriculum on
+          <a href="https://github.com/piyushbodaa/marain" target="_blank" rel="noopener noreferrer">GitHub (MIT)</a>.
+        </p>
+      </section>
+
+      <section class="section" aria-labelledby="inside-heading">
+        <h2 id="inside-heading">What&rsquo;s Inside Marain</h2>
+        <div class="grid">
+          <div class="feat">
+            <strong>5-Minute Phone-Only Unit 1 &amp; Mastery Checks</strong>
+            <span>7 units, 28 plain-English lessons, 84 balanced drills, and practical Unit Mastery Checks on every unit.</span>
+          </div>
+          <div class="feat">
+            <strong>CEFR A1 &rarr; C2 Unlocked by Mastery</strong>
+            <span>Fluency ranks unlock when you prove understanding, while XP and daily goals track consistent practice.</span>
+          </div>
+          <div class="feat">
+            <strong>50-Term AI Phrasebook &amp; Flashcards</strong>
+            <span>Searchable plain-English dictionary with everyday analogies plus tap-to-flip flashcards.</span>
+          </div>
+          <div class="feat">
+            <strong>WCAG AA Editorial Reading Themes</strong>
+            <span>Lora serif &amp; Plus Jakarta Sans typography in Light Paper, Warm Sepia, and WCAG AA Dark Obsidian.</span>
+          </div>
+          <div class="feat">
+            <strong>100% Offline &amp; Zero Data Collection</strong>
+            <span>No internet permission, no ads, no trackers, and disabled cloud/device-to-device backups.</span>
+          </div>
+          <div class="feat">
+            <strong>MIT Open Source</strong>
+            <span>Built with Kotlin &amp; Jetpack Compose and shared openly on GitHub under the MIT License.</span>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <a href="/privacy">Privacy Policy</a> &middot;
+        <a href="https://github.com/piyushbodaa/marain" target="_blank" rel="noopener noreferrer">Source code (MIT)</a>
+        &middot; Built by
+        <a href="https://piyushbodaa.com" target="_blank" rel="noopener noreferrer">Piyush Bodaa</a>
+      </footer>
+    </main>
   </body>
 </html>

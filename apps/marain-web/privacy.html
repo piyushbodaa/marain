@@ -6,7 +6,16 @@
     <title>Privacy Policy — Marain (app.marain.learn)</title>
     <meta
       name="description"
-      content="Privacy Policy for Marain (app.marain.learn), a 100% offline Android educational app that collects zero personal or device data."
+      content="Privacy Policy for Marain (app.marain.learn), a 100% offline, MIT open-source Android educational app that stores progress locally only and collects zero personal or device data."
+    />
+    <link rel="canonical" href="https://marain.fun/privacy" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Marain" />
+    <meta property="og:url" content="https://marain.fun/privacy" />
+    <meta property="og:title" content="Privacy Policy — Marain (app.marain.learn)" />
+    <meta
+      property="og:description"
+      content="Marain is a 100% offline Android educational app with local-only storage, disabled cloud/device-to-device backups, and zero data collected or shared."
     />
     <meta name="theme-color" content="#FAF9F5" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -28,7 +37,7 @@
         --hairline: #e6e3dc;
         --ink: #141413;
         --ink-secondary: #5e5c56;
-        --ink-muted: #8e8b82;
+        --ink-muted: #76736b;
         --forest: #1b4d3e;
         --forest-wash: #eaf2ef;
       }
@@ -200,7 +209,7 @@
   <body>
     <main class="wrap">
       <header class="topbar">
-        <a class="brand" href="/marain" aria-label="Marain Home">
+        <a class="brand" href="/" aria-label="Marain Home">
           <svg width="36" height="36" viewBox="0 0 108 108" style="border-radius:9px;display:block;flex-shrink:0;" aria-hidden="true">
             <path fill="#11352A" d="M0,0h108v108h-108z" />
             <path fill="#1B4D3E" d="M0,0 L108,0 L108,70 L0,92 Z" />
@@ -212,88 +221,98 @@
             <span class="brand-sub" style="display:block;">Privacy Policy</span>
           </span>
         </a>
-        <a class="back-link" href="/marain">&larr; Download Page</a>
+        <a class="back-link" href="/">&larr; Back to marain.fun</a>
       </header>
 
       <article class="card">
         <h1>Privacy Policy for Marain</h1>
         <div class="meta">
-          <span><strong>Effective Date:</strong> November 22, 2026</span>
+          <span><strong>Effective Date:</strong> November 23, 2026</span>
           <span><strong>App Package:</strong> <span class="code">app.marain.learn</span></span>
           <span><strong>Developer:</strong> Piyush Bodaa</span>
         </div>
 
         <div class="summary-box">
           <strong>Plain-English Summary:</strong> Marain is a <strong>100% offline</strong> Android
-          educational app. It requires no account, shows no ads, includes no analytics or tracking
-          SDKs, and <strong>never collects, transmits, sells, or shares</strong> any personal or
+          educational app. It requests no internet permission, requires no account, shows no ads,
+          includes no analytics or tracking SDKs, disables Android cloud backup and device-to-device
+          transfer, and <strong>never collects, transmits, sells, or shares</strong> any personal or
           device data.
         </div>
 
         <h2>1. Zero Data Collection</h2>
         <p>
           <strong>Marain</strong> (<span class="code">app.marain.learn</span>), developed by
-          <strong>Piyush Bodaa</strong> (<a href="https://piyushbodaa.com">https://piyushbodaa.com</a>),
+          <strong>Piyush Bodaa</strong> (<a href="https://piyushbodaa.com" rel="noopener noreferrer">https://piyushbodaa.com</a>),
           is designed from the ground up to work completely offline on your Android device.
         </p>
         <ul>
-          <li><strong>No account or sign-in:</strong> You do not provide your name, email address, phone number, or any login credentials.</li>
+          <li><strong>No account or sign-in:</strong> You never provide your name, email address, phone number, or login credentials.</li>
           <li><strong>No personal or device data collected:</strong> We do not collect, transmit, store on remote servers, sell, or share any personal information, identifiers, location data, or usage telemetry.</li>
-          <li><strong>No advertisements:</strong> Marain contains zero ads and zero advertising SDKs.</li>
-          <li><strong>No third-party analytics or crash reporters:</strong> Marain does not bundle third-party tracking, analytics, telemetry, or crash-reporting libraries.</li>
+          <li><strong>No advertisements:</strong> Marain contains zero ads, zero advertising IDs (<span class="code">AD_ID</span>), and zero ad SDKs.</li>
+          <li><strong>No third-party analytics or crash reporters:</strong> Marain bundles zero tracking, telemetry, or crash-reporting libraries.</li>
         </ul>
 
-        <h2>2. On-Device Local Storage Only</h2>
+        <h2>2. Local-Only Storage &amp; Backup Controls</h2>
         <p>
-          To remember your learning journey between sessions, Marain stores your app state strictly
-          locally on your device using Android <span class="code">SharedPreferences</span>. This
-          local-only data includes:
+          To remember your learning progress between sessions, Marain stores your app state strictly
+          locally on your device inside a single private Android <span class="code">SharedPreferences</span>
+          file (<span class="code">marain_learn_prefs.xml</span>). No other databases, external
+          files, or network caches are created.
         </p>
         <ul>
-          <li>Completed lessons, practice drill scores, and unlocked milestones</li>
-          <li>CEFR fluency rank (A1&ndash;C2), earned XP, daily XP goal progress, hearts, and learning streaks</li>
-          <li>Mastered phrasebook flashcards and saved chapter bookmarks</li>
-          <li>Reading preferences (Light Paper / Warm Sepia / Dark Obsidian theme and S / M / L font size)</li>
+          <li>Completed lessons, practice drill scores, Unit Mastery Check results, best combos, and unlocked milestones.</li>
+          <li>Mastery-based CEFR fluency milestones (A0&ndash;C2), practice XP, daily 50 XP goal progress, and learning streaks.</li>
+          <li>Mastered Phrasebook flashcards, saved chapter bookmarks, and onboarding completion state.</li>
+          <li>Reading appearance preferences (Light Paper / Warm Sepia / Dark Obsidian theme and S / M / L font scale).</li>
+          <li><strong>Cloud backup &amp; device-to-device transfer disabled:</strong> Marain explicitly sets <span class="code">allowBackup="false"</span> and excludes all storage domains from both Android cloud backup and device-to-device transfer so your local data never leaves this device.</li>
         </ul>
+
+        <h2>3. Erasing Your Data</h2>
         <p>
-          This data never leaves your phone. You can erase it at any time by clearing the app&rsquo;s
-          storage in Android Settings or by uninstalling Marain, which deletes all local app data
-          automatically.
+          Your learning state stays exclusively on your device. You can erase all local Marain data
+          permanently at any time by clearing app storage in Android Settings
+          (<strong>Apps &rarr; Marain &rarr; Storage &rarr; Clear storage</strong>) or by
+          uninstalling Marain.
         </p>
 
-        <h2>3. Permissions &amp; Network Access</h2>
+        <h2>4. Permissions &amp; Offline Design</h2>
         <p>
-          All lessons, practice drills, and phrasebook entries are bundled directly inside the app.
-          Marain does not require internet access to function and does not request access to your
-          camera, microphone, contacts, location, or external storage.
+          All 7 units, 28 chapters, 84 practice drills, 7 Unit Mastery Checks, and 50 Phrasebook
+          entries are bundled directly inside the app. Marain does not request
+          <span class="code">android.permission.INTERNET</span>, advertising ID permissions, or
+          access to your camera, microphone, contacts, location, or external storage.
         </p>
 
-        <h2>4. Children&rsquo;s Privacy</h2>
+        <h2>5. Children&rsquo;s Privacy</h2>
         <p>
           Marain is safe for learners of all ages. Because the app operates completely offline and
           collects zero personal information from any user, we do not knowingly collect any personal
           data from children under 13 (or the equivalent minimum age in your jurisdiction).
         </p>
 
-        <h2>5. Changes to This Policy</h2>
+        <h2>6. Open Source, Policy Updates &amp; Contact</h2>
         <p>
+          Marain is open-source under the MIT License; you can audit the app and curriculum source
+          code anytime at
+          <a href="https://github.com/piyushbodaa/marain" target="_blank" rel="noopener noreferrer">https://github.com/piyushbodaa/marain</a>.
           If Marain ever introduces optional online features in a future release, this Privacy
-          Policy will be updated clearly before those changes take effect, along with an updated
+          Policy will be updated clearly before those changes take effect, along with a new
           effective date at the top of this page.
         </p>
-
-        <h2>6. Contact</h2>
         <p>
-          If you have any questions about this Privacy Policy or Marain
-          (<span class="code">app.marain.learn</span>), please reach out to the developer,
-          <strong>Piyush Bodaa</strong>, via
-          <a href="https://piyushbodaa.com">https://piyushbodaa.com</a>.
+          Questions about this Privacy Policy or Marain (<span class="code">app.marain.learn</span>)?
+          Reach developer <strong>Piyush Bodaa</strong> via
+          <a href="https://piyushbodaa.com" target="_blank" rel="noopener noreferrer">https://piyushbodaa.com</a>.
+          Official website: <a href="https://marain.fun">https://marain.fun</a>.
         </p>
       </article>
 
       <footer class="footer">
-        <a href="/marain">Marain Download Page</a> &middot;
-        <a href="https://piyushbodaa.com">piyushbodaa.com</a>
+        <a href="/">marain.fun</a> &middot;
+        <a href="https://github.com/piyushbodaa/marain" target="_blank" rel="noopener noreferrer">GitHub (MIT)</a>
+        &middot;
+        <a href="https://piyushbodaa.com" target="_blank" rel="noopener noreferrer">piyushbodaa.com</a>
       </footer>
     </main>
   </body>

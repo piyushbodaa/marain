@@ -22,6 +22,9 @@ Everything needed to publish **Marain** (`app.marain.learn`, v1.2.0 / versionCod
 
 - **App Name**: `Marain`
 - **Package ID**: `app.marain.learn`
+- **Website**: `https://marain.fun`
+- **Privacy Policy URL**: `https://marain.fun/privacy`
+- **Source Code**: `https://github.com/piyushbodaa/marain` (MIT License)
 - **Category**: `Education`
 - **Pricing**: Free (No ads, no in-app purchases)
 - **Short Description** *(75 / 80 characters)*:
@@ -60,6 +63,7 @@ Everything needed to publish **Marain** (`app.marain.learn`, v1.2.0 / versionCod
 
 Use these exact facts when completing the **App Content → Data Safety** form in Play Console:
 
+- **Privacy Policy URL**: `https://marain.fun/privacy`
 - **Does your app collect or share any of the required user data types?** → **No**
 - **Account creation required?** → **No** (zero sign-up, zero backend servers)
 - **Network / Permissions**: **100% offline** — requires zero dangerous permissions; the full curriculum is bundled inside the app.
@@ -72,7 +76,7 @@ Use these exact facts when completing the **App Content → Data Safety** form i
 
 1. Sign in to [Google Play Console](https://play.google.com/console) and click **Create app**.
 2. Enter **App name**: `Marain`, **Default language**: English (United States), **App or game**: App, **Free or paid**: Free.
-3. Complete the initial **Set up your app** checklist (Privacy policy URL, App access: all functionality available without login, Ads: No, Content rating questionnaire, Target audience, Data safety).
+3. Complete the initial **Set up your app** checklist (Privacy policy URL: `https://marain.fun/privacy`, Website: `https://marain.fun`, App access: all functionality available without login, Ads: No, Content rating questionnaire, Target audience, Data safety).
 4. In the left sidebar, open **Testing → Internal testing** and click **Create new release**.
 5. Under **App signing**, opt in to **Play App Signing** (recommended by Google Play).
 6. Drag and drop `apps/android/app/build/outputs/bundle/release/app-release.aab` into **App bundles**.
@@ -116,7 +120,9 @@ Once `app.marain.learn` exists in Google Play Console (and the first `.aab` has 
 
 ---
 
-## 6. Direct Install on Your Android Phone (Right Now)
+## 6. Direct Install on Your Android Phone (Local Testing)
+
+*(Public website: [https://marain.fun](https://marain.fun) — public downloads are paused during internal testing; use the local signed build below for personal device testing.)*
 
 **Option A — Over USB with `adb`:**
 ```bash
