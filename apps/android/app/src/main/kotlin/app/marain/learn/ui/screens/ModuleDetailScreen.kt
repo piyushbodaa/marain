@@ -14,15 +14,21 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.automirrored.rounded.ArrowForward
 import androidx.compose.material.icons.rounded.Bookmark
 import androidx.compose.material.icons.rounded.BookmarkBorder
 import androidx.compose.material.icons.rounded.Check
+import androidx.compose.material.icons.rounded.EmojiEvents
+import androidx.compose.material.icons.rounded.PlayArrow
+import androidx.compose.material.icons.rounded.Replay
 import androidx.compose.material.icons.rounded.Star
+import androidx.compose.material.icons.rounded.Verified
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -42,14 +48,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import app.marain.learn.data.ProgressEngine
+import app.marain.learn.data.UnitMasteryStatus
 import app.marain.learn.data.UserProgress
 import app.marain.learn.data.model.Chapter
 import app.marain.learn.data.model.CurriculumModule
+import app.marain.learn.data.model.MasteryCheck
 import app.marain.learn.ui.components.EditorialProgressBar
+import app.marain.learn.ui.components.TactileButton
 import app.marain.learn.ui.components.rememberMarkdown
 import app.marain.learn.ui.theme.LocalMarainColors
 import app.marain.learn.ui.theme.LoraFontFamily
 import app.marain.learn.ui.theme.PlusJakartaSansFontFamily
+import app.marain.learn.ui.theme.UnitEditorialPalette
 import app.marain.learn.ui.theme.editorialUnitPalette
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -59,18 +70,16 @@ fun ModuleDetailScreen(
   progress: UserProgress,
   onBack: () -> Unit,
   onOpenChapter: (String) -> Unit,
+  onStartMasteryCheck: (String) -> Unit,
   onToggleBookmark: (String) -> Unit,
   modifier: Modifier = Modifier,
 ) {
   val marain = LocalMarainColors.current
-  val palette = editorialUnitPalette(module.number)
+  val palette = editorialUnitPalette(module.number, isDark = marain.isDark)
   val orderedChapters = module.chapters.sortedBy { it.number }
-  val masteredCount = orderedChapters.count { it.id in progress.completedQuizChapterIds }
-  val fraction = if (orderedChapters.isNotEmpty()) {
-    masteredCount.toFloat() / orderedChapters.size.toFloat()
-  } else {
-    0f
-  }
+  val unitStatus = ProgressEngine.unitMasteryStatus(progress, module)
+  val nextLessonInUnit = orderedChapters.firstOrNull { !ProgressEngine.isChapterMastered(progress, it) }
+  val masteryCheck = module.masteryCheck?.takeIf { it.questions.isNotEmpty() }
 
   Scaffold(
     modifier = modifier.fillMaxSize(),
@@ -96,9 +105,11 @@ fun ModuleDetailScreen(
           colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.background,
             titleContentColor = MaterialTheme.colorScheme.onBackground,
+            navigationIconContentColor = MaterialTheme.colorScheme.onBackground,
+            actionIconContentColor = MaterialTheme.colorScheme.onBackground,
           ),
         )
-        HorizontalDivider(thickness = 1.dp, color = marain.cardBorder)
+        HorizontalDivider(thickness = 1.dp, color = marain.hairlineDivider)
       }
     },
   ) { innerPadding ->
@@ -126,29 +137,30 @@ fun ModuleDetailScreen(
               .padding(20.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
           ) {
+            val phoneTag = if (module.isPhoneOnly) " · PHONE-ONLY" else ""
             Text(
-              text = "UNIT ${module.number} · ${orderedChapters.size} LESSONS · ~${module.estimatedMinutes} MIN",
+              text = "UNIT ${module.number} · ${orderedChapters.size} LESSONS · ~${module.estimatedMinutes} MIN$phoneTag",
               fontFamily = PlusJakartaSansFontFamily,
               fontWeight = FontWeight.Bold,
               fontSize = 11.sp,
               letterSpacing = 0.8.sp,
-              color = Color.White.copy(alpha = 0.78f),
+              color = palette.onFillMuted,
             )
 
             Text(
-              text = rememberMarkdown(module.title),
+              text = rememberMarkdown(module.title, codeColor = palette.onFill),
               fontFamily = LoraFontFamily,
               fontWeight = FontWeight.Bold,
               fontSize = 24.sp,
               lineHeight = 31.sp,
               letterSpacing = (-0.4).sp,
-              color = Color.White,
+              color = palette.onFill,
             )
 
             Text(
-              text = rememberMarkdown(module.subtitle),
+              text = rememberMarkdown(module.subtitle, codeColor = palette.onFill),
               style = MaterialTheme.typography.bodyMedium,
-              color = Color.White.copy(alpha = 0.86f),
+              color = palette.onFillMuted,
             )
 
             Spacer(modifier = Modifier.height(2.dp))
@@ -159,21 +171,87 @@ fun ModuleDetailScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
               ) {
                 Text(
-                  text = "Unit mastery",
+                  text = if (unitStatus.isUnitMastered) "Unit mastered" else "Unit progress",
                   style = MaterialTheme.typography.bodySmall,
-                  color = Color.White.copy(alpha = 0.78f),
+                  color = palette.onFillMuted,
                 )
+                val statusLabel = when {
+                  unitStatus.isUnitMastered && unitStatus.masteryBestPercent != null -> {
+                    "Check passed · ${unitStatus.masteryBestPercent}%"
+                  }
+                  unitStatus.isMasteryCheckReady -> "Mastery Check ready"
+                  else -> "${unitStatus.masteredLessonsCount} of ${unitStatus.totalLessonsCount} lessons"
+                }
                 Text(
-                  text = "$masteredCount of ${orderedChapters.size} mastered",
+                  text = statusLabel,
                   style = MaterialTheme.typography.labelMedium,
-                  color = Color.White,
+                  color = palette.onFill,
                 )
               }
               EditorialProgressBar(
-                progress = fraction,
-                fillColor = Color.White,
+                progress = unitStatus.progressFraction,
+                fillColor = palette.onFill,
                 height = 5.dp,
-                trackColor = Color.White.copy(alpha = 0.24f),
+                trackColor = Color.White.copy(alpha = 0.28f),
+              )
+            }
+          }
+        }
+      }
+
+      // Direct Next Action CTA inside the Unit Guidebook
+      item(key = "unit_direct_cta") {
+        when {
+          nextLessonInUnit != null -> {
+            TactileButton(
+              onClick = { onOpenChapter(nextLessonInUnit.id) },
+              fillColor = palette.fill,
+              lipColor = palette.lip,
+              contentColor = palette.onFill,
+              modifier = Modifier.fillMaxWidth(),
+            ) {
+              Icon(
+                imageVector = Icons.Rounded.PlayArrow,
+                contentDescription = null,
+                modifier = Modifier.size(20.dp),
+              )
+              Spacer(modifier = Modifier.width(6.dp))
+              Text(
+                text = if (unitStatus.masteredLessonsCount == 0) {
+                  "Start Lesson ${nextLessonInUnit.number}: ${nextLessonInUnit.title}"
+                } else {
+                  "Continue Lesson ${nextLessonInUnit.number}: ${nextLessonInUnit.title}"
+                },
+                style = MaterialTheme.typography.labelLarge,
+                fontWeight = FontWeight.Bold,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(1f, fill = false),
+              )
+            }
+          }
+          masteryCheck != null -> {
+            TactileButton(
+              onClick = { onStartMasteryCheck(module.id) },
+              fillColor = palette.fill,
+              lipColor = palette.lip,
+              contentColor = palette.onFill,
+              modifier = Modifier.fillMaxWidth(),
+            ) {
+              Icon(
+                imageVector = Icons.Rounded.Verified,
+                contentDescription = null,
+                modifier = Modifier.size(19.dp),
+              )
+              Spacer(modifier = Modifier.width(8.dp))
+              Text(
+                text = if (unitStatus.isMasteryCheckPassed) {
+                  "Retake Unit ${module.number} Mastery Check"
+                } else {
+                  "Take Unit ${module.number} Mastery Check"
+                },
+                style = MaterialTheme.typography.labelLarge,
+                fontWeight = FontWeight.Bold,
               )
             }
           }
@@ -199,19 +277,43 @@ fun ModuleDetailScreen(
           Column(modifier = Modifier.fillMaxWidth()) {
             orderedChapters.forEachIndexed { idx, chapter ->
               if (idx > 0) {
-                HorizontalDivider(thickness = 1.dp, color = marain.cardBorder)
+                HorizontalDivider(thickness = 1.dp, color = marain.hairlineDivider)
               }
+              val isMastered = ProgressEngine.isChapterMastered(progress, chapter)
+              val hasFailedAttempt = !isMastered && chapter.id in progress.attemptedQuizChapterIds
               GuidebookLessonRow(
                 chapter = chapter,
-                unitColor = palette.fill,
+                palette = palette,
                 isRead = chapter.id in progress.completedChapterIds,
-                isQuizDone = chapter.id in progress.completedQuizChapterIds,
+                isMastered = isMastered,
+                hasFailedAttempt = hasFailedAttempt,
                 bestQuizScore = progress.quizBestScores[chapter.id],
                 isBookmarked = chapter.id in progress.bookmarkedChapterIds,
                 onOpen = { onOpenChapter(chapter.id) },
                 onToggleBookmark = { onToggleBookmark(chapter.id) },
               )
             }
+          }
+        }
+      }
+
+      // Unit Mastery Check Card (distinct, clear mastery gate for this unit)
+      if (masteryCheck != null) {
+        item(key = "unit_mastery_check_section") {
+          Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text(
+              text = "UNIT MASTERY CHECK",
+              style = MaterialTheme.typography.labelSmall,
+              color = marain.inkMuted,
+              modifier = Modifier.padding(top = 4.dp),
+            )
+            UnitMasteryCheckCard(
+              unitNumber = module.number,
+              masteryCheck = masteryCheck,
+              unitStatus = unitStatus,
+              palette = palette,
+              onStartMasteryCheck = { onStartMasteryCheck(module.id) },
+            )
           }
         }
       }
@@ -224,11 +326,116 @@ fun ModuleDetailScreen(
 }
 
 @Composable
+private fun UnitMasteryCheckCard(
+  unitNumber: Int,
+  masteryCheck: MasteryCheck,
+  unitStatus: UnitMasteryStatus,
+  palette: UnitEditorialPalette,
+  onStartMasteryCheck: () -> Unit,
+) {
+  val marain = LocalMarainColors.current
+  Surface(
+    modifier = Modifier
+      .fillMaxWidth()
+      .clip(RoundedCornerShape(14.dp))
+      .clickable(onClick = onStartMasteryCheck),
+    shape = RoundedCornerShape(14.dp),
+    color = MaterialTheme.colorScheme.surface,
+    border = BorderStroke(
+      width = if (unitStatus.isMasteryCheckReady) 1.5.dp else 1.dp,
+      color = if (unitStatus.isMasteryCheckReady) palette.accent else marain.cardBorder,
+    ),
+  ) {
+    Row(
+      modifier = Modifier
+        .fillMaxWidth()
+        .padding(16.dp),
+      verticalAlignment = Alignment.CenterVertically,
+      horizontalArrangement = Arrangement.spacedBy(14.dp),
+    ) {
+      Box(
+        modifier = Modifier
+          .size(44.dp)
+          .clip(RoundedCornerShape(12.dp))
+          .background(
+            when {
+              unitStatus.isMasteryCheckPassed -> marain.masteredGold
+              unitStatus.isMasteryCheckReady -> palette.fill
+              else -> MaterialTheme.colorScheme.surfaceVariant
+            },
+          ),
+        contentAlignment = Alignment.Center,
+      ) {
+        Icon(
+          imageVector = if (unitStatus.isMasteryCheckPassed) Icons.Rounded.Verified else Icons.Rounded.EmojiEvents,
+          contentDescription = null,
+          tint = when {
+            unitStatus.isMasteryCheckPassed -> marain.onMasteredGold
+            unitStatus.isMasteryCheckReady -> palette.onFill
+            else -> MaterialTheme.colorScheme.onSurfaceVariant
+          },
+          modifier = Modifier.size(22.dp),
+        )
+      }
+
+      Column(
+        modifier = Modifier.weight(1f),
+        verticalArrangement = Arrangement.spacedBy(3.dp),
+      ) {
+        Text(
+          text = masteryCheck.title,
+          style = MaterialTheme.typography.titleMedium,
+          color = MaterialTheme.colorScheme.onSurface,
+        )
+        val desc = if (masteryCheck.subtitle.isNotBlank()) {
+          masteryCheck.subtitle
+        } else {
+          "Prove your understanding of Unit $unitNumber to unlock unit mastery."
+        }
+        Text(
+          text = desc,
+          style = MaterialTheme.typography.bodySmall,
+          color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        val meta = when {
+          unitStatus.isMasteryCheckPassed && unitStatus.masteryBestScore != null -> {
+            "Passed · Best ${unitStatus.masteryBestScore}/${masteryCheck.questions.size} (${unitStatus.masteryBestPercent ?: 100}%)"
+          }
+          unitStatus.masteryBestScore != null -> {
+            "Best ${unitStatus.masteryBestScore}/${masteryCheck.questions.size} · Need ${masteryCheck.minCorrectToPass}/${masteryCheck.questions.size} (≥${masteryCheck.passingScorePercent}%)"
+          }
+          else -> {
+            "${masteryCheck.questions.size} questions · ~${masteryCheck.estimatedMinutes} min · ≥${masteryCheck.passingScorePercent}% to pass"
+          }
+        }
+        Text(
+          text = meta,
+          style = MaterialTheme.typography.labelSmall,
+          color = when {
+            unitStatus.isMasteryCheckPassed -> marain.streakAccent
+            unitStatus.isMasteryCheckReady -> palette.accent
+            else -> marain.inkMuted
+          },
+        )
+      }
+
+      Icon(
+        imageVector = Icons.AutoMirrored.Rounded.ArrowForward,
+        contentDescription = "Start mastery check",
+        tint = if (unitStatus.isMasteryCheckReady) palette.accent else marain.inkMuted,
+        modifier = Modifier.size(18.dp),
+      )
+    }
+  }
+}
+
+@Composable
 private fun GuidebookLessonRow(
   chapter: Chapter,
-  unitColor: Color,
+  palette: UnitEditorialPalette,
   isRead: Boolean,
-  isQuizDone: Boolean,
+  isMastered: Boolean,
+  hasFailedAttempt: Boolean,
   bestQuizScore: Int?,
   isBookmarked: Boolean,
   onOpen: () -> Unit,
@@ -244,7 +451,6 @@ private fun GuidebookLessonRow(
     horizontalArrangement = Arrangement.spacedBy(13.dp),
     verticalAlignment = Alignment.Top,
   ) {
-    // Clean circular status marker
     Box(
       modifier = Modifier
         .padding(top = 2.dp)
@@ -252,24 +458,31 @@ private fun GuidebookLessonRow(
         .clip(CircleShape)
         .background(
           when {
-            isQuizDone -> marain.masteredGold
-            isRead -> unitColor
+            isMastered -> marain.masteredGold
+            hasFailedAttempt -> marain.wrongContainer
+            isRead -> palette.fill
             else -> MaterialTheme.colorScheme.surfaceVariant
           },
         ),
       contentAlignment = Alignment.Center,
     ) {
       when {
-        isQuizDone -> Icon(
+        isMastered -> Icon(
           imageVector = Icons.Rounded.Star,
           contentDescription = "Mastered",
-          tint = Color.White,
+          tint = marain.onMasteredGold,
+          modifier = Modifier.size(16.dp),
+        )
+        hasFailedAttempt -> Icon(
+          imageVector = Icons.Rounded.Replay,
+          contentDescription = "Retry practice check",
+          tint = marain.wrongAccent,
           modifier = Modifier.size(16.dp),
         )
         isRead -> Icon(
           imageVector = Icons.Rounded.Check,
           contentDescription = "Read",
-          tint = Color.White,
+          tint = palette.onFill,
           modifier = Modifier.size(16.dp),
         )
         else -> Text(
@@ -297,18 +510,21 @@ private fun GuidebookLessonRow(
         maxLines = 2,
         overflow = TextOverflow.Ellipsis,
       )
-      val meta = buildString {
-        append("${chapter.readMinutes} min · +${chapter.xpReward} XP")
-        if (isQuizDone && bestQuizScore != null) {
-          append(" · Best $bestQuizScore/${chapter.quiz.size}")
-        } else if (isRead) {
-          append(" · Drill ready")
+      val (meta, metaColor) = when {
+        isMastered && bestQuizScore != null -> {
+          "${chapter.readMinutes} min · Mastered ($bestQuizScore/${chapter.quiz.size})" to marain.streakAccent
         }
+        isMastered -> "${chapter.readMinutes} min · Mastered" to marain.streakAccent
+        hasFailedAttempt -> {
+          "${chapter.readMinutes} min · Retry check (need ≥${ProgressEngine.LESSON_PASS_PERCENT}%)" to marain.wrongAccent
+        }
+        isRead -> "${chapter.readMinutes} min · Practice check ready" to palette.accent
+        else -> "${chapter.readMinutes} min read" to marain.inkMuted
       }
       Text(
         text = meta,
         style = MaterialTheme.typography.labelSmall,
-        color = if (isQuizDone) marain.streakAccent else marain.inkMuted,
+        color = metaColor,
       )
     }
 

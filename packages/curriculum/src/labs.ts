@@ -10,7 +10,8 @@ export const LABS: LabInfo[] = [
     xpReward: 75,
     moduleId: 'mod-2-tokens-prompts',
     description:
-      'Type any sentence, emoji, or code snippet to watch how AI breaks words into numbered chunks called tokens. Then slide a conversation length bar to see a model context window fill up and push older messages off the desk.'
+      'Type any sentence, emoji, or code snippet to watch how AI breaks words into numbered chunks called tokens. Then slide a conversation length bar to see a model context window fill up and push older messages off the desk.',
+    desktopOnly: true
   },
   {
     id: 'api-credits',
@@ -21,7 +22,8 @@ export const LABS: LabInfo[] = [
     xpReward: 75,
     moduleId: 'mod-3-credits-keys',
     description:
-      'Calculate how far $5 of AI credits actually stretches across Gemini, Claude, GPT, and free local Ollama models. Play the Spot-the-Leaked-Key safety challenge and inspect a live or simulated API request header by header.'
+      'Calculate how far $5 of AI credits actually stretches across Gemini, Claude, GPT, and free local Ollama models. Play the Spot-the-Leaked-Key safety challenge and inspect a live or simulated API request header by header.',
+    desktopOnly: true
   },
   {
     id: 'harness-agent',
@@ -32,7 +34,8 @@ export const LABS: LabInfo[] = [
     xpReward: 80,
     moduleId: 'mod-4-harnesses-agents',
     description:
-      'Toggle capabilities like CLAUDE.md instructions, file reading, editing, and terminal tests on or off. Run a realistic bug-fix mission side by side to watch why a raw model can only give advice while a harnessed agent actually solves the task step by step.'
+      'Toggle capabilities like CLAUDE.md instructions, file reading, editing, and terminal tests on or off. Run a realistic bug-fix mission side by side to watch why a raw model can only give advice while a harnessed agent actually solves the task step by step.',
+    desktopOnly: true
   },
   {
     id: 'claude-cli',
@@ -43,7 +46,8 @@ export const LABS: LabInfo[] = [
     xpReward: 90,
     moduleId: 'mod-5-claude-cli',
     description:
-      'Follow 6 bite-sized interactive missions in a zero-risk terminal dojo—from pwd and ls to starting Claude Code, reviewing red-and-green diffs, compacting long chats, and undoing changes safely with Git.'
+      'Follow 6 bite-sized interactive missions in a zero-risk terminal dojo—from pwd and ls to starting Claude Code, reviewing red-and-green diffs, compacting long chats, and undoing changes safely with Git.',
+    desktopOnly: true
   },
   {
     id: 'website-builder',
@@ -54,7 +58,8 @@ export const LABS: LabInfo[] = [
     xpReward: 100,
     moduleId: 'mod-6-build-website',
     description:
-      'Fill in a clear mini-spec for a portfolio, local cafe, or event page, watch your structured prompt assemble, generate a responsive site, iterate live with plain-English requests, inspect annotated HTML/CSS/JS, and export the finished folder.'
+      'Fill in a clear mini-spec for a portfolio, local cafe, or event page, watch your structured prompt assemble, generate a responsive site, iterate live with plain-English requests, inspect annotated HTML/CSS/JS, and export the finished folder.',
+    desktopOnly: true
   },
   {
     id: 'app-builder',
@@ -65,6 +70,7 @@ export const LABS: LabInfo[] = [
     xpReward: 100,
     moduleId: 'mod-7-build-app',
     description:
-      'Go beyond static pages by creating a working Habit Tracker, Expense Splitter, or Flashcard app that remembers data across reloads. Then trigger a realistic bug, read the console clue, and watch AI patch it cleanly.'
+      'Go beyond static pages by creating a working Habit Tracker, Expense Splitter, or Flashcard app that remembers data across reloads. Then trigger a realistic bug, read the console clue, and watch AI patch it cleanly.',
+    desktopOnly: true
   }
 ];

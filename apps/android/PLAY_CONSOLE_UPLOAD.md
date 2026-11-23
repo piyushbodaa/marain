@@ -1,6 +1,6 @@
 # Marain — Google Play Console Upload & Direct Install Guide
 
-Everything needed to publish **Marain** (`app.marain.learn`, v1.1.1) — *Learn Marain: The Language of AI* — to Google Play Console and install it immediately on any Android 8.0+ phone.
+Everything needed to publish **Marain** (`app.marain.learn`, v1.2.0 / versionCode 4) — *Learn Marain: The Language of AI* — to Google Play Console and install it immediately on any Android 8.0+ phone.
 
 ---
 
@@ -76,7 +76,10 @@ Use these exact facts when completing the **App Content → Data Safety** form i
 4. In the left sidebar, open **Testing → Internal testing** and click **Create new release**.
 5. Under **App signing**, opt in to **Play App Signing** (recommended by Google Play).
 6. Drag and drop `apps/android/app/build/outputs/bundle/release/app-release.aab` into **App bundles**.
-7. Set **Release name**: `1.1.1 (3)` and **Release notes**: `v1.1.1 — Enforced local-only storage with Android cloud backup and device-to-device transfer disabled across API 26–36, plus an offline in-app Privacy Policy view.`
+7. Set **Release name**: `1.2.0 (4)` and **Release notes**:
+   ```text
+   v1.2.0 — Rebuilt Unit 1 as a crisp 5-minute phone-only experience with practical Mastery Checks across all 7 units; gated CEFR fluency milestones on real mastery instead of clicks; balanced quiz options so answers cannot be guessed by length; fixed API key, budget, and permissions safety advice; added direct Lesson 1 and Start/Continue CTA navigation; and upgraded Dark Mode contrast to WCAG AA.
+   ```
 8. Click **Next → Save → Publish to Internal testing**, then add tester Gmail addresses under the **Testers** tab and share the opt-in link.
 
 ---

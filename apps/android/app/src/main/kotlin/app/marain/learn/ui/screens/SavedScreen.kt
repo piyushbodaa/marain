@@ -142,7 +142,7 @@ fun SavedScreen(
           Column(modifier = Modifier.fillMaxWidth()) {
             savedPairs.forEachIndexed { idx, (module, chapter) ->
               if (idx > 0) {
-                HorizontalDivider(thickness = 1.dp, color = marain.cardBorder)
+                HorizontalDivider(thickness = 1.dp, color = marain.hairlineDivider)
               }
               SavedChapterRow(
                 module = module,
@@ -235,7 +235,7 @@ private fun SavedChapterRow(
   onRemoveBookmark: () -> Unit,
 ) {
   val marain = LocalMarainColors.current
-  val unitColor = editorialUnitPalette(module.number).fill
+  val unitAccent = editorialUnitPalette(module.number, isDark = marain.isDark).accent
 
   Row(
     modifier = Modifier
@@ -253,7 +253,7 @@ private fun SavedChapterRow(
       Text(
         text = "UNIT ${module.number} · LESSON ${chapter.number}$status",
         style = MaterialTheme.typography.labelSmall,
-        color = unitColor,
+        color = unitAccent,
       )
       Text(
         text = rememberMarkdown(chapter.title),

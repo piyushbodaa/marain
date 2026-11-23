@@ -36,6 +36,7 @@ import androidx.compose.material.icons.rounded.ExpandLess
 import androidx.compose.material.icons.rounded.ExpandMore
 import androidx.compose.material.icons.rounded.Replay
 import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -248,12 +249,16 @@ fun PhrasebookScreen(
                     Icon(
                       imageVector = Icons.Rounded.Close,
                       contentDescription = "Clear search",
+                      tint = MaterialTheme.colorScheme.onSurfaceVariant,
                       modifier = Modifier.size(18.dp),
                     )
                   }
                 }
               },
               colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                cursorColor = MaterialTheme.colorScheme.primary,
                 focusedContainerColor = MaterialTheme.colorScheme.surface,
                 unfocusedContainerColor = MaterialTheme.colorScheme.surface,
                 focusedBorderColor = MaterialTheme.colorScheme.primary,
@@ -288,6 +293,9 @@ fun PhrasebookScreen(
                 },
                 shape = RoundedCornerShape(10.dp),
                 border = BorderStroke(1.dp, marain.cardBorder),
+                colors = ButtonDefaults.outlinedButtonColors(
+                  contentColor = MaterialTheme.colorScheme.onSurface,
+                ),
               ) {
                 Text("Reset filters")
               }
@@ -587,6 +595,9 @@ private fun FlashcardsDeckView(
           .height(52.dp),
         shape = RoundedCornerShape(14.dp),
         border = BorderStroke(1.dp, marain.cardBorder),
+        colors = ButtonDefaults.outlinedButtonColors(
+          contentColor = MaterialTheme.colorScheme.onSurface,
+        ),
       ) {
         Icon(
           imageVector = Icons.Rounded.Replay,
@@ -646,8 +657,8 @@ private fun EditorialPhraseCard(
     shape = RoundedCornerShape(14.dp),
     color = MaterialTheme.colorScheme.surface,
     border = BorderStroke(
-      width = 1.dp,
-      color = if (expanded) MaterialTheme.colorScheme.primary.copy(alpha = 0.5f) else marain.cardBorder,
+      width = if (expanded) 1.5.dp else 1.dp,
+      color = if (expanded) MaterialTheme.colorScheme.primary else marain.cardBorder,
     ),
   ) {
     Column(
@@ -708,7 +719,7 @@ private fun EditorialPhraseCard(
           modifier = Modifier.padding(top = 6.dp),
           verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-          HorizontalDivider(thickness = 1.dp, color = marain.cardBorder)
+          HorizontalDivider(thickness = 1.dp, color = marain.hairlineDivider)
           Row(
             modifier = Modifier
               .fillMaxWidth()

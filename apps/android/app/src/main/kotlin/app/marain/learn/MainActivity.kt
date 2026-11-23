@@ -41,6 +41,7 @@ class MainActivity : ComponentActivity() {
             onChapterOpened = viewModel::onChapterOpened,
             onMarkChapterRead = viewModel::onMarkChapterRead,
             onQuizCompleted = viewModel::onQuizCompleted,
+            onMasteryCheckCompleted = viewModel::onMasteryCheckCompleted,
             onMarkPhraseMastered = viewModel::onMarkPhraseMastered,
             onToggleBookmark = viewModel::onToggleBookmark,
             onSelectReadingTheme = viewModel::onSelectReadingTheme,

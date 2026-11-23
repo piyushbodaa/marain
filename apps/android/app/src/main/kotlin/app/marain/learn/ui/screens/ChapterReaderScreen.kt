@@ -29,6 +29,8 @@ import androidx.compose.material.icons.rounded.BookmarkBorder
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Quiz
 import androidx.compose.material.icons.rounded.TextFields
+import androidx.compose.material.icons.rounded.Verified
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -56,6 +58,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import app.marain.learn.data.FontScaleOption
+import app.marain.learn.data.NextStepAfterChapter
 import app.marain.learn.data.ProgressEngine
 import app.marain.learn.data.ReadingTheme
 import app.marain.learn.data.UserProgress
@@ -85,13 +88,14 @@ fun ChapterReaderScreen(
   onMarkChapterRead: (String) -> Unit,
   onToggleBookmark: (String) -> Unit,
   onStartQuiz: (String) -> Unit,
+  onStartMasteryCheck: (String) -> Unit,
   onNavigateToChapter: (String) -> Unit,
   onSelectReadingTheme: (ReadingTheme) -> Unit,
   onSelectFontScale: (FontScaleOption) -> Unit,
   modifier: Modifier = Modifier,
 ) {
   val marain = LocalMarainColors.current
-  val unitPalette = editorialUnitPalette(module.number)
+  val unitPalette = editorialUnitPalette(module.number, isDark = marain.isDark)
   val scrollState = rememberScrollState()
   val readProgress by remember {
     derivedStateOf {
@@ -104,7 +108,8 @@ fun ChapterReaderScreen(
   var showAppearanceSheet by remember { mutableStateOf(false) }
 
   val isRead = chapter.id in progress.completedChapterIds
-  val isQuizDone = chapter.id in progress.completedQuizChapterIds
+  val isMastered = ProgressEngine.isChapterMastered(progress, chapter)
+  val hasFailedAttempt = !isMastered && chapter.id in progress.attemptedQuizChapterIds
   val bestQuizScore = progress.quizBestScores[chapter.id]
   val isBookmarked = chapter.id in progress.bookmarkedChapterIds
 
@@ -114,8 +119,8 @@ fun ChapterReaderScreen(
   val previousChapter = remember(chapter.id, curriculum) {
     ProgressEngine.previousChapterBefore(chapter.id, curriculum)
   }
-  val nextChapter = remember(chapter.id, curriculum) {
-    ProgressEngine.nextChapterAfter(chapter.id, curriculum)
+  val nextStep = remember(chapter.id, progress, curriculum) {
+    ProgressEngine.nextStepAfterChapter(chapter.id, progress, curriculum)
   }
 
   LaunchedEffect(chapter.id) {
@@ -164,6 +169,8 @@ fun ChapterReaderScreen(
           colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.background,
             titleContentColor = MaterialTheme.colorScheme.onBackground,
+            navigationIconContentColor = MaterialTheme.colorScheme.onBackground,
+            actionIconContentColor = MaterialTheme.colorScheme.onBackground,
           ),
         )
         LinearProgressIndicator(
@@ -171,8 +178,8 @@ fun ChapterReaderScreen(
           modifier = Modifier
             .fillMaxWidth()
             .height(2.5.dp),
-          color = unitPalette.fill,
-          trackColor = marain.cardBorder,
+          color = unitPalette.accent,
+          trackColor = marain.hairlineDivider,
         )
       }
     },
@@ -187,14 +194,19 @@ fun ChapterReaderScreen(
     ) {
       // Editorial Masthead & Clean Metadata Strip
       Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        val statusSuffix = if (isQuizDone) " · MASTERED" else if (isRead) " · READ" else ""
+        val statusSuffix = when {
+          isMastered -> " · MASTERED"
+          hasFailedAttempt -> " · CHECK NEEDED"
+          isRead -> " · READ"
+          else -> ""
+        }
         Text(
-          text = "UNIT ${module.number} · ${chapter.readMinutes} MIN READ · +${chapter.xpReward} XP$statusSuffix",
+          text = "UNIT ${module.number} · ${chapter.readMinutes} MIN READ$statusSuffix",
           fontFamily = PlusJakartaSansFontFamily,
           fontWeight = FontWeight.Bold,
           fontSize = 11.sp,
           letterSpacing = 0.9.sp,
-          color = unitPalette.fill,
+          color = unitPalette.accent,
         )
 
         Text(
@@ -210,7 +222,7 @@ fun ChapterReaderScreen(
         )
       }
 
-      // Editorial Left-Bar Pull-Quote for Everyday Analogy (NO loud border box)
+      // Editorial Left-Bar Pull-Quote for Everyday Analogy
       Row(
         modifier = Modifier
           .fillMaxWidth()
@@ -222,7 +234,7 @@ fun ChapterReaderScreen(
           modifier = Modifier
             .width(3.dp)
             .fillMaxHeight()
-            .background(unitPalette.fill),
+            .background(unitPalette.accent),
         )
         Column(
           modifier = Modifier
@@ -233,7 +245,7 @@ fun ChapterReaderScreen(
           Text(
             text = "EVERYDAY ANALOGY",
             style = MaterialTheme.typography.labelSmall,
-            color = unitPalette.fill,
+            color = unitPalette.accent,
           )
           Text(
             text = rememberMarkdown(chapter.analogy.title),
@@ -248,13 +260,13 @@ fun ChapterReaderScreen(
         }
       }
 
-      // Magazine-grade Editorial Sections
+      // Magazine-grade Editorial Sections (100% phone self-contained)
       chapter.sections.forEachIndexed { index, section ->
         Column(verticalArrangement = Arrangement.spacedBy(11.dp)) {
           if (index > 0) {
             HorizontalDivider(
               thickness = 1.dp,
-              color = marain.cardBorder,
+              color = marain.hairlineDivider,
               modifier = Modifier.padding(bottom = 6.dp),
             )
           }
@@ -280,7 +292,7 @@ fun ChapterReaderScreen(
       // Crisp 1.dp Hairline Phrasebook Chips
       if (glossaryTerms.isNotEmpty()) {
         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-          HorizontalDivider(thickness = 1.dp, color = marain.cardBorder)
+          HorizontalDivider(thickness = 1.dp, color = marain.hairlineDivider)
           Text(
             text = "KEY PHRASES — TAP TO DECODE",
             style = MaterialTheme.typography.labelSmall,
@@ -354,12 +366,13 @@ fun ChapterReaderScreen(
         }
       }
 
-      // Chunky Tactile 3D Practice CTA
+      // Chunky Tactile 3D Practice Check CTA (high-contrast white text on unit fill in all themes)
       Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
         TactileButton(
           onClick = { onStartQuiz(chapter.id) },
           fillColor = unitPalette.fill,
           lipColor = unitPalette.lip,
+          contentColor = unitPalette.onFill,
           modifier = Modifier.fillMaxWidth(),
         ) {
           Icon(
@@ -368,10 +381,10 @@ fun ChapterReaderScreen(
             modifier = Modifier.size(19.dp),
           )
           Spacer(modifier = Modifier.width(8.dp))
-          val ctaLabel = if (isQuizDone && bestQuizScore != null) {
-            "Practice Again (Best: $bestQuizScore/${chapter.quiz.size})"
-          } else {
-            "Practice This Lesson (+${chapter.xpReward} XP)"
+          val ctaLabel = when {
+            isMastered && bestQuizScore != null -> "Practice Check Again (Best: $bestQuizScore/${chapter.quiz.size})"
+            hasFailedAttempt -> "Retry Practice Check (Need ≥${ProgressEngine.LESSON_PASS_PERCENT}%)"
+            else -> "Check Your Understanding (${chapter.quiz.size} Qs)"
           }
           Text(
             text = ctaLabel,
@@ -388,18 +401,20 @@ fun ChapterReaderScreen(
               .height(46.dp),
             shape = RoundedCornerShape(12.dp),
             border = BorderStroke(1.dp, marain.cardBorder),
+            colors = ButtonDefaults.outlinedButtonColors(
+              contentColor = MaterialTheme.colorScheme.onSurface,
+            ),
           ) {
             Text(
-              text = "Mark Chapter as Read (+${ProgressEngine.READ_CHAPTER_XP} XP)",
+              text = "Mark Lesson as Read (+${ProgressEngine.READ_CHAPTER_XP} Practice XP)",
               style = MaterialTheme.typography.labelMedium,
-              color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
           }
         }
       }
 
-      // Clean Previous / Next Chapter Navigation
-      HorizontalDivider(thickness = 1.dp, color = marain.cardBorder)
+      // Clean Previous / Next Chapter (or Unit Mastery Check at end of unit) Navigation
+      HorizontalDivider(thickness = 1.dp, color = marain.hairlineDivider)
       Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -410,6 +425,9 @@ fun ChapterReaderScreen(
             modifier = Modifier.weight(1f),
             shape = RoundedCornerShape(10.dp),
             border = BorderStroke(1.dp, marain.cardBorder),
+            colors = ButtonDefaults.outlinedButtonColors(
+              contentColor = MaterialTheme.colorScheme.onSurface,
+            ),
           ) {
             Icon(
               imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
@@ -427,27 +445,56 @@ fun ChapterReaderScreen(
           Spacer(modifier = Modifier.weight(1f))
         }
 
-        if (nextChapter != null) {
-          OutlinedButton(
-            onClick = { onNavigateToChapter(nextChapter.id) },
-            modifier = Modifier.weight(1f),
-            shape = RoundedCornerShape(10.dp),
-            border = BorderStroke(1.dp, marain.cardBorder),
-          ) {
-            Text(
-              text = "Next Lesson",
-              maxLines = 1,
-              overflow = TextOverflow.Ellipsis,
-            )
-            Spacer(modifier = Modifier.width(6.dp))
-            Icon(
-              imageVector = Icons.AutoMirrored.Rounded.ArrowForward,
-              contentDescription = null,
-              modifier = Modifier.size(16.dp),
-            )
+        when (nextStep) {
+          is NextStepAfterChapter.UnitMasteryCheck -> {
+            OutlinedButton(
+              onClick = { onStartMasteryCheck(nextStep.module.id) },
+              modifier = Modifier.weight(1f),
+              shape = RoundedCornerShape(10.dp),
+              border = BorderStroke(1.dp, unitPalette.accent),
+              colors = ButtonDefaults.outlinedButtonColors(
+                contentColor = unitPalette.accent,
+              ),
+            ) {
+              Icon(
+                imageVector = Icons.Rounded.Verified,
+                contentDescription = null,
+                modifier = Modifier.size(16.dp),
+              )
+              Spacer(modifier = Modifier.width(6.dp))
+              Text(
+                text = "Mastery Check",
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+              )
+            }
           }
-        } else {
-          Spacer(modifier = Modifier.weight(1f))
+          is NextStepAfterChapter.NextLesson -> {
+            OutlinedButton(
+              onClick = { onNavigateToChapter(nextStep.chapter.id) },
+              modifier = Modifier.weight(1f),
+              shape = RoundedCornerShape(10.dp),
+              border = BorderStroke(1.dp, marain.cardBorder),
+              colors = ButtonDefaults.outlinedButtonColors(
+                contentColor = MaterialTheme.colorScheme.onSurface,
+              ),
+            ) {
+              Text(
+                text = "Next Lesson",
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+              )
+              Spacer(modifier = Modifier.width(6.dp))
+              Icon(
+                imageVector = Icons.AutoMirrored.Rounded.ArrowForward,
+                contentDescription = null,
+                modifier = Modifier.size(16.dp),
+              )
+            }
+          }
+          is NextStepAfterChapter.CourseComplete -> {
+            Spacer(modifier = Modifier.weight(1f))
+          }
         }
       }
 

@@ -4,58 +4,58 @@ export const MODULE_1: CurriculumModule = {
   id: 'mod-1-what-is-ai',
   number: 1,
   title: 'What Even Is AI?',
-  subtitle: 'Strip away the sci-fi hype and see how modern AI actually works in plain English.',
+  subtitle: 'A crisp 5-minute foundation: how modern AI works, which model to pick, and what chat apps hide under the hood.',
   icon: 'brain',
   accentHex: '#10B981',
-  estimatedMinutes: 16,
-  recommendedLabId: 'tokenizer',
+  estimatedMinutes: 5,
+  recommendedLabId: null,
   chapters: [
     {
       id: 'ch-1-1',
       moduleId: 'mod-1-what-is-ai',
       number: 1,
-      title: 'AI vs. Regular Software: Rules vs. Patterns',
-      readMinutes: 4,
+      title: 'Rules vs. Patterns: Why AI Feels Different',
+      readMinutes: 1,
       xpReward: 25,
       summary:
-        'Traditional software follows exact instructions written by humans line by line. Modern AI learns fuzzy patterns from millions of examples so it can handle messy real-world tasks like language and images.',
+        'Regular software obeys exact rules written by programmers. Modern AI learns fuzzy patterns from millions of examples—making it great at messy language and unreliable at exact math.',
       analogy: {
-        title: 'The Calculator vs. The Seasoned Chef',
-        body: 'A pocket calculator is regular software: press 2 + 2 and it follows rigid electrical rules to return 4 every single time. Modern AI is more like a seasoned chef who has tasted ten thousand dishes. You cannot write a simple math rule for "make this soup taste cozy," yet the chef recognizes patterns in ingredients and improvises a great bowl.'
+        title: 'The Tax Table vs. The Experienced Editor',
+        body: 'A spreadsheet formula is regular software: give it the same numbers and it returns the exact same total every time. Modern AI is more like a seasoned editor who has read ten thousand memos—it cannot prove a math formula, yet it spots tone, structure, and awkward phrasing immediately.'
       },
       sections: [
         {
-          heading: 'How regular software thinks: strict recipes',
-          body: 'Almost every app you used before 2022—spreadsheets, alarm clocks, banking portals, and calculators—was built using explicit rules. A human programmer sat down and wrote out every single scenario in advance: "If the user clicks Save, store the file. If the password is wrong, show a red warning."\n\nThis approach is unbeatable whenever the rules are crisp and unchanging. You want your bank balance to follow exact arithmetic, never a creative guess. The trouble starts when humans try to write fixed rules for messy, everyday tasks.',
+          heading: 'Regular software follows exact recipes',
+          body: 'Calculators, spreadsheets, and banking systems run on explicit rules written in advance: if a balance drops below zero, trigger an alert. Whenever a task demands 100% repeatable accuracy, hand-written rules are still undefeated.',
           callout: {
             type: 'example',
-            title: 'Try writing a rigid rule for a cat',
-            body: 'How would you explain a cat to a computer using only rules? "Four legs, whiskers, pointy ears." Wait—what if the cat is curled up sleeping, hiding one leg, or viewed from behind? Humans spent decades trying to code those rules by hand and still got fooled by fuzzy pillows.'
+            title: 'Where rigid rules break down',
+            body: 'Try writing fixed rules to flag rude customer emails. Blocking a list of bad words misses polite sarcasm ("Thanks for wasting my afternoon") and wrongly flags harmless messages.'
           }
         },
         {
-          heading: 'How AI flips the script: learning from examples',
-          body: 'Instead of hand-writing a million brittle rules, AI researchers tried something radically different: show a computer millions of labeled examples and let math adjust internal dials until the computer spots the patterns itself.\n\nThose internal dials are called model weights (or parameters). During a huge upfront study phase called training, the system sees billions of sentences, photos, or lines of code, makes guesses, checks how wrong it was, and nudges those weights slightly closer to the right pattern. Once training finishes, the weights are frozen and ready to use—a phase called inference.',
+          heading: 'AI learns patterns into frozen weights',
+          body: 'Instead of hand-coding rules, AI labs train a network on billions of examples, adjusting internal numbers called **model weights** until its guesses improve. That expensive study phase is **training**. When you send a prompt later, the weights stay frozen while it generates a reply—a fast step called **inference**.',
           callout: {
             type: 'myth',
-            title: 'Myth Buster: AI does not "understand" like a human brain',
-            body: 'Even when an AI writes a heartfelt poem or explains taxes clearly, there is no conscious person inside the server having feelings or memories. It is applying extraordinarily rich statistical patterns learned during training.'
+            title: 'Your chat does not retrain the model',
+            body: 'Sending a message runs inference on frozen weights. Your prompt may shape the current thread, yet it does not rewrite the model’s core knowledge in real time.'
           }
         },
         {
-          heading: 'When to use AI—and when regular software wins',
-          body: 'Because AI works with probabilities rather than rigid formulas, it shines at drafting emails, summarizing messy notes, translating tone, writing starter code, and brainstorming ideas. At the same time, regular software still beats AI at exact arithmetic, accounting ledgers, and tasks that must behave identically 100% of the time.\n\nThe best modern tools combine both worlds: AI handles the messy human request, then hands exact math or file operations off to reliable traditional code.',
+          heading: 'Pick the right tool for the job',
+          body: 'Because AI predicts probabilities rather than running exact formulas, reach for it on messy human tasks—drafting replies, summarizing notes, comparing options, or untangling jargon. Keep exact arithmetic, budgets, and legal totals inside spreadsheets or deterministic code.',
           callout: {
             type: 'tip',
-            title: 'A simple rule of thumb',
-            body: 'Need exact certainty (like calculating GST on 400 invoices)? Use regular software or a spreadsheet formula. Need judgment on messy text, structure, or creative starting points? Reach for AI.'
+            title: 'Best combo: AI writes the formula, software runs it',
+            body: 'Need to sum 500 expense rows by category? Ask AI to write the spreadsheet formula, then let the spreadsheet calculate the exact number.'
           }
         }
       ],
       keyTakeaways: [
-        'Regular software obeys exact human-written rules; AI learns statistical patterns from vast sets of examples.',
-        'Training is the expensive upfront study phase that tunes model weights; inference is the fast everyday act of answering your prompt.',
-        'AI excels at messy, open-ended tasks like writing and coding, while regular software still wins at strict, repeatable calculations.'
+        'Regular software executes exact human-written rules; AI applies statistical patterns learned from examples.',
+        'Training tunes model weights upfront; everyday prompting runs inference on frozen weights.',
+        'Use AI for messy language and drafting, and deterministic software for exact calculations.'
       ],
       glossaryTermIds: ['ai', 'model-weights', 'training-vs-inference'],
       relatedLabId: null,
@@ -63,41 +63,41 @@ export const MODULE_1: CurriculumModule = {
         {
           id: 'q-1-1-1',
           type: 'multiple_choice',
-          question: 'What is the main difference between regular software and modern AI?',
+          question: 'How does modern AI handle a messy task like sorting sarcastic customer complaints differently from traditional software?',
           options: [
-            'Regular software runs only on phones, while AI runs only on supercomputers.',
-            'Regular software follows exact human-written rules, while AI learns patterns from many examples.',
-            'Regular software cannot use the internet, while AI always browses live websites.',
-            'Regular software uses math, while AI does not use math at all.'
+            'It looks up every complaint against a live database maintained by human moderators.',
+            'It learns statistical patterns from examples instead of relying on fixed rules.',
+            'It automatically rewrites its source code line by line after every customer email.',
+            'It converts every sentence into a strict yes-or-no spreadsheet formula before replying.'
           ],
           correctIndex: 1,
           explanation:
-            'Traditional programs execute explicit step-by-step rules coded by programmers. Modern AI learns flexible patterns from massive collections of examples by tuning mathematical weights.'
+            'Traditional software relies on explicit rules written by humans, whereas modern AI learns flexible patterns across huge sets of examples.'
         },
         {
           id: 'q-1-1-2',
           type: 'true_false',
           question:
-            'Every time you send a message to ChatGPT or Claude, the AI is permanently retraining its model weights on your chat in real time.',
+            'When you correct a mistake in a chat with Claude or ChatGPT, the model permanently updates its core weights for all users right away.',
           options: ['True', 'False'],
           correctIndex: 1,
           explanation:
-            'False! Answering your everyday prompts is called inference—the model weights stay frozen while it generates a reply. Training is a separate, massively expensive process done beforehand.'
+            'False. Chatting runs inference on frozen model weights. Your correction only helps inside that active conversation unless a separate training run happens later.'
         },
         {
           id: 'q-1-1-3',
           type: 'spot_mistake',
           question:
-            'A friend says: "I need to sum 5,000 exact accounting rows for a tax filing, so I should paste them into an AI chat instead of Excel because AI is smarter." What is the mistake here?',
+            'Maya pastes 600 monthly receipts into a plain AI chat and asks for an exact tax total instead of using a spreadsheet. What is the real risk?',
           options: [
-            'AI chats are probabilistic pattern-matchers and can slip on exact arithmetic, whereas a spreadsheet uses rigid rules that are 100% accurate.',
-            'Excel cannot open more than 1,000 rows.',
-            'AI cannot read numbers at all.',
-            'Spreadsheets require an API key to add numbers.'
+            'Spreadsheets cannot categorize receipts without an AI plugin.',
+            'AI chat models refuse to process messages that contain currency symbols or decimals.',
+            'Probabilistic language models can miscount exact arithmetic across long lists.',
+            'Pasting financial numbers into a chat automatically retrains the model weights overnight.'
           ],
-          correctIndex: 0,
+          correctIndex: 2,
           explanation:
-            'Use the right tool for the job! Exact, repeatable arithmetic is where classic software like spreadsheets shines with 100% reliability—save AI for summarizing, categorizing, or writing the formula for you.'
+            'Language models estimate plausible text rather than running a calculator on every row. Let AI draft the spreadsheet formula, and let the spreadsheet sum the exact total.'
         }
       ]
     },
@@ -105,90 +105,90 @@ export const MODULE_1: CurriculumModule = {
       id: 'ch-1-2',
       moduleId: 'mod-1-what-is-ai',
       number: 2,
-      title: 'What Is an LLM? The World’s Best Pattern-Completer',
-      readMinutes: 4,
+      title: 'How LLMs Write: One Token at a Time',
+      readMinutes: 1,
       xpReward: 25,
       summary:
-        'A Large Language Model (LLM) generates entire essays, recipes, and programs by doing one deceptively simple job over and over: predicting the single most helpful next piece of text.',
+        'A Large Language Model does not retrieve stored answers from a vault. It builds every reply fresh by predicting the next chunk of text—which explains both its creativity and its confident mistakes.',
       analogy: {
-        title: 'Supercharged Autocomplete That Read the Whole Library',
-        body: 'You already know autocomplete on your phone keyboard: type "See you at" and it suggests "home" or "work." Now imagine an autocomplete engine that read virtually every public book, textbook, conversation, and code manual on Earth. To accurately guess the next word in a mystery novel or a Python file, it quietly had to learn grammar, logic, history, and coding patterns.'
+        title: 'Phone Autocomplete Scaled to an Entire Library',
+        body: 'When your phone keyboard suggests "tomorrow" after "See you", it is predicting the next likely word. An LLM does the same thing after studying vast amounts of writing and code—so predicting the next chunk accurately requires capturing grammar, logic, and structure.'
       },
       sections: [
         {
-          heading: 'Breaking down the three scary words: L-L-M',
-          body: 'Tech news loves acronyms, so let us unpack LLM in ten seconds. "Large" means the model has billions of tuned numbers (weights) and studied an enormous library of text. "Language" means it works primarily with human words and programming languages—though modern versions are also multimodal, meaning they can see images and read PDFs too.\n\n"Model" simply means a mathematical representation of patterns. Put together, a Large Language Model is a giant pattern-matcher built specifically to read and generate language.',
-          callout: {
-            type: 'tip',
-            title: 'Why "next-word prediction" turns into real usefulness',
-            body: 'At first glance, guessing the next word sounds too simple to explain coding or advice. Think about this: to correctly predict the next word after "If a shirt costs $40 with 25% off, the final price is $", the model has to absorb the underlying pattern of percentages!'
-          }
-        },
-        {
-          heading: 'One piece at a time—not a pre-written script',
-          body: 'When you ask an LLM a question, it does not search a giant filing cabinet of pre-written answers. Instead, it writes fresh from scratch, one small chunk (a token) at a time. That is why you literally watch words stream across the screen.\n\nAfter picking the first token, it feeds that token back in, looks at the whole conversation plus its new word, and predicts the next token—repeating hundreds of times per second until it predicts a special "stop, I am finished" signal.',
+          heading: 'What "Large Language Model" means in plain English',
+          body: '**Large** refers to billions of tuned weights trained on massive text collections. **Language** reflects how it reads and writes human prose and code—and modern **multimodal** models also take screenshots, photos, or audio as input. **Model** simply means a mathematical map of patterns.',
           callout: {
             type: 'example',
-            title: 'Watching the probability wheel spin',
-            body: 'If you type "The sun rises in the", the model assigns roughly 99% probability to "east" and tiny fractions to "morning" or "sky". If you type "Write a funny name for a dog:", dozens of options have reasonable probabilities—which is why asking twice gives two creative answers.'
+            title: 'Why next-chunk guessing looks like reasoning',
+            body: 'To predict the next piece after "A $40 shirt with 25% off costs $", the model must pick "30"—meaning training quietly rewards patterns that track math, logic, and context.'
           }
         },
         {
-          heading: 'How raw predictors become polite assistants',
-          body: 'A freshly trained base LLM only knows how to continue internet text—if you ask it "How do I boil an egg?", a raw base model might continue with "How do I fry bacon? How do I make toast?" because that looks like a FAQ list.\n\nTo turn it into a helpful assistant, AI labs run a second finishing step (post-training) using human feedback and step-by-step reasoning examples. That teaches the model to answer questions directly, admit uncertainty when appropriate, and follow safety guidelines.',
+          heading: 'Generated live, never copied from an answer vault',
+          body: 'An LLM writes one small text chunk (**token**) at a time, feeds that chunk back into the conversation, and predicts the next until it outputs a stop signal. Because several continuations can have similar probabilities, asking the same creative prompt twice often yields two fresh answers.',
           callout: {
             type: 'myth',
-            title: 'Myth Buster: LLMs do not copy-paste web pages from a live database',
-            body: 'Unless a chat app explicitly gives the AI a web-search tool, an LLM is generating text purely from compressed patterns stored in its frozen weights—not secretly Googling your question in the background.'
+            title: 'Fluent tone does not prove a fact is real',
+            body: 'Post-training teaches models to sound clear and helpful, not to verify every fact. Without a live search tool or a source you paste in, a model can smoothly invent a realistic quote or citation.'
+          }
+        },
+        {
+          heading: 'Reading the clues when an answer feels off',
+          body: 'Once you know replies are predicted sequentially, three everyday quirks make total sense: models stream word by word, they can change phrasing on a retry, and they need **grounding** (real documents or web search) whenever accuracy on recent or niche facts matters.',
+          callout: {
+            type: 'tip',
+            title: 'Spot ungrounded claims fast',
+            body: 'Whenever an AI gives you a specific date, price, law, or link from memory alone, treat it as a draft to verify—not a verified lookup.'
           }
         }
       ],
       keyTakeaways: [
-        'LLM stands for Large Language Model—a giant neural network trained on vast text and code to predict the next piece of text.',
-        'LLMs write answers freshly one chunk at a time rather than pulling pre-written replies from a database.',
-        'Modern LLMs are often multimodal, meaning they can understand screenshots, photos, and PDFs alongside plain text.'
+        'LLMs generate every reply sequentially via next-token prediction rather than pulling saved scripts from a database.',
+        'Multimodal models extend the same pattern engine to screenshots, photos, PDFs, and audio.',
+        'Polished prose is a product of pattern prediction and post-training—always verify ungrounded facts.'
       ],
       glossaryTermIds: ['llm', 'next-token-prediction', 'multimodal'],
-      relatedLabId: 'tokenizer',
+      relatedLabId: null,
       quiz: [
         {
           id: 'q-1-2-1',
           type: 'multiple_choice',
-          question: 'How does an LLM produce a full three-paragraph answer to your question?',
+          question: 'Why does asking the exact same brainstorming prompt twice often give you two different replies?',
           options: [
-            'It copies the top result from a search engine and changes a few words.',
-            'It asks five humans in a call center to draft a reply.',
-            'It selects one pre-written template stored by human engineers.',
-            'It predicts the most likely next chunk of text (token) one step at a time until finished.'
+            'The model samples among probable next tokens as it generates each reply fresh.',
+            'The server switches you to another AI company on retries.',
+            'The model checks your past browser cookies to intentionally avoid repeating earlier words.',
+            'Each reply is picked randomly from a fixed list of pre-written responses saved by engineers.'
           ],
-          correctIndex: 3,
+          correctIndex: 0,
           explanation:
-            'Every LLM generates replies sequentially through next-token prediction—picking one token, adding it to the text so far, and predicting the next until the response is complete.'
+            'LLMs generate replies token by token from probability distributions. For open-ended prompts, multiple tokens are plausible, so fresh runs naturally vary.'
         },
         {
           id: 'q-1-2-2',
           type: 'true_false',
           question:
-            'Modern multimodal LLMs can accept screenshots or photos in addition to typed text.',
+            'Because a multimodal LLM can read a screenshot of a receipt or error screen, it automatically searches the live internet to verify every detail in the image.',
           options: ['True', 'False'],
-          correctIndex: 0,
+          correctIndex: 1,
           explanation:
-            'True! Multimodal models convert images, PDFs, or audio into internal signals alongside text so you can paste a screenshot of an error or design right into the prompt.'
+            'False. Being multimodal only means the model can process images alongside text. Live internet verification still requires an external search tool.'
         },
         {
           id: 'q-1-2-3',
           type: 'spot_mistake',
           question:
-            'Someone says: "I asked an LLM about this morning’s stock price and it got it right, so every LLM clearly has built-in live internet access." Spot the mistake.',
+            'Daniel asks an offline AI model for the closing price of a stock today and concludes: "It gave me a specific number with two decimals, so it must have checked live market data." What is the mistake?',
           options: [
-            'LLMs cannot read numbers like stock prices.',
-            'Stock prices never change during the morning.',
-            'A base LLM only knows what was in its frozen training data; live web lookup only happens if the surrounding app gives it a search tool.',
-            'Only open-weights models can see stock prices.'
+            'Offline models are unable to format numbers with decimal places unless connected to Excel.',
+            'Stock prices are updated only once a week, so the model could have remembered them from training.',
+            'Next-token prediction can generate a fluent, plausible number even without live web access.',
+            'Only multimodal models with camera permissions are allowed to read financial websites.'
           ],
           correctIndex: 2,
           explanation:
-            'Raw LLMs have frozen knowledge from training. When an AI knows today’s news or prices, that is because the chat app attached a web-search tool around the model!'
+            'A bare LLM has frozen knowledge and optimizes for plausible continuations. Unless a wrapper explicitly runs a live search tool, specific numbers about today can be pure guesses.'
         }
       ]
     },
@@ -196,48 +196,48 @@ export const MODULE_1: CurriculumModule = {
       id: 'ch-1-3',
       moduleId: 'mod-1-what-is-ai',
       number: 3,
-      title: 'Meet the AI Families: Claude, Gemini, GPT & Open-Weights',
-      readMinutes: 4,
+      title: 'Choosing a Model: Families, Tiers & Open Weights',
+      readMinutes: 2,
       xpReward: 25,
       summary:
-        'Just like car brands offer compact sedans and heavy-duty trucks, AI labs release model families with fast budget options, flagship thinkers, and open-weights models you can run privately.',
+        'Not all AI is one brain. Major labs ship fast, balanced, and reasoning tiers—and open-weights models let people run AI privately without depending on a single cloud vendor.',
       analogy: {
-        title: 'Airlines and Aircraft Tiers',
-        body: 'Calling all AI "ChatGPT" is like calling every smartphone an "iPhone." Today there are several major AI builders—Anthropic (Claude), Google (Gemini), OpenAI (GPT), plus open-weights builders like Meta (Llama) and DeepSeek. Each family offers smaller zippy models for quick errands and flagship models for complex work.'
+        title: 'Hatchbacks, Sedans, and Heavy Trucks',
+        body: 'Calling every AI "ChatGPT" is like calling every vehicle a sedan. Different makers build separate model families, and each maker sells nimble economy tiers for quick errands alongside heavy-duty thinkers for tough problems.'
       },
       sections: [
         {
-          heading: 'The major closed (hosted) model families',
-          body: 'Three major labs lead hosted cloud AI—meaning the models live on the company’s giant servers and you talk to them via a chat app or API:\n\n• **Claude (by Anthropic)**: Beloved for crisp, natural writing, careful instruction-following, and standout coding tools like Claude Code.\n• **Gemini (by Google)**: Known for huge context windows (reading massive documents or videos at once), strong multimodal skills, and fast, low-cost Flash models.\n• **GPT (by OpenAI)**: The family that kicked off the ChatGPT wave, offering versatile general assistants and deep reasoning models.',
+          heading: 'Separate builders, distinct strengths',
+          body: 'Three hosted cloud families dominate everyday apps: **Claude** (Anthropic), **Gemini** (Google), and **GPT** (OpenAI). They are trained independently by rival teams, so their writing tone, context limits, tool integrations, and pricing all differ.',
           callout: {
             type: 'tip',
-            title: 'Notice the three sizes inside almost every family',
-            body: 'Most labs ship a "Small/Fast" tier (cheap, instant replies for simple tasks), a "Balanced/Workhorse" tier (best everyday quality-to-price), and a "Flagship/Reasoning" tier (slower and pricier, built for thorny planning or tricky bugs).'
+            title: 'Match the tier to the task',
+            body: 'Fast/mini tiers shine on proofreading, translations, and quick summaries. Save slower flagship or reasoning tiers for complex plans, subtle debugging, or high-stakes analysis.'
           }
         },
         {
-          heading: 'Open-weights models: Llama, DeepSeek, Qwen & Mistral',
-          body: 'Not all powerful AI is locked behind one company’s servers. Open-weights models publish their finished weight files publicly. Anyone—researchers, startups, or curious beginners—can inspect how they behave, rent cheap servers to host them, or even run smaller versions right on a personal laptop with zero internet connection.\n\nMeta’s **Llama**, **DeepSeek**, **Qwen**, and **Mistral** have narrowed the gap with proprietary giants dramatically, driving AI costs down for everyone.',
+          heading: 'Open-weights models change who controls the model',
+          body: 'Teams such as Meta (**Llama**), **DeepSeek**, **Qwen**, and **Mistral** release **open-weights** models—publishing the finished parameter files publicly. Anyone can host them on chosen servers or run compact versions directly on their own hardware offline.',
           callout: {
             type: 'example',
-            title: 'Why a normal person cares about open-weights',
-            body: 'Imagine summarizing private medical receipts or personal journal entries on an airplane with Wi-Fi turned off. An open-weights model running locally on your computer keeps 100% of that text on your own machine—and costs $0 per message.'
+            title: 'When private or local matters',
+            body: 'Summarizing personal medical notes or sensitive journal drafts on an offline device keeps every word off third-party cloud servers and costs nothing per message.'
           }
         },
         {
-          heading: 'How to pick a model without overthinking it',
-          body: 'Beginners often get paralyzed by version numbers and benchmark charts. You do not need to memorize scores! In practice, the difference between good models matters far less than giving clear instructions.\n\nStart with one fast, generous workhorse model for everyday questions, reach for a stronger coding/reasoning tier when designing an app or untangling a stubborn bug, and explore local open-weights models whenever you want free offline practice.',
+          heading: 'Skip benchmark obsession',
+          body: 'Leaderboard charts change every month and rarely predict how useful a model feels on your real tasks. In daily life, giving crisp context and checking outputs improves results far more than chasing the newest model name.',
           callout: {
             type: 'myth',
-            title: 'Myth Buster: Bigger and more expensive is not always better',
-            body: 'Using the most expensive flagship model to format a grocery list is like renting a cargo plane to pick up milk. Smaller models like Gemini Flash or GPT mini respond in a split second at a tiny fraction of the cost.'
+            title: 'More expensive does not always mean better for the job',
+            body: 'Sending a grocery list to a slow flagship reasoning model wastes time and money when a fast small tier finishes the same job cleanly in half a second.'
           }
         }
       ],
       keyTakeaways: [
-        'Major AI model families include Claude (Anthropic), Gemini (Google), GPT (OpenAI), and open-weights models like Llama and DeepSeek.',
-        'Most families come in speed/cost tiers: fast & cheap models for quick jobs, balanced models for daily work, and flagship models for hard reasoning.',
-        'Open-weights models publish their trained weight files publicly so you can host them cheaply or run them privately on your own computer.'
+        'Claude, Gemini, and GPT are separate model families built by independent labs—not one shared backend.',
+        'Use fast small tiers for quick routine tasks and heavier reasoning tiers only when complexity justifies the wait and cost.',
+        'Open-weights models publish their trained weights so you can self-host or run compact versions privately offline.'
       ],
       glossaryTermIds: ['llm', 'open-weights', 'model-weights', 'local-model'],
       relatedLabId: null,
@@ -245,41 +245,41 @@ export const MODULE_1: CurriculumModule = {
         {
           id: 'q-1-3-1',
           type: 'multiple_choice',
-          question: 'What makes an "open-weights" model like Llama or DeepSeek different from a closed cloud-only model?',
+          question: 'Which task is the BEST fit for a fast, smaller model tier instead of a slow flagship reasoning model?',
           options: [
-            'Open-weights models can only write short one-sentence answers.',
-            'Their trained weight files are published publicly so people can host or run them on their own hardware.',
-            'They never use tokens.',
-            'They require a $200/month subscription to download.'
+            'Auditing a tangled multi-file payment bug with subtle race conditions across a whole app.',
+            'Designing a long-term database migration strategy with strict rollback constraints.',
+            'Cleaning up typos and bullet formatting in ten lines of meeting notes.',
+            'Comparing conflicting legal clauses across three dense commercial supplier contracts.'
           ],
-          correctIndex: 1,
+          correctIndex: 2,
           explanation:
-            'Open-weights means the trained parameter files are shared publicly. That lets individuals and businesses run them privately on local machines or third-party servers.'
+            'Fast small tiers handle routine formatting, proofreading, and simple rewrites in a split second at a fraction of the cost—reserve heavy reasoning models for genuinely hard problems.'
         },
         {
           id: 'q-1-3-2',
           type: 'true_false',
           question:
-            'You should always pick the largest, most expensive flagship AI model for every simple task like fixing spelling in an email.',
+            'An open-weights model publishes its trained weight files so individuals or companies can host or run it on hardware they control.',
           options: ['True', 'False'],
-          correctIndex: 1,
+          correctIndex: 0,
           explanation:
-            'False! Fast, smaller tiers handle everyday proofreading, summarizing, and quick formatting in a split second for a tiny fraction of the cost.'
+            'True. Publishing the trained parameter files lets people run open-weights models on private servers or personal devices instead of relying on a single vendor’s cloud.'
         },
         {
           id: 'q-1-3-3',
           type: 'spot_mistake',
           question:
-            'A coworker says: "ChatGPT, Claude, and Gemini are all just different websites connected to the exact same single AI brain." What is wrong with that claim?',
+            'A colleague says: "I switched from ChatGPT to Claude and Gemini, so I am just paying three apps to talk to the exact same model underneath." What did they get wrong?',
           options: [
-            'They are separate model families built and trained independently by different companies (OpenAI, Anthropic, Google) with different strengths.',
-            'Claude is not available on websites.',
-            'Gemini only works on Android phones.',
-            'OpenAI owns Anthropic and Google.'
+            'Claude, Gemini, and GPT are distinct model families trained separately by Anthropic, Google, and OpenAI.',
+            'ChatGPT and Gemini share identical weights, while only Claude runs on an open-weights engine.',
+            'All three websites run locally on your phone hardware without calling any cloud servers.',
+            'The underlying models are identical, and only the app color themes and login screens differ.'
           ],
           correctIndex: 0,
           explanation:
-            'GPT (OpenAI), Claude (Anthropic), and Gemini (Google) are distinct model families trained separately by different teams—each with its own writing style, context limits, and pricing.'
+            'Each lab trains its own model family with its own architecture, training mix, context limits, and pricing—they are genuinely different models, not reskins of one engine.'
         }
       ]
     },
@@ -287,92 +287,158 @@ export const MODULE_1: CurriculumModule = {
       id: 'ch-1-4',
       moduleId: 'mod-1-what-is-ai',
       number: 4,
-      title: 'Chat Apps vs. Raw Models: What’s Really Under the Hood',
-      readMinutes: 4,
+      title: 'Raw Models vs. AI Apps: What the Wrapper Adds',
+      readMinutes: 1,
       xpReward: 25,
       summary:
-        'When you open ChatGPT, Claude.ai, or Gemini in a browser, you are not talking straight to a bare model—you are using a polished app packed with memory, hidden instructions, and extra tools.',
+        'A raw AI model only takes input and outputs text—with zero memory between turns. Everything else you see in ChatGPT, Claude, or Gemini comes from the app wrapped around it.',
       analogy: {
-        title: 'The Car Engine vs. The Full Dealership Car',
-        body: 'A raw AI model is like a V6 engine sitting on a wooden crate. By itself it has huge power, yet you cannot drive it to the grocery store. A chat app like Claude.ai or ChatGPT bolts on the seats, dashboard, GPS, fuel gauge, and cupholders so any driver can hop in and go.'
+        title: 'A Bare Engine vs. A Finished Car',
+        body: 'A raw LLM is like an engine sitting on a workshop stand: powerful, yet unable to steer or brake by itself. A chat app bolts on the seats, fuel gauge, GPS, and steering wheel so you can actually drive.'
       },
       sections: [
         {
-          heading: 'What a raw AI model actually does by itself',
-          body: 'Strip away the colorful website and a raw model is shockingly minimalist. You send it a chunk of text (and maybe an image), and it sends back a chunk of text. That is it!\n\nA raw model has no saved sidebar of past chats, no "Upload PDF" button, no built-in internet search, no memory of who you were yesterday, and no way to edit files on your computer. Every single request starts with a completely blank slate unless software sends the prior messages back in.',
+          heading: 'Raw models start every request with amnesia',
+          body: 'By itself, a raw model has no saved history, no file browser, and no live web access. It is **stateless**: each call starts blank. When a chat app seems to remember message #1 during message #6, the app is quietly bundling and resending messages #1 through #6 together.',
           callout: {
             type: 'warning',
-            title: 'Why raw models feel like they have amnesia',
-            body: 'Raw models are stateless—they do not remember your previous message on their own! Every time you send message #5 in a chat app, the app quietly re-sends messages #1, #2, #3, #4, AND #5 together behind the scenes.'
+            title: 'Why mega-long chats lose track',
+            body: 'Because every turn resends earlier history into a fixed memory limit, endless rambling threads eventually crowd out early instructions and make replies slower and less focused.'
           }
         },
         {
-          heading: 'All the invisible extras a chat app adds for you',
-          body: 'When you type into ChatGPT, Claude.ai, or Gemini, the chat wrapper quietly performs half a dozen helpful tricks before and after calling the model:\n\n• **Chat history & memory**: Saves past conversations in a sidebar and re-sends recent turns automatically.\n• **Hidden system instructions**: Tells the model today’s date, how to format tables cleanly, and when to stay safe.\n• **Built-in tools**: Decides when to search the web, run Python code for math, read uploaded PDFs, or render a live webpage preview.\n• **Friendly interface**: Streams words smoothly, highlights code blocks, and offers one-click copy buttons.',
+          heading: 'What the chat wrapper quietly adds',
+          body: 'Consumer chat apps layer four big features around the raw model: **saved history**, a hidden **system prompt** (date, style, safety rules), **built-in tools** (web search, file readers, calculators), and a polished interface for streaming replies.',
           callout: {
             type: 'example',
-            title: 'Same model, wildly different experience',
-            body: 'If you ask a raw model via API "What is the weather in Mumbai right now?", it says it cannot check live weather. Ask the exact same model inside a chat app with web search enabled, and it silently searches Google and hands you the forecast in two seconds.'
+            title: 'Same model, two different answers',
+            body: 'Ask a bare API model for today’s train delays and it declines. Ask the exact same model inside a chat app with web search turned on, and the wrapper fetches live results first.'
           }
         },
         {
-          heading: 'Why knowing this distinction unlocks superpowers',
-          body: 'Once you see the seam between the **raw model** and the **app wrapped around it**, the entire AI ecosystem stops looking mysterious. Coding tools like Claude Code, browser assistants, and apps you build yourself are all simply new wrappers plugging into the exact same raw models—just wired to different tools like your project folder or a spreadsheet.\n\nIn the upcoming modules, you will learn how text turns into tokens, how API credits pay for raw model calls, and how developer tools called harnesses give models hands to build real software.',
+          heading: 'One seam explains the entire AI ecosystem',
+          body: 'Once you separate the **raw model** from the **wrapper**, every AI product clicks into place. Voice assistants, research apps, and coding agents simply wrap the same raw models with different instructions and tools—setting you up for tokens, APIs, and agents in Units 2–4.',
           callout: {
             type: 'tip',
-            title: 'Preview of Module 4',
-            body: 'When a wrapper is specifically engineered to give an AI file access, terminal commands, and multi-step loops, builders call it an AI Harness. You will explore that hands-on in Module 4!'
+            title: 'Check what tools are turned on',
+            body: 'Before blaming a model for missing a live fact or file, check whether the app you are using actually has web search or file access enabled.'
           }
         }
       ],
       keyTakeaways: [
-        'A raw AI model only takes text/media in and returns text out—it has no built-in chat history, web browser, or file access.',
-        'Chat apps like ChatGPT, Claude.ai, and Gemini are wrappers that add history, hidden instructions, file uploads, and web search around a raw model.',
-        'Understanding the split between raw models and wrapper apps explains how coding tools, agents, and custom AI apps work.'
+        'Raw LLMs are stateless: they accept input and return text with no built-in chat memory or live internet.',
+        'Chat apps are wrappers that resend conversation history, inject hidden system instructions, and attach tools like web search.',
+        'Seeing the split between model and wrapper explains how chatbots, search assistants, and coding agents all work.'
       ],
       glossaryTermIds: ['chat-wrapper', 'llm', 'system-prompt', 'ai-harness'],
-      relatedLabId: 'tokenizer',
+      relatedLabId: null,
       quiz: [
         {
           id: 'q-1-4-1',
           type: 'multiple_choice',
-          question: 'Why does a chat app appear to remember message #1 when you send message #5?',
+          question: 'When you ask a follow-up question on turn #6 of a mobile AI chat, how does the AI know what you asked on turn #1?',
           options: [
-            'The raw model permanently memorizes every user’s face and name.',
-            'Models can only have five-message conversations.',
-            'Your Wi-Fi router stores the AI’s memory.',
-            'The chat app quietly bundles and re-sends earlier messages from the conversation along with message #5.'
+            'The raw model permanently memorizes each user’s account history inside its frozen weights.',
+            'Your phone operating system caches the model’s internal weights between every message.',
+            'The chat app stores the thread and resends the earlier turns along with your new message.',
+            'The AI runs a live web search on your profile name to reconstruct the earlier messages.'
           ],
-          correctIndex: 3,
+          correctIndex: 2,
           explanation:
-            'Raw models are stateless! The chat app saves your history and quietly sends the earlier messages back to the model each time you hit Send.'
+            'Raw models are stateless. The wrapper app saves your conversation and sends the prior turns back to the model with every new message.'
         },
         {
           id: 'q-1-4-2',
           type: 'true_false',
           question:
-            'A raw AI model by itself already includes a chat sidebar, PDF upload button, and live web search without any wrapper app.',
+            'Two apps can call the exact same underlying AI model yet give different capabilities if one app attaches web search and file tools while the other does not.',
           options: ['True', 'False'],
-          correctIndex: 1,
+          correctIndex: 0,
           explanation:
-            'False! A raw model simply takes input and generates output. Sidebars, PDF readers, and live web search are all features added by the chat app or harness built around the model.'
+            'True. Capabilities like live search, document reading, and saved memory come from the wrapper around the model, not from the bare weights alone.'
         },
         {
           id: 'q-1-4-3',
           type: 'spot_mistake',
           question:
-            'Priya asks a raw API model to check today’s cricket score and gets "I do not have access to real-time data." She concludes: "The API uses a dumber model than the website!" Spot her mistake.',
+            'Priya tests a bare model via API and gets "I cannot check live cricket scores," even though the same provider’s mobile app answered right away. She assumes the API runs an older, weaker model. What did she miss?',
           options: [
-            'The API cannot answer sports questions.',
-            'APIs only run on Sundays.',
-            'It can be the exact same model—the website simply wrapped it with a live web-search tool that the raw API call did not attach.',
-            'Websites never use LLMs.'
+            'Mobile apps always run a private model withheld from API developers.',
+            'The mobile app wraps the model with a live web-search tool that a bare API call lacks.',
+            'Sports scores stay blocked on API accounts until you buy a subscription.',
+            'Bare API calls can only return code snippets, never everyday facts.'
           ],
-          correctIndex: 2,
+          correctIndex: 1,
           explanation:
-            'Same brain, different accessories! The consumer chat site adds web search and other tools automatically, while a plain API call talks directly to the bare model unless you attach tools.'
+            'It can be the exact same model underneath—the consumer app automatically attaches a web-search tool, whereas a bare API call only uses tools you explicitly connect.'
         }
       ]
     }
-  ]
+  ],
+  masteryCheck: {
+    id: 'mc-1-what-is-ai',
+    title: 'Unit 1 Mastery Check',
+    subtitle: 'Four quick real-world scenarios to prove you can tell models, apps, and tools apart.',
+    passThreshold: 0.75,
+    xpReward: 40,
+    estimatedMinutes: 2,
+    questions: [
+      {
+        id: 'mc-1-q1',
+        type: 'multiple_choice',
+        question: 'You have 450 invoice lines to total for a client tax report and a tense client email to soften. What is the smartest split between regular software and AI?',
+        options: [
+          'Use AI for both tasks so the invoice math matches the tone of the apology email.',
+          'Let a spreadsheet sum the invoices and use AI to draft the email.',
+          'Write custom spreadsheet macros to draft the apology email and let AI add the numbers.',
+          'Ask a flagship reasoning model to sum all 450 rows twice and average its two replies.'
+        ],
+        correctIndex: 1,
+        explanation:
+          'Deterministic spreadsheets guarantee 100% accurate arithmetic, while LLMs shine on messy human tone and phrasing.'
+      },
+      {
+        id: 'mc-1-q2',
+        type: 'spot_mistake',
+        question: 'An offline AI model gives a confident, well-formatted paragraph quoting a 2026 court ruling you never heard of. A teammate says: "It wrote an exact case number and date, so it must be real." What is the mistake?',
+        options: [
+          'Next-token prediction can fabricate fluent citations without real verification.',
+          'Offline models only cite real cases if you prompt in lowercase.',
+          'Post-training removes all legal knowledge unless a paid cloud subscription stays active.',
+          'Case numbers are reliable when the model answers quickly.'
+        ],
+        correctIndex: 0,
+        explanation:
+          'LLMs generate plausible-looking continuations token by token. Fluent formatting and exact numbers never prove a fact—verify ungrounded claims against real sources.'
+      },
+      {
+        id: 'mc-1-q3',
+        type: 'multiple_choice',
+        question: 'A clinic wants to summarize private patient intake notes completely offline without sending text to any external cloud vendor. Which option fits best?',
+        options: [
+          'Switching a hosted chat app to dark mode with search off.',
+          'Using the largest hosted cloud flagship model because expensive tiers never log prompts.',
+          'Running a compact open-weights model locally on hardware the clinic controls.',
+          'Asking a web chatbot to promise at the top of the prompt that it will delete the weights.'
+        ],
+        correctIndex: 2,
+        explanation:
+          'Open-weights models publish their trained weights so organizations and individuals can host or run them privately on their own hardware with zero cloud transmission.'
+      },
+      {
+        id: 'mc-1-q4',
+        type: 'spot_mistake',
+        question: 'After 40 turns in one mobile chat, an AI forgets a rule you gave in message #1. Your friend blames the AI for "losing its training." What actually explains it?',
+        options: [
+          'Consumer apps erase the model’s training weights once a chat passes thirty messages.',
+          'Your phone automatically switches from an LLM to regular software after half an hour.',
+          'The model permanently forgets message #1 unless you upgrade to an open-weights tier.',
+          'Raw models are stateless, and the chat wrapper’s resending history crowded out early context.'
+        ],
+        correctIndex: 3,
+        explanation:
+          'The model’s weights never changed during inference—the wrapper app resends prior turns on each message, and long threads eventually crowd out or dilute early rules.'
+      }
+    ]
+  }
 };

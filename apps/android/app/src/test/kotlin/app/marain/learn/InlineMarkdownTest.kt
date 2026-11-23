@@ -100,6 +100,17 @@ class InlineMarkdownTest {
     curriculum.modules.forEach { mod ->
       assertCleanInline("module ${mod.id} title", mod.title)
       assertCleanInline("module ${mod.id} subtitle", mod.subtitle)
+      mod.masteryCheck?.let { mc ->
+        assertCleanInline("masteryCheck ${mc.id} title", mc.title)
+        assertCleanInline("masteryCheck ${mc.id} subtitle", mc.subtitle)
+        mc.questions.forEach { q ->
+          assertCleanInline("masteryCheck ${mc.id} question ${q.id}", q.question)
+          assertCleanInline("masteryCheck ${mc.id} explanation ${q.id}", q.explanation)
+          q.options.forEachIndexed { idx, opt ->
+            assertCleanInline("masteryCheck ${mc.id} ${q.id} option[$idx]", opt)
+          }
+        }
+      }
       mod.chapters.forEach { ch ->
         assertCleanInline("chapter ${ch.id} title", ch.title)
         assertCleanInline("chapter ${ch.id} summary", ch.summary)

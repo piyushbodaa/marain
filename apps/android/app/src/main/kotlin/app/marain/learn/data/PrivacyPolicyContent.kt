@@ -40,8 +40,8 @@ object PrivacyPolicyContent {
         "To remember your learning progress between sessions, Marain stores your app state strictly locally on your device inside a single private SharedPreferences file (marain_learn_prefs.xml). No other databases, external files, or network caches are created.",
       ),
       bullets = listOf(
-        "Completed lessons, practice drill scores, best combos, and unlocked milestones.",
-        "CEFR fluency rank (A1–C2), earned XP, daily 50 XP goal progress, and learning streaks.",
+        "Completed lessons, practice drill scores, Unit Mastery Check results, best combos, and unlocked milestones.",
+        "Mastery-based CEFR fluency milestones (A0–C2), practice XP, daily 50 XP goal progress, and learning streaks.",
         "Mastered Phrasebook flashcards, saved chapter bookmarks, and onboarding completion state.",
         "Reading appearance preferences (Light Paper / Warm Sepia / Dark Obsidian theme and S / M / L font scale).",
         "Cloud backup & device-to-device transfer disabled: Marain explicitly sets allowBackup=\"false\" and excludes all storage domains from both Android cloud backup and device-to-device transfer so your local data never leaves this device.",

@@ -174,14 +174,16 @@ object InlineMarkdown {
 }
 
 @Composable
-fun rememberMarkdown(text: String): AnnotatedString {
-  val codeBg = MaterialTheme.colorScheme.primary.copy(alpha = 0.11f)
-  val codeInk = MaterialTheme.colorScheme.primary
-  return remember(text, codeBg, codeInk) {
+fun rememberMarkdown(
+  text: String,
+  codeColor: Color = MaterialTheme.colorScheme.primary,
+  codeBackground: Color = codeColor.copy(alpha = 0.11f),
+): AnnotatedString {
+  return remember(text, codeBackground, codeColor) {
     InlineMarkdown.parse(
       text = text,
-      codeBackground = codeBg,
-      codeColor = codeInk,
+      codeBackground = codeBackground,
+      codeColor = codeColor,
     )
   }
 }

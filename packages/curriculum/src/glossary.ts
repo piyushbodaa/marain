@@ -202,40 +202,40 @@ export const GLOSSARY: GlossaryTerm[] = [
       'An API is the restaurant waiter: your app writes an order on a slip, the waiter carries it to the AI kitchen, and brings back the plated answer.',
     category: 'money',
     example:
-      'Your desktop app sends a JSON message to the OpenAI or Anthropic API endpoint and gets back the model’s reply in seconds.'
+      'A backend server or trusted local tool sends a JSON message to an AI API endpoint and receives the model’s structured reply in seconds.'
   },
   {
     id: 'api-key',
     term: 'API Key',
     shortDef:
-      'A long secret text string (such as sk-...) that proves who you are and links API usage directly to your billing account.',
+      'A secret credential string (such as sk-...) that authenticates API requests and bills usage to your account—always scope it to one project with minimum permissions.',
     analogy:
-      'It is your company credit card number and PIN combined into one line of text—anyone who sees it can spend your credits.',
+      'Like a company debit card tied to a specific budget: anyone who sees the number can spend your balance, so you issue scoped cards per project and revoke any card that leaks.',
     category: 'money',
     example:
-      'Pasting your key into a private local Settings box or a `.env` file, never inside public HTML or a shared screenshot.'
+      'Storing your key in a password manager and server-side environment variables (or a git-ignored local `.env`), never inside public HTML, frontend JavaScript, screenshots, or AI chat prompts.'
   },
   {
     id: 'env-file',
     term: '.env File',
     shortDef:
-      'A hidden local configuration file on your computer that stores secrets like API keys separately from the code you share.',
+      'A local plain-text configuration file that keeps secrets like API keys separate from source code—it is unencrypted on disk, so keep it out of Git, zip backups, and AI chat context.',
     analogy:
-      'A locked drawer next to your desk where you keep your passport, while your normal notebooks stay out in the open.',
+      'A separate envelope tucked beside your blueprints rather than written on the blueprint itself—it keeps secrets out of public copies, though anyone who opens the envelope can read it.',
     category: 'money',
     example:
-      'A file named `.env` containing `ANTHROPIC_API_KEY=sk-ant-...` that your code reads automatically without hardcoding the secret.'
+      'Storing `ANTHROPIC_API_KEY=sk-ant-...` in `.env` for local server code while listing `.env` in `.gitignore` and never exposing it to frontend browser code.'
   },
   {
     id: 'gitignore',
     term: '.gitignore',
     shortDef:
-      'A plain text checklist telling Git which files and folders must NEVER be uploaded or saved to GitHub—especially `.env` secret files.',
+      'A plain-text checklist telling Git which untracked files—especially `.env` secret files—to ignore so they are never staged or pushed to a repository.',
     analogy:
-      'A "Do Not Pack" sticky note on your safe before movers box up the room.',
+      'A "Do Not Pack" sticky note on your private folder before movers box up the room.',
     category: 'money',
     example:
-      'Adding `.env` as a line inside `.gitignore` stops your API key from accidentally going public when you share a project.'
+      'Adding `.env` to `.gitignore` before your first `git add` prevents accidental uploads—and if a key was ever committed earlier, revoke it immediately because `.gitignore` does not erase Git history.'
   },
   {
     id: 'token-pricing',
@@ -250,14 +250,14 @@ export const GLOSSARY: GlossaryTerm[] = [
   },
   {
     id: 'rate-limit',
-    term: 'Rate Limit & Spending Cap',
+    term: 'Rate Limit, Quota & Spending Cap',
     shortDef:
-      'Safety rails set by you or the provider that cap how many requests per minute can run or the maximum dollars that can be spent per month.',
+      'Safeguards that cap requests per minute/day (rate limits and quotas) or monthly spend (prepaid balances, workspace caps, and alerts)—noting that some cloud budgets only send alerts rather than stopping charges.',
     analogy:
-      'Putting a $10 daily limit on a teenager’s debit card so an accidental bug or loop can never drain your bank account.',
+      'Combining a prepaid $5 coffee card (with auto-reload off) and a per-minute order limit so a runaway bug cannot quietly run up a big tab.',
     category: 'money',
     example:
-      'Setting a $5 hard monthly budget in your Anthropic, OpenAI, or Google AI billing dashboard before testing your first app.'
+      'Keeping auto-reload OFF on prepaid Anthropic or OpenAI credits, setting workspace limits, and—on Google Cloud—pairing budget alerts with strict API request quotas.'
   },
   {
     id: 'local-model',
@@ -331,20 +331,20 @@ export const GLOSSARY: GlossaryTerm[] = [
     id: 'human-in-the-loop',
     term: 'Human-in-the-Loop Approval',
     shortDef:
-      'A safety checkpoint where an AI agent pauses and asks for your explicit "Yes" before editing files, spending money, or running risky commands.',
+      'A safety checkpoint where an AI agent pauses for your explicit approval before editing files, running commands, sending external messages, or spending money—paired with least-privilege permissions.',
     analogy:
       'A junior mechanic showing you the repair quote and waiting for your signature before ordering parts or touching the engine.',
     category: 'agents',
     example:
-      'Claude Code showing a red-and-green preview of a file change and waiting for you to press Yes or No.'
+      'Reviewing a red-and-green diff or exact shell command and approving only the specific step needed rather than enabling blanket auto-approve.'
   },
   {
     id: 'claude-md',
     term: 'CLAUDE.md (Project Instructions)',
     shortDef:
-      'A plain-English markdown file placed in your project folder that tells AI coding tools your preferences, folder layout, and house rules every session.',
+      'A plain-English markdown file in a project folder that shares preferences, folder layout, and workflow conventions with an AI tool every session (helpful guidance, not a hard security boundary).',
     analogy:
-      'A house-sitter’s welcome note taped to the fridge: "Water the fern on Tuesdays, lock the back door, never touch the thermostat."',
+      'A house-sitter’s welcome note taped to the fridge: "Water the fern on Tuesdays and follow the garden schedule"—handy reminders, while real locks still handle security.',
     category: 'agents',
     example:
       'Writing "Keep explanations jargon-free and always run npm test before saying you are finished" inside `CLAUDE.md`.'
@@ -432,12 +432,12 @@ export const GLOSSARY: GlossaryTerm[] = [
     id: 'git',
     term: 'Git (Version Control)',
     shortDef:
-      'A free time-machine system for project folders that tracks every change you make and lets you roll back to an earlier working version in seconds.',
+      'A free time-machine system for project folders that tracks every change you make and lets you inspect diffs or roll back to an earlier working version.',
     analogy:
-      'Video game save slots for your files: before trying a bold experiment, you save the game so you can never permanently ruin your work.',
+      'Video game save slots for your files: before trying a bold experiment, you save the game so you can recover cleanly.',
     category: 'cli',
     example:
-      'Running `git status` to see which files an AI edited, or `git checkout -- index.html` to undo a change you did not like.'
+      'Running `git status` and `git diff` to see which files an AI edited before committing, or restoring a saved snapshot when an experiment goes sideways.'
   },
   {
     id: 'commit',
@@ -522,12 +522,12 @@ export const GLOSSARY: GlossaryTerm[] = [
     id: 'local-storage',
     term: 'LocalStorage & Databases',
     shortDef:
-      'Ways for an app to remember your data after you close the tab—LocalStorage saves small data right inside your browser, while a database stores shared data on a server.',
+      'Ways an app remembers data after reload—`localStorage` saves small non-sensitive data inside one browser, while a backend database stores shared data and protects secrets.',
     analogy:
-      'LocalStorage is a personal notebook in your own backpack; a cloud database is a shared library binder that multiple people can read from any device.',
+      'LocalStorage is a personal notebook in your own backpack (never put secrets in it); a cloud database with access rules is a shared vault that multiple devices can read safely.',
     category: 'building',
     example:
-      'A single-user Habit Tracker works great with LocalStorage; a team chat app needs a cloud database.'
+      'A single-user Habit Tracker works great with `localStorage`; team sync, user accounts, or paid API keys require a backend with proper access rules.'
   },
   {
     id: 'mvp',

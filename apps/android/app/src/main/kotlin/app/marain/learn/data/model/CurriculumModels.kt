@@ -1,6 +1,8 @@
 package app.marain.learn.data.model
 
 import kotlinx.serialization.Serializable
+import kotlin.math.ceil
+import kotlin.math.roundToInt
 
 @Serializable
 data class Curriculum(
@@ -13,6 +15,9 @@ data class Curriculum(
 ) {
   val totalChapters: Int
     get() = modules.sumOf { it.chapters.size }
+
+  fun orderedModules(): List<CurriculumModule> =
+    modules.sortedBy { it.number }
 
   fun findModule(moduleId: String): CurriculumModule? =
     modules.firstOrNull { it.id == moduleId }
@@ -34,6 +39,27 @@ data class Curriculum(
 }
 
 @Serializable
+data class MasteryCheck(
+  val id: String,
+  val title: String,
+  val subtitle: String = "",
+  val passThreshold: Double = 0.75,
+  val xpReward: Int = 40,
+  val estimatedMinutes: Int = 2,
+  val questions: List<QuizQuestion> = emptyList(),
+) {
+  val passingScorePercent: Int
+    get() = (passThreshold.coerceIn(0.0, 1.0) * 100.0).roundToInt()
+
+  val minCorrectToPass: Int
+    get() = if (questions.isEmpty()) {
+      0
+    } else {
+      ceil(questions.size * passThreshold.coerceIn(0.0, 1.0) - 1e-9).toInt().coerceIn(1, questions.size)
+    }
+}
+
+@Serializable
 data class CurriculumModule(
   val id: String,
   val number: Int,
@@ -44,7 +70,11 @@ data class CurriculumModule(
   val estimatedMinutes: Int,
   val recommendedLabId: String? = null,
   val chapters: List<Chapter>,
-)
+  val masteryCheck: MasteryCheck? = null,
+) {
+  val isPhoneOnly: Boolean
+    get() = recommendedLabId == null && chapters.all { it.relatedLabId == null }
+}
 
 @Serializable
 data class Chapter(
@@ -113,4 +143,5 @@ data class LabInfo(
   val xpReward: Int,
   val moduleId: String,
   val description: String,
+  val desktopOnly: Boolean = false,
 )

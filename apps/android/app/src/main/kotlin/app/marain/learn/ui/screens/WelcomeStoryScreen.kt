@@ -134,7 +134,7 @@ fun WelcomeStoryScreen(
         }
       }
 
-      // Chunky Tactile Primary CTA
+      // Chunky Tactile Primary CTA — opens Lesson 1 directly
       TactileButton(
         onClick = {
           if (page < totalSlides - 1) page += 1 else onFinish()
@@ -142,7 +142,7 @@ fun WelcomeStoryScreen(
         modifier = Modifier.fillMaxWidth(),
       ) {
         Text(
-          text = if (page < totalSlides - 1) "Continue" else "Start Unit 1",
+          text = if (page < totalSlides - 1) "Continue" else "Start Lesson 1",
           style = MaterialTheme.typography.labelLarge,
           fontWeight = FontWeight.Bold,
         )
@@ -259,7 +259,7 @@ private fun SlideTwoFluencyLadder() {
     )
 
     Text(
-      text = "Learn Marain — The Language of AI.",
+      text = "Earn fluency by proving understanding.",
       fontFamily = LoraFontFamily,
       fontWeight = FontWeight.Bold,
       fontSize = 30.sp,
@@ -269,7 +269,7 @@ private fun SlideTwoFluencyLadder() {
     )
 
     Text(
-      text = "Five minutes a day takes you cleanly from A1 First Contact all the way to C2 Fluent Builder.",
+      text = "Five minutes on your phone takes you through Unit 1. Pass each short Unit Mastery Check to unlock A1 through C2 — never just by tapping for points.",
       style = MaterialTheme.typography.bodyLarge,
       color = MaterialTheme.colorScheme.onSurfaceVariant,
     )
@@ -280,9 +280,9 @@ private fun SlideTwoFluencyLadder() {
       border = BorderStroke(1.dp, marain.cardBorder),
     ) {
       Column(modifier = Modifier.fillMaxWidth()) {
-        ProgressEngine.fluencyTiers.forEachIndexed { idx, tier ->
+        ProgressEngine.cefrMilestoneTiers.forEachIndexed { idx, tier ->
           if (idx > 0) {
-            HorizontalDivider(thickness = 1.dp, color = marain.cardBorder)
+            HorizontalDivider(thickness = 1.dp, color = marain.hairlineDivider)
           }
           Row(
             modifier = Modifier
@@ -306,7 +306,7 @@ private fun SlideTwoFluencyLadder() {
               modifier = Modifier.weight(1f),
             )
             Text(
-              text = "${tier.minXp} XP",
+              text = tier.requirementSummary,
               style = MaterialTheme.typography.bodySmall,
               color = marain.inkMuted,
             )
@@ -337,7 +337,7 @@ private fun SlideThreeEditorialMethod() {
     )
 
     Text(
-      text = "Read like Varsity. Practice like Duolingo.",
+      text = "Read like Varsity. Verify like a craftsperson.",
       fontFamily = LoraFontFamily,
       fontWeight = FontWeight.Bold,
       fontSize = 30.sp,
@@ -349,20 +349,20 @@ private fun SlideThreeEditorialMethod() {
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
       WelcomeFeatureRow(
         index = "01",
-        title = "28 Calm Editorial Chapters",
-        body = "Memorable everyday analogies, myth busters, and Light, Warm Sepia, or Dark reading modes.",
+        title = "Phone-First Editorial Chapters",
+        body = "Clear everyday analogies, myth busters, and Light, Warm Sepia, or high-contrast Dark reading modes.",
         border = marain.cardBorder,
       )
       WelcomeFeatureRow(
         index = "02",
-        title = "84 Tactile Practice Drills",
-        body = "Instant plain-English explanations, 5 Hearts with free recharge, combo streaks, and daily 50 XP goals.",
+        title = "Real Understanding & Mastery Checks",
+        body = "Realistic scenario questions after every lesson, plus a short Mastery Check to prove each unit.",
         border = marain.cardBorder,
       )
       WelcomeFeatureRow(
         index = "03",
-        title = "50-Word AI Phrasebook",
-        body = "Searchable dictionary plus tap-to-flip flashcards — 100% offline with zero account required.",
+        title = "50-Word Offline AI Phrasebook",
+        body = "Searchable dictionary and tap-to-flip flashcards — 100% offline, zero accounts, zero leaderboards.",
         border = marain.cardBorder,
       )
     }

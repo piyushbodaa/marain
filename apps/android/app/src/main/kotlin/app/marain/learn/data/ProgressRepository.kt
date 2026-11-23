@@ -1,6 +1,8 @@
 package app.marain.learn.data
 
 import android.content.Context
+import app.marain.learn.data.model.Curriculum
+import app.marain.learn.data.model.CurriculumModule
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -53,6 +55,26 @@ class ProgressRepository(
       chapterXpReward = chapterXpReward,
       todayEpochDay = today,
       maxCombo = maxCombo,
+    )
+    persist(outcome.updatedProgress)
+    _progress.value = outcome.updatedProgress
+    return outcome
+  }
+
+  fun recordMasteryCheckResult(
+    module: CurriculumModule,
+    correctCount: Int,
+    totalQuestions: Int,
+    curriculum: Curriculum,
+  ): MasteryCheckOutcome {
+    val today = todayEpochDayProvider()
+    val outcome = ProgressEngine.recordMasteryCheckResult(
+      state = _progress.value,
+      module = module,
+      correctCount = correctCount,
+      totalQuestions = totalQuestions,
+      curriculum = curriculum,
+      todayEpochDay = today,
     )
     persist(outcome.updatedProgress)
     _progress.value = outcome.updatedProgress

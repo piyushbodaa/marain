@@ -121,10 +121,16 @@ fun TactileButton(
   cornerRadius: Dp = 14.dp,
   content: @Composable RowScope.() -> Unit,
 ) {
+  val marain = LocalMarainColors.current
   val interactionSource = remember { MutableInteractionSource() }
   val isPressed by interactionSource.collectIsPressedAsState()
   val effectiveFill = if (enabled) fillColor else MaterialTheme.colorScheme.surfaceVariant
-  val effectiveLip = if (enabled) lipColor else MaterialTheme.colorScheme.outlineVariant
+  val effectiveLip = if (enabled) lipColor else marain.neutralLip
+  val effectiveBorder = if (enabled) {
+    borderColor?.let { BorderStroke(1.5.dp, it) }
+  } else {
+    BorderStroke(1.dp, marain.cardBorder)
+  }
   val topOffset by animateDpAsState(
     targetValue = if (isPressed && enabled) lipDepth - 1.dp else 0.dp,
     animationSpec = tween(durationMillis = 70),
@@ -161,7 +167,7 @@ fun TactileButton(
       shape = RoundedCornerShape(cornerRadius),
       color = effectiveFill,
       contentColor = if (enabled) contentColor else MaterialTheme.colorScheme.onSurfaceVariant,
-      border = borderColor?.let { BorderStroke(1.5.dp, it) },
+      border = effectiveBorder,
     ) {
       Row(
         modifier = Modifier
@@ -509,7 +515,7 @@ fun ReadingAppearanceBottomSheet(
         style = MaterialTheme.typography.titleLarge,
         color = MaterialTheme.colorScheme.onSurface,
       )
-      HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+      HorizontalDivider(color = LocalMarainColors.current.hairlineDivider)
       ReadingAppearanceControls(
         selectedTheme = selectedTheme,
         selectedFontScale = selectedFontScale,

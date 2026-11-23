@@ -72,9 +72,11 @@ fun PrivacyPolicyScreen(
           colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.background,
             titleContentColor = MaterialTheme.colorScheme.onBackground,
+            navigationIconContentColor = MaterialTheme.colorScheme.onBackground,
+            actionIconContentColor = MaterialTheme.colorScheme.onBackground,
           ),
         )
-        HorizontalDivider(thickness = 1.dp, color = marain.cardBorder)
+        HorizontalDivider(thickness = 1.dp, color = marain.hairlineDivider)
       }
     },
   ) { innerPadding ->
@@ -165,7 +167,7 @@ fun PrivacyPolicyScreen(
           if (idx > 0) {
             HorizontalDivider(
               thickness = 1.dp,
-              color = marain.cardBorder,
+              color = marain.hairlineDivider,
               modifier = Modifier.padding(bottom = 4.dp),
             )
           }

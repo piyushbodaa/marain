@@ -28,6 +28,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -42,13 +43,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import app.marain.learn.data.FontScaleOption
+import app.marain.learn.data.MasteryCheckOutcome
 import app.marain.learn.data.PhraseMasteryOutcome
+import app.marain.learn.data.ProgressEngine
 import app.marain.learn.data.QuizCompletionOutcome
 import app.marain.learn.data.ReadingTheme
 import app.marain.learn.data.UserProgress
 import app.marain.learn.data.model.Curriculum
 import app.marain.learn.ui.screens.ChapterQuizScreen
 import app.marain.learn.ui.screens.ChapterReaderScreen
+import app.marain.learn.ui.screens.MasteryCheckScreen
 import app.marain.learn.ui.screens.ModuleDetailScreen
 import app.marain.learn.ui.screens.PathScreen
 import app.marain.learn.ui.screens.PhrasebookScreen
@@ -70,6 +74,7 @@ sealed interface DetailRoute {
   data class ModuleDetail(val moduleId: String) : DetailRoute
   data class ChapterReader(val chapterId: String) : DetailRoute
   data class ChapterQuiz(val chapterId: String) : DetailRoute
+  data class UnitMasteryCheck(val moduleId: String) : DetailRoute
   data object PrivacyPolicy : DetailRoute
 }
 
@@ -83,22 +88,49 @@ fun MarainApp(
   onChapterOpened: (String) -> Unit,
   onMarkChapterRead: (String) -> Unit,
   onQuizCompleted: (chapterId: String, correct: Int, total: Int, xpReward: Int, maxCombo: Int) -> QuizCompletionOutcome,
+  onMasteryCheckCompleted: (moduleId: String, correct: Int, total: Int) -> MasteryCheckOutcome,
   onMarkPhraseMastered: (String) -> PhraseMasteryOutcome,
   onToggleBookmark: (String) -> Unit,
   onSelectReadingTheme: (ReadingTheme) -> Unit,
   onSelectFontScale: (FontScaleOption) -> Unit,
   modifier: Modifier = Modifier,
 ) {
+  var activeTab by rememberSaveable { mutableStateOf(TopTab.PATH) }
+  var hasAutoLaunchedFirstLesson by rememberSaveable { mutableStateOf(false) }
+  val backStack = remember { mutableStateListOf<DetailRoute>() }
+
+  // Direct-to-Lesson-1 launch for fresh learners (once per fresh session, never traps Back)
+  LaunchedEffect(progress.hasCompletedOnboarding) {
+    if (
+      progress.hasCompletedOnboarding &&
+      !hasAutoLaunchedFirstLesson &&
+      backStack.isEmpty() &&
+      ProgressEngine.shouldAutoLaunchFirstLesson(progress)
+    ) {
+      val firstLessonId = ProgressEngine.firstLessonChapterId(curriculum)
+      if (firstLessonId != null) {
+        hasAutoLaunchedFirstLesson = true
+        backStack.add(DetailRoute.ChapterReader(firstLessonId))
+      }
+    }
+  }
+
   if (!progress.hasCompletedOnboarding) {
     WelcomeStoryScreen(
-      onFinish = onCompleteOnboarding,
+      onFinish = {
+        val shouldStartFirstLesson = ProgressEngine.shouldAutoLaunchFirstLesson(progress)
+        val firstLessonId = ProgressEngine.firstLessonChapterId(curriculum)
+        if (shouldStartFirstLesson && firstLessonId != null) {
+          hasAutoLaunchedFirstLesson = true
+          backStack.clear()
+          backStack.add(DetailRoute.ChapterReader(firstLessonId))
+        }
+        onCompleteOnboarding()
+      },
       modifier = modifier,
     )
     return
   }
-
-  var activeTab by rememberSaveable { mutableStateOf(TopTab.PATH) }
-  val backStack = remember { mutableStateListOf<DetailRoute>() }
 
   fun popBack() {
     if (backStack.isNotEmpty()) {
@@ -106,6 +138,14 @@ fun MarainApp(
     } else if (activeTab != TopTab.PATH) {
       activeTab = TopTab.PATH
     }
+  }
+
+  fun openChapterDirectly(chapterId: String) {
+    backStack.add(DetailRoute.ChapterReader(chapterId))
+  }
+
+  fun openMasteryCheckDirectly(moduleId: String) {
+    backStack.add(DetailRoute.UnitMasteryCheck(moduleId))
   }
 
   BackHandler(enabled = backStack.isNotEmpty() || activeTab != TopTab.PATH) {
@@ -124,7 +164,10 @@ fun MarainApp(
             progress = progress,
             onBack = { popBack() },
             onOpenChapter = { chapterId ->
-              backStack.add(DetailRoute.ChapterReader(chapterId))
+              openChapterDirectly(chapterId)
+            },
+            onStartMasteryCheck = { moduleId ->
+              openMasteryCheckDirectly(moduleId)
             },
             onToggleBookmark = onToggleBookmark,
             modifier = modifier,
@@ -149,6 +192,9 @@ fun MarainApp(
             onToggleBookmark = onToggleBookmark,
             onStartQuiz = { chapterId ->
               backStack.add(DetailRoute.ChapterQuiz(chapterId))
+            },
+            onStartMasteryCheck = { moduleId ->
+              backStack.add(DetailRoute.UnitMasteryCheck(moduleId))
             },
             onNavigateToChapter = { targetChapterId ->
               backStack[backStack.lastIndex] = DetailRoute.ChapterReader(targetChapterId)
@@ -180,9 +226,16 @@ fun MarainApp(
                 backStack.add(DetailRoute.ChapterReader(nextChapterId))
               }
             },
-            onBackToModule = { moduleId ->
+            onStartMasteryCheck = { moduleId ->
+              backStack.removeAt(backStack.lastIndex)
+              if (backStack.lastOrNull() is DetailRoute.ChapterReader) {
+                backStack.removeAt(backStack.lastIndex)
+              }
+              backStack.add(DetailRoute.UnitMasteryCheck(moduleId))
+            },
+            onBackToPath = {
               backStack.clear()
-              backStack.add(DetailRoute.ModuleDetail(moduleId))
+              activeTab = TopTab.PATH
             },
             modifier = modifier,
           )
@@ -190,6 +243,36 @@ fun MarainApp(
           popBack()
         }
       }
+
+      is DetailRoute.UnitMasteryCheck -> {
+        val module = curriculum.findModule(currentDetail.moduleId)
+        if (module != null && module.masteryCheck != null) {
+          MasteryCheckScreen(
+            curriculum = curriculum,
+            module = module,
+            onClose = { popBack() },
+            onCompleteMasteryCheck = { correct, total ->
+              onMasteryCheckCompleted(module.id, correct, total)
+            },
+            onContinueToNextLesson = { nextChapterId ->
+              backStack.clear()
+              backStack.add(DetailRoute.ChapterReader(nextChapterId))
+            },
+            onReviewModule = { moduleId ->
+              backStack.clear()
+              backStack.add(DetailRoute.ModuleDetail(moduleId))
+            },
+            onOpenProgress = {
+              backStack.clear()
+              activeTab = TopTab.PROGRESS
+            },
+            modifier = modifier,
+          )
+        } else {
+          popBack()
+        }
+      }
+
       is DetailRoute.PrivacyPolicy -> {
         PrivacyPolicyScreen(
           onBack = { popBack() },
@@ -224,7 +307,13 @@ fun MarainApp(
             backStack.add(DetailRoute.ModuleDetail(moduleId))
           },
           onOpenChapter = { chapterId ->
-            backStack.add(DetailRoute.ChapterReader(chapterId))
+            openChapterDirectly(chapterId)
+          },
+          onOpenMasteryCheck = { moduleId ->
+            openMasteryCheckDirectly(moduleId)
+          },
+          onOpenProgress = {
+            activeTab = TopTab.PROGRESS
           },
         )
 
@@ -238,7 +327,7 @@ fun MarainApp(
           curriculum = curriculum,
           progress = progress,
           onOpenChapter = { chapterId ->
-            backStack.add(DetailRoute.ChapterReader(chapterId))
+            openChapterDirectly(chapterId)
           },
           onToggleBookmark = onToggleBookmark,
           onBrowseModules = { activeTab = TopTab.PATH },
@@ -253,6 +342,12 @@ fun MarainApp(
           onSelectFontScale = onSelectFontScale,
           onReplayIntroStory = onReplayOnboarding,
           onOpenPrivacyPolicy = { backStack.add(DetailRoute.PrivacyPolicy) },
+          onOpenUnitGuidebook = { moduleId ->
+            backStack.add(DetailRoute.ModuleDetail(moduleId))
+          },
+          onOpenMasteryCheck = { moduleId ->
+            openMasteryCheckDirectly(moduleId)
+          },
         )
       }
     }
@@ -275,7 +370,7 @@ private fun MarainHairlineBottomBar(
     tonalElevation = 0.dp,
   ) {
     Column(modifier = Modifier.navigationBarsPadding()) {
-      HorizontalDivider(thickness = 1.dp, color = marain.cardBorder)
+      HorizontalDivider(thickness = 1.dp, color = marain.hairlineDivider)
       Row(
         modifier = Modifier
           .fillMaxWidth()

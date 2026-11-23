@@ -1,16 +1,18 @@
 package app.marain.learn
 
 import app.marain.learn.data.CurriculumParser
+import app.marain.learn.data.model.QuizQuestion
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class CurriculumParsingTest {
 
   @Test
-  fun curriculumAsset_parsesAllModulesChaptersQuizzesAndGlossaryCleanly() {
+  fun curriculumAsset_parsesAllModulesChaptersMasteryChecksAndBalancedOptionsCleanly() {
     val rawJson = javaClass.classLoader!!.getResourceAsStream("curriculum.json").let { stream ->
       assertNotNull("Expected bundled asset curriculum.json in app/src/main/assets/", stream)
       stream!!.bufferedReader(Charsets.UTF_8).use { it.readText() }
@@ -51,9 +53,24 @@ class CurriculumParsingTest {
 
     val seenModuleIds = mutableSetOf<String>()
     val seenChapterIds = mutableSetOf<String>()
+    val seenMasteryCheckIds = mutableSetOf<String>()
+    val allFourOptionQuestions = mutableListOf<QuizQuestion>()
     val validQuestionTypes = setOf("multiple_choice", "true_false", "spot_mistake")
     val validCalloutTypes = setOf("tip", "myth", "example", "warning")
     val hexRegex = Regex("^#[0-9A-Fa-f]{6}$")
+
+    fun validateQuestion(q: QuizQuestion, seenIds: MutableSet<String>, ownerLabel: String) {
+      assertTrue("Duplicate quiz id ${q.id} in $ownerLabel", seenIds.add(q.id))
+      assertTrue("Invalid quiz type '${q.type}' in ${q.id}", q.type.lowercase() in validQuestionTypes)
+      assertTrue("Question text blank in ${q.id}", q.question.isNotBlank())
+      assertTrue("Quiz ${q.id} must have >= 2 options", q.options.size >= 2)
+      assertTrue("correctIndex ${q.correctIndex} out of bounds in ${q.id}", q.correctIndex in q.options.indices)
+      assertFalse("Option text cannot be blank in ${q.id}", q.options.any { it.isBlank() })
+      assertTrue("Explanation blank in ${q.id}", q.explanation.isNotBlank())
+      if (q.options.size == 4) {
+        allFourOptionQuestions.add(q)
+      }
+    }
 
     curriculum.modules.forEachIndexed { idx, module ->
       assertTrue("Duplicate module id: ${module.id}", seenModuleIds.add(module.id))
@@ -67,6 +84,21 @@ class CurriculumParsingTest {
         assertTrue("Unknown recommendedLabId '$labId' on ${module.id}", labId in labIds)
       }
       assertTrue("Module ${module.id} must have >= 4 chapters", module.chapters.size >= 4)
+
+      // Validate Unit Mastery Check on every module
+      val masteryCheck = module.masteryCheck
+      assertNotNull("Module ${module.id} must define a masteryCheck", masteryCheck)
+      masteryCheck!!
+      assertTrue("Duplicate masteryCheck id: ${masteryCheck.id}", seenMasteryCheckIds.add(masteryCheck.id))
+      assertTrue("MasteryCheck title blank on ${module.id}", masteryCheck.title.isNotBlank())
+      assertTrue("MasteryCheck passThreshold out of expected range on ${module.id}", masteryCheck.passThreshold in 0.70..0.95)
+      assertTrue("MasteryCheck xpReward must be positive on ${module.id}", masteryCheck.xpReward > 0)
+      assertTrue("MasteryCheck estimatedMinutes must be positive on ${module.id}", masteryCheck.estimatedMinutes > 0)
+      assertTrue("MasteryCheck on ${module.id} must have >= 4 questions", masteryCheck.questions.size >= 4)
+      val seenMcQuizIds = mutableSetOf<String>()
+      masteryCheck.questions.forEach { q ->
+        validateQuestion(q, seenMcQuizIds, "masteryCheck ${masteryCheck.id}")
+      }
 
       module.chapters.forEach { chapter ->
         assertTrue("Duplicate chapter id: ${chapter.id}", seenChapterIds.add(chapter.id))
@@ -103,15 +135,31 @@ class CurriculumParsingTest {
 
         val seenQuizIds = mutableSetOf<String>()
         chapter.quiz.forEach { q ->
-          assertTrue("Duplicate quiz id ${q.id} in ${chapter.id}", seenQuizIds.add(q.id))
-          assertTrue("Invalid quiz type '${q.type}' in ${q.id}", q.type.lowercase() in validQuestionTypes)
-          assertTrue("Question text blank in ${q.id}", q.question.isNotBlank())
-          assertTrue("Quiz ${q.id} must have >= 2 options", q.options.size >= 2)
-          assertTrue("correctIndex ${q.correctIndex} out of bounds in ${q.id}", q.correctIndex in q.options.indices)
-          assertFalse("Option text cannot be blank in ${q.id}", q.options.any { it.isBlank() })
-          assertTrue("Explanation blank in ${q.id}", q.explanation.isNotBlank())
+          validateQuestion(q, seenQuizIds, "chapter ${chapter.id}")
         }
       }
     }
+
+    // Unit 1 must be a tight, phone-only experience with zero desktop-lab pointers
+    val unit1 = curriculum.orderedModules().first()
+    assertEquals(1, unit1.number)
+    assertNull("Unit 1 must not point to a desktop recommendedLabId", unit1.recommendedLabId)
+    assertTrue("Unit 1 must be phone-only", unit1.isPhoneOnly)
+    assertTrue("Unit 1 estimatedMinutes should be <= 6 for a crisp ~5-min flow", unit1.estimatedMinutes <= 6)
+    unit1.chapters.forEach { ch ->
+      assertNull("Unit 1 chapter ${ch.id} must not point to a desktop lab", ch.relatedLabId)
+    }
+
+    // Guard against answer-length bias: strictly longest option must NOT be correct > 35% of 4-option questions
+    assertTrue("Expected at least 56 four-option questions", allFourOptionQuestions.size >= 56)
+    val strictlyLongestCorrect = allFourOptionQuestions.count { q ->
+      val correctLen = q.options[q.correctIndex].length
+      q.options.indices.all { i -> i == q.correctIndex || correctLen > q.options[i].length }
+    }
+    val longestRatio = strictlyLongestCorrect.toDouble() / allFourOptionQuestions.size.toDouble()
+    assertTrue(
+      "Answer-length bias detected: strictly longest option is correct in $strictlyLongestCorrect/${allFourOptionQuestions.size} (${(longestRatio * 100).toInt()}%, max allowed 35%)",
+      longestRatio <= 0.35,
+    )
   }
 }

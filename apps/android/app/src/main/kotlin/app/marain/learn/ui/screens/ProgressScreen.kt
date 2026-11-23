@@ -21,6 +21,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowForward
 import androidx.compose.material.icons.rounded.Check
+import androidx.compose.material.icons.rounded.Verified
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -54,18 +55,18 @@ fun ProgressScreen(
   onSelectFontScale: (FontScaleOption) -> Unit,
   onReplayIntroStory: () -> Unit,
   onOpenPrivacyPolicy: () -> Unit,
+  onOpenUnitGuidebook: (String) -> Unit,
+  onOpenMasteryCheck: (String) -> Unit,
   modifier: Modifier = Modifier,
 ) {
   val marain = LocalMarainColors.current
-  val rankProgress = ProgressEngine.fluencyRankForXp(progress.totalXp)
+  val rankProgress = ProgressEngine.fluencyRank(progress, curriculum)
   val effectiveStreak = ProgressEngine.effectiveStreakDays(progress, todayEpochDay)
   val todayXp = ProgressEngine.todayXpEarned(progress, todayEpochDay)
   val dailyFraction = ProgressEngine.dailyGoalFraction(progress, todayEpochDay)
   val dailyGoalHit = ProgressEngine.isDailyGoalReached(progress, todayEpochDay)
-  val modulesCompleted = ProgressEngine.completedModulesCount(progress, curriculum)
-  val chaptersRead = curriculum.allChaptersOrdered().count { it.id in progress.completedChapterIds }
   val accuracy = ProgressEngine.quizAccuracyPercent(progress)
-  val orderedModules = curriculum.modules.sortedBy { it.number }
+  val orderedModules = curriculum.orderedModules()
   val milestones = ProgressEngine.milestones(progress, curriculum, todayEpochDay)
 
   LazyColumn(
@@ -81,8 +82,8 @@ fun ProgressScreen(
       )
     }
 
-    // Unified CEFR Rank + Daily Goal Card (clean hairline, zero pill clutter)
-    item(key = "cefr_summary") {
+    // 1. Mastery-Gated Fluency Card (strictly separated from Practice XP)
+    item(key = "fluency_mastery_summary") {
       Surface(
         shape = RoundedCornerShape(14.dp),
         color = MaterialTheme.colorScheme.surface,
@@ -101,7 +102,7 @@ fun ProgressScreen(
           ) {
             Box(
               modifier = Modifier
-                .size(52.dp)
+                .size(54.dp)
                 .clip(RoundedCornerShape(12.dp))
                 .background(MaterialTheme.colorScheme.primary),
               contentAlignment = Alignment.Center,
@@ -117,73 +118,117 @@ fun ProgressScreen(
 
             Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
               Text(
-                text = "MARAIN FLUENCY",
+                text = "FLUENCY LEVEL · EARNED BY MASTERY",
                 style = MaterialTheme.typography.labelSmall,
-                color = marain.inkMuted,
+                color = MaterialTheme.colorScheme.primary,
               )
               Text(
                 text = rankProgress.currentTier.title,
                 style = MaterialTheme.typography.headlineSmall,
                 color = MaterialTheme.colorScheme.onSurface,
               )
+              Text(
+                text = rankProgress.currentTier.canDoStatement,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+              )
             }
           }
 
           Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            val nextTier = ProgressEngine.fluencyTiers.getOrNull(rankProgress.currentTier.level)
             Row(
               modifier = Modifier.fillMaxWidth(),
               horizontalArrangement = Arrangement.SpaceBetween,
+              verticalAlignment = Alignment.CenterVertically,
             ) {
               Text(
-                text = if (nextTier != null) "Next: ${nextTier.cefrCode} ${nextTier.title}" else "C2 Fluency Reached",
+                text = rankProgress.nextRequirementLabel,
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-              )
-              Text(
-                text = "${progress.totalXp} XP",
-                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.Medium,
                 color = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.weight(1f),
+              )
+              Spacer(modifier = Modifier.width(8.dp))
+              Text(
+                text = "${rankProgress.masteredUnitsCount}/${rankProgress.totalUnitsCount} units",
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.primary,
               )
             }
             EditorialProgressBar(
               progress = rankProgress.progressFraction,
               fillColor = MaterialTheme.colorScheme.primary,
               height = 5.dp,
-              trackColor = marain.cardBorder,
-            )
-          }
-
-          HorizontalDivider(thickness = 1.dp, color = marain.cardBorder)
-
-          Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            Row(
-              modifier = Modifier.fillMaxWidth(),
-              horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
-              Text(
-                text = if (dailyGoalHit) "Today's goal complete" else "Today's daily goal",
-                style = MaterialTheme.typography.bodySmall,
-                color = if (dailyGoalHit) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
-              )
-              Text(
-                text = "$todayXp / ${ProgressEngine.DAILY_GOAL_XP} XP",
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurface,
-              )
-            }
-            EditorialProgressBar(
-              progress = dailyFraction,
-              fillColor = MaterialTheme.colorScheme.primary,
-              height = 5.dp,
-              trackColor = marain.cardBorder,
+              trackColor = marain.hairlineDivider,
             )
           }
         }
       }
     }
 
-    // Crisp 2x3 Hairline Metrics Grid (zero pastel icon boxes)
+    // 2. Daily Practice Habit Card (explicitly frames XP as practice habit, never fluency level)
+    item(key = "practice_habit_card") {
+      Surface(
+        shape = RoundedCornerShape(14.dp),
+        color = MaterialTheme.colorScheme.surface,
+        border = BorderStroke(1.dp, marain.cardBorder),
+      ) {
+        Column(
+          modifier = Modifier
+            .fillMaxWidth()
+            .padding(18.dp),
+          verticalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+          Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+          ) {
+            Text(
+              text = "DAILY PRACTICE HABIT",
+              style = MaterialTheme.typography.labelSmall,
+              color = marain.inkMuted,
+            )
+            Text(
+              text = "${progress.totalXp} Practice XP total",
+              style = MaterialTheme.typography.labelMedium,
+              color = MaterialTheme.colorScheme.onSurface,
+            )
+          }
+
+          Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+          ) {
+            Text(
+              text = if (dailyGoalHit) "Today's practice goal hit" else "Today's practice goal",
+              style = MaterialTheme.typography.bodySmall,
+              color = if (dailyGoalHit) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Text(
+              text = "$todayXp / ${ProgressEngine.DAILY_GOAL_XP} XP",
+              style = MaterialTheme.typography.labelMedium,
+              color = MaterialTheme.colorScheme.onSurface,
+            )
+          }
+          EditorialProgressBar(
+            progress = dailyFraction,
+            fillColor = MaterialTheme.colorScheme.primary,
+            height = 5.dp,
+            trackColor = marain.hairlineDivider,
+          )
+
+          Text(
+            text = "Practice XP tracks study consistency from reading, flashcards, and correct answers. Fluency milestones (A1–C2) only unlock when you pass Unit Mastery Checks.",
+            style = MaterialTheme.typography.bodySmall,
+            color = marain.inkMuted,
+          )
+        }
+      }
+    }
+
+    // 3. Crisp 2x3 Hairline Metrics Grid
     item(key = "metrics_table") {
       Surface(
         shape = RoundedCornerShape(14.dp),
@@ -193,53 +238,53 @@ fun ProgressScreen(
         Column(modifier = Modifier.fillMaxWidth()) {
           Row(modifier = Modifier.fillMaxWidth()) {
             StatGridCell(
+              value = "${rankProgress.masteredUnitsCount}/${rankProgress.totalUnitsCount}",
+              label = "Units",
+              sublabel = "Mastered",
+              accentColor = marain.masteredGold,
+              modifier = Modifier.weight(1f),
+            )
+            VerticalHairline(marain.hairlineDivider)
+            StatGridCell(
+              value = "${rankProgress.masteredLessonsCount}/${rankProgress.totalLessonsCount}",
+              label = "Lessons",
+              sublabel = "Passed",
+              accentColor = MaterialTheme.colorScheme.primary,
+              modifier = Modifier.weight(1f),
+            )
+            VerticalHairline(marain.hairlineDivider)
+            StatGridCell(
+              value = if (progress.quizTotalAnswered > 0) "$accuracy%" else "—",
+              label = "Accuracy",
+              sublabel = "${progress.quizTotalAnswered} Qs",
+              accentColor = MaterialTheme.colorScheme.onSurface,
+              modifier = Modifier.weight(1f),
+            )
+          }
+
+          HorizontalDivider(thickness = 1.dp, color = marain.hairlineDivider)
+
+          Row(modifier = Modifier.fillMaxWidth()) {
+            StatGridCell(
               value = "${effectiveStreak}d",
               label = "Streak",
               sublabel = "Best ${progress.longestStreakDays}d",
               accentColor = marain.streakAccent,
               modifier = Modifier.weight(1f),
             )
-            VerticalHairline(marain.cardBorder)
+            VerticalHairline(marain.hairlineDivider)
             StatGridCell(
               value = "${progress.totalXp}",
-              label = "Total XP",
+              label = "Practice XP",
               sublabel = "Best ${progress.bestQuizCombo}x",
               accentColor = MaterialTheme.colorScheme.primary,
               modifier = Modifier.weight(1f),
             )
-            VerticalHairline(marain.cardBorder)
-            StatGridCell(
-              value = "$modulesCompleted/${curriculum.modules.size}",
-              label = "Units",
-              sublabel = "Completed",
-              accentColor = MaterialTheme.colorScheme.onSurface,
-              modifier = Modifier.weight(1f),
-            )
-          }
-
-          HorizontalDivider(thickness = 1.dp, color = marain.cardBorder)
-
-          Row(modifier = Modifier.fillMaxWidth()) {
-            StatGridCell(
-              value = "$chaptersRead/${curriculum.totalChapters}",
-              label = "Read",
-              sublabel = "${progress.bookmarkedChapterIds.size} saved",
-              accentColor = MaterialTheme.colorScheme.onSurface,
-              modifier = Modifier.weight(1f),
-            )
-            VerticalHairline(marain.cardBorder)
+            VerticalHairline(marain.hairlineDivider)
             StatGridCell(
               value = "${progress.masteredPhraseIds.size}/${curriculum.glossary.size}",
               label = "Phrases",
-              sublabel = "Mastered",
-              accentColor = MaterialTheme.colorScheme.primary,
-              modifier = Modifier.weight(1f),
-            )
-            VerticalHairline(marain.cardBorder)
-            StatGridCell(
-              value = if (progress.quizTotalAnswered > 0) "$accuracy%" else "—",
-              label = "Accuracy",
-              sublabel = "${progress.quizTotalAnswered} drills",
+              sublabel = "Reviewed",
               accentColor = MaterialTheme.colorScheme.onSurface,
               modifier = Modifier.weight(1f),
             )
@@ -248,11 +293,11 @@ fun ProgressScreen(
       }
     }
 
-    // CEFR A1 -> C2 Progression Track
+    // 4. CEFR A1 -> C2 Mastery-Gated Fluency Track
     item(key = "cefr_track") {
       Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(
-          text = "CEFR FLUENCY TRACK",
+          text = "FLUENCY MILESTONES (UNLOCKED BY MASTERY)",
           style = MaterialTheme.typography.labelSmall,
           color = marain.inkMuted,
         )
@@ -262,11 +307,11 @@ fun ProgressScreen(
           border = BorderStroke(1.dp, marain.cardBorder),
         ) {
           Column(modifier = Modifier.fillMaxWidth()) {
-            ProgressEngine.fluencyTiers.forEachIndexed { idx, tier ->
-              val unlocked = progress.totalXp >= tier.minXp
+            ProgressEngine.cefrMilestoneTiers.forEachIndexed { idx, tier ->
+              val unlocked = rankProgress.isTierUnlocked(tier)
               val isCurrent = tier.cefrCode == rankProgress.currentTier.cefrCode
               if (idx > 0) {
-                HorizontalDivider(thickness = 1.dp, color = marain.cardBorder)
+                HorizontalDivider(thickness = 1.dp, color = marain.hairlineDivider)
               }
               Row(
                 modifier = Modifier
@@ -277,7 +322,7 @@ fun ProgressScreen(
               ) {
                 Box(
                   modifier = Modifier
-                    .size(28.dp)
+                    .size(30.dp)
                     .clip(CircleShape)
                     .background(
                       when {
@@ -295,31 +340,37 @@ fun ProgressScreen(
                     fontSize = 11.sp,
                     color = when {
                       isCurrent -> MaterialTheme.colorScheme.onPrimary
-                      unlocked -> MaterialTheme.colorScheme.primary
-                      else -> marain.inkMuted
+                      unlocked -> MaterialTheme.colorScheme.onPrimaryContainer
+                      else -> MaterialTheme.colorScheme.onSurfaceVariant
                     },
                   )
                 }
 
-                Text(
-                  text = tier.title,
-                  style = MaterialTheme.typography.bodyMedium,
-                  fontWeight = if (isCurrent) FontWeight.Bold else FontWeight.Medium,
-                  color = if (unlocked) MaterialTheme.colorScheme.onSurface else marain.inkMuted,
-                  modifier = Modifier.weight(1f),
-                )
+                Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                  Text(
+                    text = tier.title,
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = if (isCurrent) FontWeight.Bold else FontWeight.SemiBold,
+                    color = if (unlocked) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
+                  )
+                  Text(
+                    text = tier.canDoStatement,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = marain.inkMuted,
+                  )
+                }
 
                 if (unlocked) {
                   Icon(
                     imageVector = Icons.Rounded.Check,
                     contentDescription = "Unlocked",
                     tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(17.dp),
+                    modifier = Modifier.size(18.dp),
                   )
                 } else {
                   Text(
-                    text = "${tier.minXp} XP",
-                    style = MaterialTheme.typography.bodySmall,
+                    text = tier.requirementSummary,
+                    style = MaterialTheme.typography.labelSmall,
                     color = marain.inkMuted,
                   )
                 }
@@ -330,7 +381,97 @@ fun ProgressScreen(
       }
     }
 
-    // Understated Milestones List
+    // 5. Unit Mastery Breakdown (clickable to take Mastery Check or review unit)
+    item(key = "unit_mastery") {
+      Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text(
+          text = "UNIT MASTERY",
+          style = MaterialTheme.typography.labelSmall,
+          color = marain.inkMuted,
+        )
+        Surface(
+          shape = RoundedCornerShape(14.dp),
+          color = MaterialTheme.colorScheme.surface,
+          border = BorderStroke(1.dp, marain.cardBorder),
+        ) {
+          Column(
+            modifier = Modifier
+              .fillMaxWidth()
+              .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(14.dp),
+          ) {
+            orderedModules.forEach { module ->
+              val status = ProgressEngine.unitMasteryStatus(progress, module)
+              val unitAccent = editorialUnitPalette(module.number, isDark = marain.isDark).accent
+              Column(
+                modifier = Modifier
+                  .fillMaxWidth()
+                  .clip(RoundedCornerShape(8.dp))
+                  .clickable {
+                    if (status.isMasteryCheckReady) {
+                      onOpenMasteryCheck(module.id)
+                    } else {
+                      onOpenUnitGuidebook(module.id)
+                    }
+                  },
+                verticalArrangement = Arrangement.spacedBy(6.dp),
+              ) {
+                Row(
+                  modifier = Modifier.fillMaxWidth(),
+                  horizontalArrangement = Arrangement.SpaceBetween,
+                  verticalAlignment = Alignment.CenterVertically,
+                ) {
+                  Row(
+                    modifier = Modifier.weight(1f),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                  ) {
+                    if (status.isUnitMastered) {
+                      Icon(
+                        imageVector = Icons.Rounded.Verified,
+                        contentDescription = "Mastered",
+                        tint = marain.masteredGold,
+                        modifier = Modifier.size(16.dp),
+                      )
+                    }
+                    Text(
+                      text = "${module.number}. ${module.title}",
+                      style = MaterialTheme.typography.bodyMedium,
+                      fontWeight = if (status.isMasteryCheckReady) FontWeight.SemiBold else FontWeight.Normal,
+                      color = MaterialTheme.colorScheme.onSurface,
+                    )
+                  }
+                  Spacer(modifier = Modifier.width(8.dp))
+                  val statusText = when {
+                    status.isUnitMastered && status.masteryBestPercent != null -> "Mastered · ${status.masteryBestPercent}%"
+                    status.isUnitMastered -> "Mastered"
+                    status.isMasteryCheckReady -> "Take Check"
+                    else -> "${status.masteredLessonsCount}/${status.totalLessonsCount} lessons"
+                  }
+                  Text(
+                    text = statusText,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = when {
+                      status.isUnitMastered -> marain.streakAccent
+                      status.isMasteryCheckReady -> unitAccent
+                      else -> marain.inkMuted
+                    },
+                  )
+                }
+                EditorialProgressBar(
+                  progress = status.progressFraction,
+                  fillColor = if (status.isUnitMastered) marain.masteredGold else unitAccent,
+                  height = 4.dp,
+                  trackColor = marain.hairlineDivider,
+                )
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // 6. Milestones List
     item(key = "milestones_section") {
       val unlockedCount = milestones.count { it.unlocked }
       Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -357,7 +498,7 @@ fun ProgressScreen(
           Column(modifier = Modifier.fillMaxWidth()) {
             milestones.forEachIndexed { idx, milestone ->
               if (idx > 0) {
-                HorizontalDivider(thickness = 1.dp, color = marain.cardBorder)
+                HorizontalDivider(thickness = 1.dp, color = marain.hairlineDivider)
               }
               Row(
                 modifier = Modifier
@@ -377,7 +518,7 @@ fun ProgressScreen(
                     Icon(
                       imageVector = Icons.Rounded.Check,
                       contentDescription = "Unlocked",
-                      tint = Color.White,
+                      tint = marain.onMasteredGold,
                       modifier = Modifier.size(14.dp),
                     )
                   }
@@ -406,61 +547,7 @@ fun ProgressScreen(
       }
     }
 
-    // Unit Mastery Breakdown
-    item(key = "unit_mastery") {
-      Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text(
-          text = "UNIT MASTERY",
-          style = MaterialTheme.typography.labelSmall,
-          color = marain.inkMuted,
-        )
-        Surface(
-          shape = RoundedCornerShape(14.dp),
-          color = MaterialTheme.colorScheme.surface,
-          border = BorderStroke(1.dp, marain.cardBorder),
-        ) {
-          Column(
-            modifier = Modifier
-              .fillMaxWidth()
-              .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-          ) {
-            orderedModules.forEach { module ->
-              val done = module.chapters.count { it.id in progress.completedQuizChapterIds }
-              val total = module.chapters.size
-              val frac = if (total > 0) done.toFloat() / total.toFloat() else 0f
-              val unitColor = editorialUnitPalette(module.number).fill
-              Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
-                Row(
-                  modifier = Modifier.fillMaxWidth(),
-                  horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                  Text(
-                    text = "${module.number}. ${module.title}",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.weight(1f),
-                  )
-                  Text(
-                    text = "$done/$total",
-                    style = MaterialTheme.typography.labelMedium,
-                    color = marain.inkMuted,
-                  )
-                }
-                EditorialProgressBar(
-                  progress = frac,
-                  fillColor = unitColor,
-                  height = 4.dp,
-                  trackColor = marain.cardBorder,
-                )
-              }
-            }
-          }
-        }
-      }
-    }
-
-    // Reading Appearance Controls
+    // 7. Reading Appearance Controls
     item(key = "reading_appearance") {
       Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(
@@ -485,7 +572,7 @@ fun ProgressScreen(
       }
     }
 
-    // Settings Links (Privacy & Local Data + Replay Intro Story)
+    // 8. Settings Links (Privacy & Local Data + Replay Intro Story)
     item(key = "settings_links") {
       Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(
@@ -527,7 +614,7 @@ fun ProgressScreen(
               )
             }
 
-            HorizontalDivider(thickness = 1.dp, color = marain.cardBorder)
+            HorizontalDivider(thickness = 1.dp, color = marain.hairlineDivider)
 
             Row(
               modifier = Modifier

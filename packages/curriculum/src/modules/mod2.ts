@@ -7,7 +7,7 @@ export const MODULE_2: CurriculumModule = {
   subtitle: 'Learn how AI slices your text, why it forgets long chats, and how to prompt cleanly.',
   icon: 'layers',
   accentHex: '#3B82F6',
-  estimatedMinutes: 17,
+  estimatedMinutes: 16,
   recommendedLabId: 'tokenizer',
   chapters: [
     {
@@ -38,13 +38,13 @@ export const MODULE_2: CurriculumModule = {
           body: 'Not all characters cost the same number of tokens. Punctuation, blank spaces, and leading spaces often attach right onto the start of a word token. Meanwhile, emojis, complex code symbols, and non-English scripts (like Hindi, Tamil, Arabic, or Japanese) frequently split into 2 to 4 tokens per word or symbol.\n\nThat means two messages that look the same length on screen can use very different token counts under the hood.',
           callout: {
             type: 'tip',
-            title: 'Try it yourself in the Token Playground',
-            body: 'Head into the Token & Context Playground lab after this chapter and type your own name, an emoji like 🚀, and a sentence in another language—you will see the colored token bricks light up instantly!'
+            title: 'Quick mental check: estimate tokens on your phone',
+            body: 'Picture four inputs side by side: `"coffee"` is **1 token**, `"unbelievable"` splits into **3 tokens** (`un` + `believ` + `able`), a single emoji like `🚀` can take **2–3 tokens**, and a 75-word text message lands right around **100 tokens**.'
           }
         },
         {
           heading: 'Three everyday reasons tokens matter to you',
-          body: 'You never need to count tokens manually, yet knowing they exist immediately clears up three common mysteries:\n\n1. **Speed**: Generating 1,000 tokens takes roughly twice as long as generating 500 tokens because the model creates one token at a time.\n2. **Memory limits**: Every AI has a maximum token budget per conversation (its context window).\n3. **Cost**: When you use pay-as-you-go API credits in Module 3, providers bill per million tokens—not per message or per minute.',
+          body: 'You never need to count tokens manually, yet knowing they exist immediately clears up three common mysteries:\n\n1. **Speed**: Generating 1,000 tokens takes roughly twice as long as generating 500 tokens because the model creates one token at a time.\n2. **Memory limits**: Every AI has a maximum token budget per conversation (its context window).\n3. **Cost**: When you use pay-as-you-go API credits in Unit 3, providers bill per million tokens—not per message or per minute.',
           callout: {
             type: 'myth',
             title: 'Myth Buster: "One token = one word"',
@@ -58,17 +58,17 @@ export const MODULE_2: CurriculumModule = {
         'Tokens explain why AI occasionally struggles with spelling puzzles, why longer replies take longer, and how AI pricing works.'
       ],
       glossaryTermIds: ['token', 'tokenizer', 'next-token-prediction'],
-      relatedLabId: 'tokenizer',
+      relatedLabId: null,
       quiz: [
         {
           id: 'q-2-1-1',
           type: 'multiple_choice',
-          question: 'Roughly how many English words equal 100 tokens?',
+          question: 'Roughly how many everyday English words correspond to 100 tokens?',
           options: [
-            'About 10 words',
-            'About 1,000 words',
-            'About 75 words',
-            'Exactly 100 letters'
+            'Roughly 25 English words',
+            'Roughly 200 English words',
+            'Roughly 75 English words',
+            'Exactly 100 English words'
           ],
           correctIndex: 2,
           explanation:
@@ -90,10 +90,10 @@ export const MODULE_2: CurriculumModule = {
           question:
             'Sam thinks: "My AI miscounted the letters in strawberry, which proves it is bad at all logic and coding." What is the real explanation?',
           options: [
-            'The AI does not know the English alphabet.',
-            'The tokenizer feeds the AI whole word-chunks as numbers rather than individual characters, making letter-counting awkward even for strong reasoning models.',
-            'Strawberry is a copyrighted word blocked by AI.',
-            'AI can only count up to two.'
+            'Models ignore lowercase letters unless separated by hyphens.',
+            'Tokenizers feed models numbered word-chunks rather than individual letters.',
+            'Spelling puzzles need live search because dictionaries are excluded.',
+            'Modern LLMs only process whole sentences at once and cannot inspect anything shorter than a word.'
           ],
           correctIndex: 1,
           explanation:
@@ -126,16 +126,16 @@ export const MODULE_2: CurriculumModule = {
         },
         {
           heading: 'Why a cluttered desk still hurts quality',
-          body: 'Even if your model boasts a massive 200,000-token desk, piling 80 unrelated topics onto one endless chat thread causes "context rot." Just like a human trying to focus at a messy desk buried in old receipts, the AI can get distracted by dead-end ideas or outdated code you abandoned twenty messages ago.\n\nEven worse, because the app re-sends the whole desk on every turn, a bloated chat gets slower and uses far more tokens on every single message.',
+          body: 'Even if your model boasts a massive 200,000-token desk, piling 80 unrelated topics onto one endless chat thread causes "context rot." Just like a human trying to focus at a messy desk buried in old receipts, the AI can get distracted by dead-end ideas or outdated drafts you abandoned twenty messages ago.\n\nEven worse, because the app re-sends the whole desk on every turn, a bloated chat gets slower and uses far more tokens on every single message.',
           callout: {
             type: 'tip',
             title: 'Start a fresh chat when switching topics',
-            body: 'Finished planning your weekend trip and now want help writing a resume? Click "New Chat"! A clean desk gives faster, smarter, and cheaper answers.'
+            body: 'Finished planning your weekend trip and now want help writing a resume? Tap "New Chat"! A clean desk gives faster, smarter, and cheaper answers.'
           }
         },
         {
           heading: 'Keeping long projects crisp without losing your work',
-          body: 'What if you are working on one big project—like designing a website—and your chat gets really long? You have two pro moves:\n\n1. **Summarize and restart**: Ask the AI, "Summarize all our agreed decisions and current progress in 8 bullet points," copy that crisp summary, and paste it into a brand-new chat.\n2. **Use `/compact`**: Modern AI coding tools like Claude Code include a built-in `/compact` command that tidies up the desk for you automatically.',
+          body: 'What if you are working on one big project—like planning an event or designing a site—and your chat gets really long? You have two pro moves:\n\n1. **Summarize and restart**: Ask the AI, "Summarize all our agreed decisions and current progress in 8 bullet points," copy that crisp summary, and paste it into a brand-new chat.\n2. **Use `/compact`**: Modern AI coding tools include a built-in `/compact` command that tidies up the desk for you automatically.',
           callout: {
             type: 'warning',
             title: 'Watch out for silent forgetting',
@@ -149,21 +149,21 @@ export const MODULE_2: CurriculumModule = {
         'Starting fresh chats for new topics—or summarizing progress into a clean thread—keeps AI sharper, faster, and cheaper.'
       ],
       glossaryTermIds: ['context-window', 'token', 'compact-command'],
-      relatedLabId: 'tokenizer',
+      relatedLabId: null,
       quiz: [
         {
           id: 'q-2-2-1',
           type: 'multiple_choice',
           question: 'Which items count toward a model’s context window on turn 10 of a conversation?',
           options: [
-            'System instructions, uploaded files, messages #1–#10, earlier AI replies, and the new reply.',
-            'Only the single sentence you just typed in message #10.',
-            'Only the AI’s replies, never your prompts.',
-            'Only PDFs, never plain text.'
+            'System instructions, attached files, all prior turns, and the new reply.',
+            'Only the newest message you typed plus any PDF or image uploaded on that turn.',
+            'Only the AI’s previous answers, since user prompts are compressed out after turn one.',
+            'Everything in your account’s entire chat sidebar across all past conversations.'
           ],
           correctIndex: 0,
           explanation:
-            'Everything on the desk counts together: hidden instructions, attached files, all prior back-and-forth turns, and the reply currently being generated.'
+            'Everything active in the current thread counts together: hidden instructions, attached files, all prior back-and-forth turns, and the reply currently being generated.'
         },
         {
           id: 'q-2-2-2',
@@ -179,12 +179,12 @@ export const MODULE_2: CurriculumModule = {
           id: 'q-2-2-3',
           type: 'spot_mistake',
           question:
-            'Maya uploaded 40 pages of notes and chatted for two hours. Suddenly the AI ignores a formatting rule she gave in message #1. She thinks: "The AI is stubbornly disobeying me on purpose!" What likely happened?',
+            'Maya uploaded 40 pages of notes and chatted for two hours. Suddenly the AI ignores a formatting rule she gave in message #1. She thinks it is deliberately ignoring her. What likely happened?',
           options: [
-            'The AI got tired and went offline.',
-            'She forgot to capitalize her sentences.',
-            'AI models always ignore message #1.',
-            'Her long conversation cluttered or pushed message #1 out of the active context window—starting a fresh chat with a short summary will fix it immediately.'
+            'The model automatically resets its formatting rules every thirty minutes for privacy reasons.',
+            'Uploading PDF notes switches the model into read-only mode where formatting instructions stop working.',
+            'The provider quietly downgraded her chat mid-thread to a smaller model that cannot follow lists.',
+            'The long thread diluted or pushed message #1 out of active context; a fresh thread with a brief summary restores focus.'
           ],
           correctIndex: 3,
           explanation:
@@ -240,17 +240,17 @@ export const MODULE_2: CurriculumModule = {
         'Temperature controls randomness: keep it low for precise, repeatable work and higher for creative brainstorming.'
       ],
       glossaryTermIds: ['prompt', 'system-prompt', 'temperature'],
-      relatedLabId: 'tokenizer',
+      relatedLabId: null,
       quiz: [
         {
           id: 'q-2-3-1',
           type: 'multiple_choice',
           question: 'When should you prefer a LOW temperature setting (like 0.0–0.2)?',
           options: [
-            'Brainstorming 30 wacky names for a comic book villain.',
-            'Writing surreal poetry.',
-            'Extracting dates and totals accurately from customer receipts or fixing a software bug.',
-            'Making the AI write longer essays.'
+            'Brainstorming playful names for a new coffee roaster.',
+            'Generating several contrasting short-story endings so every retry feels surprising and fresh.',
+            'Extracting invoice dates or fixing a focused software bug.',
+            'Forcing the model to write longer multi-page essays with richer descriptive adjectives.'
           ],
           correctIndex: 2,
           explanation:
@@ -272,10 +272,10 @@ export const MODULE_2: CurriculumModule = {
           question:
             'Alex wants a landing page headline for his neighborhood bakery and types only: "Give me marketing copy." Why will the result feel generic?',
           options: [
-            'AI cannot write bakery headlines.',
-            'The prompt gave no audience, brand vibe, example, or length constraint—so the model falls back on generic average internet phrasing.',
-            'He forgot to say "please".',
-            'Marketing copy requires temperature 5.0.'
+            'Short prompts automatically trigger a weaker small model.',
+            'Missing audience, vibe, example, and length forces generic average phrasing.',
+            'Marketing copy needs a system prompt to specify brand tone.',
+            'Without setting temperature above 0.9, the model can only repeat standard dictionary definitions.'
           ],
           correctIndex: 1,
           explanation:
@@ -308,44 +308,44 @@ export const MODULE_2: CurriculumModule = {
         },
         {
           heading: 'Grounding: turning a closed-book guess into an open-book check',
-          body: 'The single best antidote to hallucinations is **grounding**—putting the real source material right onto the AI’s desk instead of asking it to recall from memory.\n\nRather than asking "What is my company’s refund policy?", paste the actual refund policy text into the prompt and ask: *"Using ONLY the policy pasted below, answer the customer’s question and quote the exact sentence. If the policy does not say, reply: Not covered in the document."* Giving the AI explicit permission to say "I do not know" cuts guesswork dramatically.',
+          body: 'The single best antidote to hallucinations is **grounding**—putting the real source material right onto the AI’s desk instead of asking it to recall from memory.\n\nRather than asking "What is my company’s refund policy?", paste the public refund policy text into the prompt and ask: *"Using ONLY the policy pasted below, answer the customer’s question and quote the exact sentence. If the policy does not say, reply: Not covered in the document."* Giving the AI explicit permission to say "I do not know" cuts guesswork dramatically—just remember to **redact private personal IDs, passwords, API keys, or confidential secrets** before pasting documents into any cloud chat.',
           callout: {
             type: 'example',
             title: 'The "Quote the source" prompt pattern',
-            body: 'Add this line whenever summarizing important PDFs, contracts, or articles: "Only use facts explicitly stated in the text above. Cite the exact heading or line for every claim, and flag anything missing."'
+            body: 'Add this line whenever summarizing non-sensitive PDFs, public policies, or articles: "Only use facts explicitly stated in the text above. Cite the exact heading or line for every claim, and flag anything missing."'
           }
         },
         {
           heading: 'A 30-second verification checklist for everyday life',
-          body: 'You do not need to be paranoid about AI—just treat it like a sharp, fast intern whose work you glance over before signing your name:\n\n1. **Check high-stakes facts at the source**: Click links, open the official site, or check the original document for numbers, dates, and medical/legal advice.\n2. **Verify code by running it**: Never assume code works because it looks neat—run it and click the buttons! (We will practice this in Modules 6 and 7.)\n3. **Ask AI to critique itself**: Prompting "List any assumptions you made or places where you might be uncertain" often catches shaky spots right away.',
+          body: 'You do not need to be paranoid about AI—just treat it like a sharp, fast intern whose work you glance over before signing your name:\n\n1. **Check high-stakes facts at the source**: Click links, open the official site, or check the original document for numbers, dates, and medical/legal advice.\n2. **Verify code by running it**: Never assume code works because it looks neat—run it and test the buttons!\n3. **Ask AI to critique itself**: Prompting "List any assumptions you made or places where you might be uncertain" often catches shaky spots right away.',
           callout: {
             type: 'tip',
             title: 'Safe mental model',
-            body: 'Trust AI for drafts, structure, explanations, and starting points. Verify AI for facts, numbers, links, and final decisions.'
+            body: 'Trust AI for drafts, structure, explanations, and starting points. Verify AI for facts, numbers, links, and final decisions—and never paste passwords or API keys into prompts.'
           }
         }
       ],
       keyTakeaways: [
         'A hallucination is a fluent, confident-sounding invention produced because LLMs optimize for plausible text patterns.',
-        'Grounding—pasting source documents or enabling live web search—turns risky memory guesses into verifiable open-book answers.',
-        'Give AI explicit permission to say "I don’t know," and always verify high-stakes facts, quotes, links, and code before relying on them.'
+        'Grounding—pasting non-sensitive source documents or enabling live web search—turns risky memory guesses into verifiable open-book answers.',
+        'Give AI explicit permission to say "I don’t know," redact private secrets before pasting, and verify high-stakes facts before relying on them.'
       ],
       glossaryTermIds: ['hallucination', 'grounding', 'prompt'],
-      relatedLabId: null,
+      relatedLabId: 'tokenizer',
       quiz: [
         {
           id: 'q-2-4-1',
           type: 'multiple_choice',
-          question: 'What is the most effective way to prevent hallucinations when asking AI questions about your own apartment lease?',
+          question: 'What is the most effective way to reduce hallucinations when asking AI about a specific clause in your apartment lease?',
           options: [
-            'Paste the lease text into the prompt (grounding) and tell the AI to answer strictly from that text and quote the exact clause.',
-            'Ask the AI to promise it will not lie.',
-            'Type the question in ALL CAPS.',
-            'Raise the temperature to 1.0.'
+            'Paste the redacted lease text and ask it to quote the exact clause or say if missing.',
+            'Add a system rule warning the model to never guess wrong.',
+            'Lower temperature to 0.0 so it only outputs verified legal facts.',
+            'Ask three times in separate chats and trust the majority answer.'
           ],
           correctIndex: 0,
           explanation:
-            'Grounding places the exact source document on the AI’s working desk so it reads and quotes real clauses instead of guessing generic lease terms from memory.'
+            'Grounding places the real (redacted) document on the AI’s working desk so it quotes actual clauses instead of guessing generic lease terms from memory.'
         },
         {
           id: 'q-2-4-2',
@@ -363,10 +363,10 @@ export const MODULE_2: CurriculumModule = {
           question:
             'Jordan asks an AI (without web search): "What time does the new cafe on Oak Street close tonight?" and drives over based on its confident "9:00 PM" reply. What went wrong?',
           options: [
-            'AI cannot read street names.',
-            'Cafes never close at 9:00 PM.',
-            'Oak Street is too short of a prompt.',
-            'Without live web search or grounded info, the AI guessed a plausible cafe closing time from general patterns instead of checking real hours.'
+            'He should have raised temperature to 0.8 so the model checked wider local business listings.',
+            'The model only stores store hours for major national chains unless you give it your zip code.',
+            'His prompt lacked a system prompt specifying the local time zone for the closing hour.',
+            'Ungrounded models guess plausible closing hours from patterns instead of checking live info.'
           ],
           correctIndex: 3,
           explanation:
@@ -374,5 +374,71 @@ export const MODULE_2: CurriculumModule = {
         }
       ]
     }
-  ]
+  ],
+  masteryCheck: {
+    id: 'mc-2-tokens-prompts',
+    title: 'Unit 2 Mastery Check',
+    subtitle: 'Apply tokens, context hygiene, temperature, and grounding to four realistic situations.',
+    passThreshold: 0.75,
+    xpReward: 40,
+    estimatedMinutes: 2,
+    questions: [
+      {
+        id: 'mc-2-q1',
+        type: 'multiple_choice',
+        question: 'You have been brainstorming a holiday trip for 60 messages and now need an AI to draft a formal job cover letter. What is the smartest move?',
+        options: [
+          'Stay in the same thread so the AI warms up faster from all the previous tokens.',
+          'Raise temperature to 1.0 inside the travel thread so it ignores the trip details.',
+          'Start a fresh chat so old travel messages do not clutter context.',
+          'Paste "Forget everything above" three times in capital letters before your prompt.'
+        ],
+        correctIndex: 2,
+        explanation:
+          'Opening a fresh chat clears unrelated messages off the working desk, preventing context distraction, lower quality, and wasted tokens.'
+      },
+      {
+        id: 'mc-2-q2',
+        type: 'spot_mistake',
+        question: 'A team sets `temperature = 0` on an ungrounded customer-support bot and tells management: "Now the AI cannot hallucinate wrong return policies." What is wrong with that claim?',
+        options: [
+          'Temperature 0 only makes outputs repeatable; ungrounded models can still guess wrong.',
+          'Temperature 0 disables the tokenizer so replies shrink to one word.',
+          'Customer-support bots require temperature 0.9 to read pasted policy documents accurately.',
+          'Lowering temperature forces the chat wrapper to turn off live web search automatically.'
+        ],
+        correctIndex: 0,
+        explanation:
+          'Temperature controls randomness, not truth. Without grounding the model in the real return policy text, temperature 0 simply makes its guesses consistent.'
+      },
+      {
+        id: 'mc-2-q3',
+        type: 'multiple_choice',
+        question: 'You want an AI to extract warranty exclusions from a 12-page appliance manual PDF without guessing. Which prompt strategy works best?',
+        options: [
+          'Ask from memory first, then attach the PDF only if uncertain.',
+          'Attach the manual, ask it to answer strictly from that text, and cite exact headings.',
+          'Tell it to invent plausible terms whenever a section is tricky.',
+          'Ask for a creative story summarizing the manual at high temperature so nothing feels dry.'
+        ],
+        correctIndex: 1,
+        explanation:
+          'Grounding with the real document, constraining answers to the pasted text, requiring citations, and allowing "not stated" sharply reduces hallucinations.'
+      },
+      {
+        id: 'mc-2-q4',
+        type: 'multiple_choice',
+        question: 'Two messages have the exact same character count on screen: one is plain English prose, and the other mixes emojis, URLs, and non-English script. Which statement is accurate?',
+        options: [
+          'Both messages always use identical tokens because characters map 1-to-1.',
+          'Plain English costs more tokens because common words split per letter.',
+          'Token count depends only on spaces, so emojis add zero tokens.',
+          'The emoji, URL, and non-English message will usually consume noticeably more tokens.'
+        ],
+        correctIndex: 3,
+        explanation:
+          'Tokenizers pack common English words into single tokens, while emojis, dense URLs, and many non-English scripts frequently split into 2–4 tokens each.'
+      }
+    ]
+  }
 };

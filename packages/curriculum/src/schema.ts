@@ -46,6 +46,16 @@ export interface QuizQuestion {
   explanation: string;
 }
 
+export interface MasteryCheck {
+  id: string;
+  title: string;
+  subtitle: string;
+  passThreshold: number;
+  xpReward: number;
+  estimatedMinutes: number;
+  questions: QuizQuestion[];
+}
+
 export interface Chapter {
   id: string;
   moduleId: string;
@@ -70,8 +80,9 @@ export interface CurriculumModule {
   icon: string;
   accentHex: string;
   estimatedMinutes: number;
-  recommendedLabId: LabId;
+  recommendedLabId: LabId | null;
   chapters: Chapter[];
+  masteryCheck: MasteryCheck;
 }
 
 export interface GlossaryTerm {
@@ -92,6 +103,7 @@ export interface LabInfo {
   xpReward: number;
   moduleId: string;
   description: string;
+  desktopOnly: boolean;
 }
 
 export interface Curriculum {

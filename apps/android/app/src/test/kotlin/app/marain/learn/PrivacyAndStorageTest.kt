@@ -57,6 +57,33 @@ class PrivacyAndStorageTest {
     assertTrue(restored.hasCompletedOnboarding)
     assertEquals(ReadingTheme.SEPIA, restored.readingTheme)
     assertEquals(FontScaleOption.LARGE, restored.fontScale)
+
+    // New mastery fields default safely when reading v1.1.0 persisted progress
+    assertTrue(restored.quizBestPercents.isEmpty())
+    assertTrue(restored.attemptedQuizChapterIds.isEmpty())
+    assertTrue(restored.passedMasteryModuleIds.isEmpty())
+    assertTrue(restored.masteryBestScores.isEmpty())
+    assertTrue(restored.masteryBestPercents.isEmpty())
+    assertTrue(restored.masteryAttemptCounts.isEmpty())
+  }
+
+  @Test
+  fun storageContract_roundTripsMasteryCheckProgressFieldsCleanly() {
+    val state = UserProgress(
+      completedChapterIds = setOf("ch-1-1", "ch-1-2"),
+      completedQuizChapterIds = setOf("ch-1-1", "ch-1-2"),
+      quizBestScores = mapOf("ch-1-1" to 3, "ch-1-2" to 2),
+      quizBestPercents = mapOf("ch-1-1" to 100, "ch-1-2" to 67),
+      attemptedQuizChapterIds = setOf("ch-1-1", "ch-1-2", "ch-1-3"),
+      passedMasteryModuleIds = setOf("mod-1-what-is-ai"),
+      masteryBestScores = mapOf("mod-1-what-is-ai" to 4),
+      masteryBestPercents = mapOf("mod-1-what-is-ai" to 100),
+      masteryAttemptCounts = mapOf("mod-1-what-is-ai" to 2),
+    )
+
+    val encoded = json.encodeToString(UserProgress.serializer(), state)
+    val decoded = json.decodeFromString(UserProgress.serializer(), encoded)
+    assertEquals(state, decoded)
   }
 
   @Test

@@ -35,6 +35,8 @@ import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.LocalFireDepartment
 import androidx.compose.material.icons.rounded.Replay
+import androidx.compose.material.icons.rounded.Verified
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -58,6 +60,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import app.marain.learn.data.NextStepAfterChapter
 import app.marain.learn.data.ProgressEngine
 import app.marain.learn.data.QuizCompletionOutcome
 import app.marain.learn.data.UserProgress
@@ -67,6 +70,7 @@ import app.marain.learn.ui.components.TactileButton
 import app.marain.learn.ui.components.rememberMarkdown
 import app.marain.learn.ui.theme.LocalMarainColors
 import app.marain.learn.ui.theme.PlusJakartaSansFontFamily
+import app.marain.learn.ui.theme.editorialUnitPalette
 
 @Composable
 fun ChapterQuizScreen(
@@ -75,7 +79,8 @@ fun ChapterQuizScreen(
   onClose: () -> Unit,
   onCompleteQuiz: (correctCount: Int, totalQuestions: Int, maxCombo: Int) -> QuizCompletionOutcome,
   onNextChapter: (String) -> Unit,
-  onBackToModule: (String) -> Unit,
+  onStartMasteryCheck: (String) -> Unit,
+  onBackToPath: () -> Unit,
   modifier: Modifier = Modifier,
 ) {
   val marain = LocalMarainColors.current
@@ -89,29 +94,34 @@ fun ChapterQuizScreen(
   var maxCombo by remember(chapter.id) { mutableIntStateOf(0) }
   var outcome by remember(chapter.id) { mutableStateOf<QuizCompletionOutcome?>(null) }
 
-  val nextChapter = remember(chapter.id, curriculum) {
-    ProgressEngine.nextChapterAfter(chapter.id, curriculum)
-  }
-
   val finishedOutcome = outcome
   if (finishedOutcome != null || questions.isEmpty()) {
+    val resolvedOutcome = finishedOutcome ?: QuizCompletionOutcome(
+      updatedProgress = UserProgress(),
+      xpEarned = 0,
+      comboBonusXp = 0,
+      maxCombo = 0,
+      isFirstQuizCompletion = false,
+      isPerfectScore = true,
+      passed = true,
+      passingScorePercent = ProgressEngine.LESSON_PASS_PERCENT,
+      correctCount = 0,
+      totalQuestions = 0,
+      accuracyPercent = 100,
+      updatedStreakDays = 1,
+    )
+    val nextStep = remember(chapter.id, resolvedOutcome.updatedProgress, curriculum) {
+      ProgressEngine.nextStepAfterChapter(chapter.id, resolvedOutcome.updatedProgress, curriculum)
+    }
+
     QuizCelebrationScreen(
+      curriculum = curriculum,
       chapter = chapter,
-      outcome = finishedOutcome ?: QuizCompletionOutcome(
-        updatedProgress = UserProgress(),
-        xpEarned = 0,
-        comboBonusXp = 0,
-        maxCombo = 0,
-        isFirstQuizCompletion = false,
-        isPerfectScore = true,
-        correctCount = 0,
-        totalQuestions = 0,
-        accuracyPercent = 100,
-        updatedStreakDays = 1,
-      ),
-      nextChapter = nextChapter,
-      onNextChapter = { next -> onNextChapter(next.id) },
-      onBackToModule = { onBackToModule(chapter.moduleId) },
+      outcome = resolvedOutcome,
+      nextStep = nextStep,
+      onNextChapter = onNextChapter,
+      onStartMasteryCheck = onStartMasteryCheck,
+      onBackToPath = onBackToPath,
       onReviewChapter = onClose,
       onRetake = {
         currentIndex = 0
@@ -145,7 +155,6 @@ fun ChapterQuizScreen(
     modifier = modifier.fillMaxSize(),
     containerColor = MaterialTheme.colorScheme.background,
     topBar = {
-      // Clean borderless header: Close X + sleek 8.dp progress track + crisp red heart & numeral (NO pink pill!)
       Row(
         modifier = Modifier
           .fillMaxWidth()
@@ -157,8 +166,8 @@ fun ChapterQuizScreen(
         IconButton(onClick = onClose) {
           Icon(
             imageVector = Icons.Rounded.Close,
-            contentDescription = "Close practice drill",
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            contentDescription = "Close practice check",
+            tint = MaterialTheme.colorScheme.onBackground,
           )
         }
 
@@ -171,7 +180,7 @@ fun ChapterQuizScreen(
             val segmentColor = when {
               idx < currentIndex -> MaterialTheme.colorScheme.primary
               idx == currentIndex && hasChecked -> if (isSelectedCorrect) marain.correctAccent else marain.wrongAccent
-              idx == currentIndex -> MaterialTheme.colorScheme.primary.copy(alpha = 0.55f)
+              idx == currentIndex -> MaterialTheme.colorScheme.primary.copy(alpha = 0.65f)
               else -> marain.cardBorder
             }
             Box(
@@ -220,13 +229,14 @@ fun ChapterQuizScreen(
           val bannerInk = if (isSelectedCorrect) marain.onCorrectContainer else marain.onWrongContainer
           val bannerAccent = if (isSelectedCorrect) marain.correctAccent else marain.wrongAccent
           val bannerLip = if (isSelectedCorrect) marain.correctLip else marain.wrongLip
+          val bannerButtonInk = if (isSelectedCorrect) marain.onCorrectAccent else marain.onWrongAccent
 
           Surface(
             modifier = Modifier.fillMaxWidth(),
             color = bannerBg,
           ) {
             Column(modifier = Modifier.fillMaxWidth()) {
-              HorizontalDivider(thickness = 1.dp, color = bannerAccent.copy(alpha = 0.25f))
+              HorizontalDivider(thickness = 1.dp, color = bannerAccent)
               Column(
                 modifier = Modifier
                   .fillMaxWidth()
@@ -258,7 +268,7 @@ fun ChapterQuizScreen(
                 }
 
                 Text(
-                  text = rememberMarkdown(question.explanation),
+                  text = rememberMarkdown(question.explanation, codeColor = bannerInk),
                   style = MaterialTheme.typography.bodyMedium,
                   color = bannerInk,
                 )
@@ -272,7 +282,7 @@ fun ChapterQuizScreen(
                   },
                   fillColor = bannerAccent,
                   lipColor = bannerLip,
-                  contentColor = Color.White,
+                  contentColor = bannerButtonInk,
                   modifier = Modifier.fillMaxWidth(),
                 ) {
                   val buttonLabel = when {
@@ -293,7 +303,7 @@ fun ChapterQuizScreen(
 
         if (!hasChecked) {
           Column(modifier = Modifier.fillMaxWidth()) {
-            HorizontalDivider(thickness = 1.dp, color = marain.cardBorder)
+            HorizontalDivider(thickness = 1.dp, color = marain.hairlineDivider)
             Box(
               modifier = Modifier
                 .fillMaxWidth()
@@ -336,11 +346,10 @@ fun ChapterQuizScreen(
         .padding(horizontal = 20.dp, vertical = 12.dp),
       verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-      // Question type & chapter label (clean typographic header — zero rainbow pill)
       val typeLabel = when (question.type.lowercase().trim()) {
         "true_false" -> "MYTH BUSTER"
         "spot_mistake" -> "SPOT THE MISTAKE"
-        else -> "MULTIPLE CHOICE"
+        else -> "PRACTICE CHECK"
       }
 
       Row(
@@ -396,7 +405,6 @@ fun ChapterQuizScreen(
 
       Spacer(modifier = Modifier.height(2.dp))
 
-      // Duolingo-grade Tactile 3D Answer Cards
       Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         question.options.forEachIndexed { idx, optionText ->
           TactileQuizOptionCard(
@@ -484,7 +492,6 @@ private fun TactileQuizOptionCard(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(13.dp),
       ) {
-        // Keycap letter badge
         Surface(
           modifier = Modifier.size(28.dp),
           shape = RoundedCornerShape(7.dp),
@@ -507,7 +514,8 @@ private fun TactileQuizOptionCard(
               fontWeight = FontWeight.Bold,
               fontSize = 12.5.sp,
               color = when {
-                hasChecked && (isCorrectOption || isChosen) -> Color.White
+                hasChecked && isCorrectOption -> marain.onCorrectAccent
+                hasChecked && isChosen && !isCorrectOption -> marain.onWrongAccent
                 isChosen -> MaterialTheme.colorScheme.onPrimary
                 else -> MaterialTheme.colorScheme.onSurfaceVariant
               },
@@ -544,26 +552,29 @@ private fun TactileQuizOptionCard(
 
 @Composable
 private fun QuizCelebrationScreen(
+  curriculum: Curriculum,
   chapter: Chapter,
   outcome: QuizCompletionOutcome,
-  nextChapter: Chapter?,
-  onNextChapter: (Chapter) -> Unit,
-  onBackToModule: () -> Unit,
+  nextStep: NextStepAfterChapter,
+  onNextChapter: (String) -> Unit,
+  onStartMasteryCheck: (String) -> Unit,
+  onBackToPath: () -> Unit,
   onReviewChapter: () -> Unit,
   onRetake: () -> Unit,
   modifier: Modifier = Modifier,
 ) {
   val marain = LocalMarainColors.current
-  val rank = ProgressEngine.fluencyRankForXp(outcome.updatedProgress.totalXp).currentTier
+  val rankProgress = ProgressEngine.fluencyRank(outcome.updatedProgress, curriculum)
+  val rank = rankProgress.currentTier
   val headline = when {
     outcome.isPerfectScore -> "Lesson mastered."
-    outcome.accuracyPercent >= 60 -> "Lesson complete."
-    else -> "Good practice."
+    outcome.passed -> "Lesson passed."
+    else -> "Not mastered yet."
   }
   val subtext = when {
     outcome.isPerfectScore -> "Every question right on \"${chapter.title}\"."
-    outcome.accuracyPercent >= 60 -> "Solid recall on \"${chapter.title}\". Keep building momentum."
-    else -> "Review the chapter anytime or run the drill again to lock it in."
+    outcome.passed -> "You scored ${outcome.accuracyPercent}% on \"${chapter.title}\" (≥${outcome.passingScorePercent}% required)."
+    else -> "Score at least ${outcome.passingScorePercent}% to master \"${chapter.title}\". Review the concepts and try again — wrong answers earn 0 XP."
   }
 
   Surface(
@@ -583,13 +594,22 @@ private fun QuizCelebrationScreen(
       Surface(
         modifier = Modifier.size(74.dp),
         shape = RoundedCornerShape(22.dp),
-        color = if (outcome.isPerfectScore) marain.masteredGold else MaterialTheme.colorScheme.primary,
+        color = when {
+          outcome.isPerfectScore -> marain.masteredGold
+          outcome.passed -> MaterialTheme.colorScheme.primary
+          else -> marain.wrongContainer
+        },
+        border = if (!outcome.passed) BorderStroke(1.5.dp, marain.wrongAccent) else null,
       ) {
         Box(contentAlignment = Alignment.Center) {
           Icon(
-            imageVector = Icons.Rounded.Check,
+            imageVector = if (outcome.passed) Icons.Rounded.Check else Icons.Rounded.Replay,
             contentDescription = null,
-            tint = Color.White,
+            tint = when {
+              outcome.isPerfectScore -> marain.onMasteredGold
+              outcome.passed -> MaterialTheme.colorScheme.onPrimary
+              else -> marain.wrongAccent
+            },
             modifier = Modifier.size(38.dp),
           )
         }
@@ -600,7 +620,7 @@ private fun QuizCelebrationScreen(
       Text(
         text = "${rank.cefrCode} · ${rank.title.uppercase()}",
         style = MaterialTheme.typography.labelSmall,
-        color = MaterialTheme.colorScheme.primary,
+        color = if (outcome.passed) MaterialTheme.colorScheme.primary else marain.wrongAccent,
       )
 
       Spacer(modifier = Modifier.height(8.dp))
@@ -624,7 +644,7 @@ private fun QuizCelebrationScreen(
       if (outcome.comboBonusXp > 0) {
         Spacer(modifier = Modifier.height(10.dp))
         Text(
-          text = "${outcome.maxCombo}x combo bonus (+${outcome.comboBonusXp} XP)",
+          text = "${outcome.maxCombo}x combo bonus (+${outcome.comboBonusXp} Practice XP)",
           style = MaterialTheme.typography.labelMedium,
           color = marain.streakAccent,
         )
@@ -632,7 +652,7 @@ private fun QuizCelebrationScreen(
 
       Spacer(modifier = Modifier.height(24.dp))
 
-      // Crisp 3-column hairline metrics strip (no pastel rainbow blocks)
+      // Crisp 3-column hairline metrics strip
       Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(14.dp),
@@ -643,6 +663,7 @@ private fun QuizCelebrationScreen(
           modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 16.dp),
+          verticalAlignment = Alignment.CenterVertically,
         ) {
           CelebrationStatCell(
             value = "${outcome.correctCount}/${outcome.totalQuestions}",
@@ -654,11 +675,11 @@ private fun QuizCelebrationScreen(
             modifier = Modifier
               .width(1.dp)
               .height(38.dp)
-              .background(marain.cardBorder),
+              .background(marain.hairlineDivider),
           )
           CelebrationStatCell(
             value = "+${outcome.xpEarned}",
-            label = "XP EARNED",
+            label = "PRACTICE XP",
             valueColor = MaterialTheme.colorScheme.primary,
             modifier = Modifier.weight(1f),
           )
@@ -666,12 +687,12 @@ private fun QuizCelebrationScreen(
             modifier = Modifier
               .width(1.dp)
               .height(38.dp)
-              .background(marain.cardBorder),
+              .background(marain.hairlineDivider),
           )
           CelebrationStatCell(
-            value = "${outcome.updatedStreakDays}d",
-            label = "STREAK",
-            valueColor = marain.streakAccent,
+            value = "${outcome.accuracyPercent}%",
+            label = if (outcome.passed) "PASSED" else "NEED ≥${outcome.passingScorePercent}%",
+            valueColor = if (outcome.passed) marain.correctAccent else marain.wrongAccent,
             modifier = Modifier.weight(1f),
           )
         }
@@ -679,71 +700,176 @@ private fun QuizCelebrationScreen(
 
       Spacer(modifier = Modifier.height(28.dp))
 
-      if (nextChapter != null) {
+      if (!outcome.passed) {
+        // Failed check -> primary CTA is Retry so mastery stays meaningful
         TactileButton(
-          onClick = { onNextChapter(nextChapter) },
-          modifier = Modifier.fillMaxWidth(),
-        ) {
-          Text(
-            text = rememberMarkdown("Next: ${nextChapter.title}"),
-            style = MaterialTheme.typography.labelLarge,
-            fontWeight = FontWeight.Bold,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.weight(1f, fill = false),
-          )
-          Spacer(modifier = Modifier.width(6.dp))
-          Icon(
-            imageVector = Icons.AutoMirrored.Rounded.ArrowForward,
-            contentDescription = null,
-            modifier = Modifier.size(18.dp),
-          )
-        }
-      } else {
-        TactileButton(
-          onClick = onBackToModule,
-          modifier = Modifier.fillMaxWidth(),
-        ) {
-          Text(
-            text = "Back to Unit Guidebook",
-            style = MaterialTheme.typography.labelLarge,
-            fontWeight = FontWeight.Bold,
-          )
-        }
-      }
-
-      Spacer(modifier = Modifier.height(12.dp))
-
-      Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(10.dp),
-      ) {
-        OutlinedButton(
           onClick = onRetake,
-          modifier = Modifier
-            .weight(1f)
-            .height(48.dp),
-          shape = RoundedCornerShape(12.dp),
-          border = BorderStroke(1.dp, marain.cardBorder),
+          modifier = Modifier.fillMaxWidth(),
         ) {
           Icon(
             imageVector = Icons.Rounded.Replay,
             contentDescription = null,
-            modifier = Modifier.size(16.dp),
+            modifier = Modifier.size(18.dp),
           )
-          Spacer(modifier = Modifier.width(6.dp))
-          Text("Retry Drill")
+          Spacer(modifier = Modifier.width(8.dp))
+          Text(
+            text = "Retry Practice Check",
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.Bold,
+          )
         }
 
-        OutlinedButton(
-          onClick = onReviewChapter,
-          modifier = Modifier
-            .weight(1f)
-            .height(48.dp),
-          shape = RoundedCornerShape(12.dp),
-          border = BorderStroke(1.dp, marain.cardBorder),
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Row(
+          modifier = Modifier.fillMaxWidth(),
+          horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-          Text("Review Lesson")
+          OutlinedButton(
+            onClick = onReviewChapter,
+            modifier = Modifier
+              .weight(1f)
+              .height(48.dp),
+            shape = RoundedCornerShape(12.dp),
+            border = BorderStroke(1.dp, marain.cardBorder),
+            colors = ButtonDefaults.outlinedButtonColors(
+              contentColor = MaterialTheme.colorScheme.onSurface,
+            ),
+          ) {
+            Text("Review Lesson")
+          }
+          OutlinedButton(
+            onClick = onBackToPath,
+            modifier = Modifier
+              .weight(1f)
+              .height(48.dp),
+            shape = RoundedCornerShape(12.dp),
+            border = BorderStroke(1.dp, marain.cardBorder),
+            colors = ButtonDefaults.outlinedButtonColors(
+              contentColor = MaterialTheme.colorScheme.onSurface,
+            ),
+          ) {
+            Text("Back to Path")
+          }
+        }
+      } else {
+        // Passed check -> seamless flow to Next Lesson OR Unit Mastery Check!
+        when (nextStep) {
+          is NextStepAfterChapter.UnitMasteryCheck -> {
+            val unitPalette = editorialUnitPalette(nextStep.module.number, isDark = marain.isDark)
+            val passPct = nextStep.module.masteryCheck?.passingScorePercent ?: 75
+            Text(
+              text = "Ready for Unit ${nextStep.module.number} Mastery Check (≥$passPct% to master this unit)",
+              style = MaterialTheme.typography.bodySmall,
+              color = MaterialTheme.colorScheme.onSurfaceVariant,
+              textAlign = TextAlign.Center,
+              modifier = Modifier.padding(bottom = 12.dp),
+            )
+            TactileButton(
+              onClick = { onStartMasteryCheck(nextStep.module.id) },
+              fillColor = unitPalette.fill,
+              lipColor = unitPalette.lip,
+              contentColor = unitPalette.onFill,
+              modifier = Modifier.fillMaxWidth(),
+            ) {
+              Icon(
+                imageVector = Icons.Rounded.Verified,
+                contentDescription = null,
+                modifier = Modifier.size(19.dp),
+              )
+              Spacer(modifier = Modifier.width(8.dp))
+              Text(
+                text = "Take Unit ${nextStep.module.number} Mastery Check",
+                style = MaterialTheme.typography.labelLarge,
+                fontWeight = FontWeight.Bold,
+              )
+              Spacer(modifier = Modifier.width(6.dp))
+              Icon(
+                imageVector = Icons.AutoMirrored.Rounded.ArrowForward,
+                contentDescription = null,
+                modifier = Modifier.size(18.dp),
+              )
+            }
+          }
+
+          is NextStepAfterChapter.NextLesson -> {
+            TactileButton(
+              onClick = { onNextChapter(nextStep.chapter.id) },
+              modifier = Modifier.fillMaxWidth(),
+            ) {
+              Text(
+                text = rememberMarkdown(
+                  "Next: ${nextStep.chapter.title}",
+                  codeColor = MaterialTheme.colorScheme.onPrimary,
+                ),
+                style = MaterialTheme.typography.labelLarge,
+                fontWeight = FontWeight.Bold,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(1f, fill = false),
+              )
+              Spacer(modifier = Modifier.width(6.dp))
+              Icon(
+                imageVector = Icons.AutoMirrored.Rounded.ArrowForward,
+                contentDescription = null,
+                modifier = Modifier.size(18.dp),
+              )
+            }
+          }
+
+          is NextStepAfterChapter.CourseComplete -> {
+            TactileButton(
+              onClick = onBackToPath,
+              modifier = Modifier.fillMaxWidth(),
+            ) {
+              Text(
+                text = "Back to Learning Path",
+                style = MaterialTheme.typography.labelLarge,
+                fontWeight = FontWeight.Bold,
+              )
+            }
+          }
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Row(
+          modifier = Modifier.fillMaxWidth(),
+          horizontalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+          OutlinedButton(
+            onClick = onRetake,
+            modifier = Modifier
+              .weight(1f)
+              .height(48.dp),
+            shape = RoundedCornerShape(12.dp),
+            border = BorderStroke(1.dp, marain.cardBorder),
+            colors = ButtonDefaults.outlinedButtonColors(
+              contentColor = MaterialTheme.colorScheme.onSurface,
+            ),
+          ) {
+            Icon(
+              imageVector = Icons.Rounded.Replay,
+              contentDescription = null,
+              modifier = Modifier.size(16.dp),
+            )
+            Spacer(modifier = Modifier.width(6.dp))
+            Text("Retry Check")
+          }
+
+          OutlinedButton(
+            onClick = onReviewChapter,
+            modifier = Modifier
+              .weight(1f)
+              .height(48.dp),
+            shape = RoundedCornerShape(12.dp),
+            border = BorderStroke(1.dp, marain.cardBorder),
+            colors = ButtonDefaults.outlinedButtonColors(
+              contentColor = MaterialTheme.colorScheme.onSurface,
+            ),
+          ) {
+            Text("Review Lesson")
+          }
         }
       }
     }
