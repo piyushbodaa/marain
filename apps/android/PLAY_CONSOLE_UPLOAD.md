@@ -1,6 +1,6 @@
 # Marain — Google Play Console Upload & Direct Install Guide
 
-Everything needed to publish **Marain** (`app.marain.learn`, v1.2.0 / versionCode 4) — *Learn Marain: The Language of AI* — to Google Play Console and install it immediately on any Android 8.0+ phone.
+Everything needed to publish **Marain** (`app.marain.learn`, v1.2.1 / versionCode 5) — *Learn Marain: The Language of AI* — to Google Play Console and install it immediately on any Android 8.0+ phone.
 
 ---
 
@@ -80,9 +80,9 @@ Use these exact facts when completing the **App Content → Data Safety** form i
 4. In the left sidebar, open **Testing → Internal testing** and click **Create new release**.
 5. Under **App signing**, opt in to **Play App Signing** (recommended by Google Play).
 6. Drag and drop `apps/android/app/build/outputs/bundle/release/app-release.aab` into **App bundles**.
-7. Set **Release name**: `1.2.0 (4)` and **Release notes**:
+7. Set **Release name**: `1.2.1 (5)` and **Release notes**:
    ```text
-   v1.2.0 — Rebuilt Unit 1 as a crisp 5-minute phone-only experience with practical Mastery Checks across all 7 units; gated CEFR fluency milestones on real mastery instead of clicks; balanced quiz options so answers cannot be guessed by length; fixed API key, budget, and permissions safety advice; added direct Lesson 1 and Start/Continue CTA navigation; and upgraded Dark Mode contrast to WCAG AA.
+   v1.2.1 — Updated app website and Privacy Policy links to https://marain.fun and https://marain.fun/privacy.
    ```
 8. Click **Next → Save → Publish to Internal testing**, then add tester Gmail addresses under the **Testers** tab and share the opt-in link.
 
@@ -105,17 +105,17 @@ Once `app.marain.learn` exists in Google Play Console (and the first `.aab` has 
 
 ```bash
 # 1. Dry run — verify version parsing, release notes (<= 500 chars), key, and AAB with zero network calls
-./publish-internal.sh --dry-run --skip-build --notes "v1.2.0 internal test"
+./publish-internal.sh --dry-run --skip-build --notes "v1.2.1 internal test"
 
-# 2. Upload the already-built signed v1.2.0 (4) bundle directly to Internal Testing
-./publish-internal.sh --skip-build --notes "v1.2.0 — Rebuilt Unit 1, mastery checks, balanced quizzes, and WCAG AA dark mode."
+# 2. Upload the already-built signed v1.2.1 (5) bundle directly to Internal Testing
+./publish-internal.sh --skip-build --notes "v1.2.1 — Updated app website and Privacy Policy links to https://marain.fun and https://marain.fun/privacy."
 
 # 3. Auto-increment versionCode, rebuild curriculum + tests + signed AAB, and upload to Internal Testing
-./publish-internal.sh --bump --notes "v1.2.1 — Bug fixes and polish"
+./publish-internal.sh --bump --notes "v1.2.2 — Bug fixes and polish"
 
 # 4. Optional flags: change versionName, choose another track, or upload as draft on a brand-new draft app
 ./publish-internal.sh --bump --version-name 1.3.0 --track beta --notes "v1.3.0 beta release"
-./publish-internal.sh --skip-build --status draft --notes "v1.2.0 draft internal release"
+./publish-internal.sh --skip-build --status draft --notes "v1.2.1 draft internal release"
 ```
 
 ---
