@@ -2,6 +2,9 @@
 *.jks
 *.keystore
 keystore.properties
+play-service-account.json
+*service-account*.json
+*-play-key.json
 .env
 .env.*
 *.pem

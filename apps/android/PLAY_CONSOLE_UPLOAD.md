@@ -84,7 +84,39 @@ Use these exact facts when completing the **App Content → Data Safety** form i
 
 ---
 
-## 5. Direct Install on Your Android Phone (Right Now)
+## 5. One-Command Automatic Upload (Play Developer API)
+
+Once `app.marain.learn` exists in Google Play Console (and the first `.aab` has been uploaded once manually), you can upload future releases from the terminal in one command using the zero-dependency uploader (`apps/android/publish-internal.sh` → `apps/android/scripts/publish-play.mjs`).
+
+### One-Time Credential Setup (NEVER commit keys!)
+1. In Google Cloud Console, enable the **Google Play Android Developer API** (`androidpublisher.googleapis.com`), create a service account, and download its JSON key.
+2. In Google Play Console → **Users and permissions**, invite that service account's email and grant **View app information** + **Release to testing tracks** (or Release manager) on **Marain**.
+3. Save the downloaded JSON key to:
+   ```text
+   apps/android/play-service-account.json
+   ```
+   *(Explicitly gitignored in both root `.gitignore` and `apps/android/.gitignore` along with `*service-account*.json` and `*-play-key.json` so credentials can never be pushed to GitHub. You can also pass `--key <path>` or set `PLAY_SERVICE_ACCOUNT_JSON`.)*
+
+### Common Commands (run from `apps/android/`)
+
+```bash
+# 1. Dry run — verify version parsing, release notes (<= 500 chars), key, and AAB with zero network calls
+./publish-internal.sh --dry-run --skip-build --notes "v1.2.0 internal test"
+
+# 2. Upload the already-built signed v1.2.0 (4) bundle directly to Internal Testing
+./publish-internal.sh --skip-build --notes "v1.2.0 — Rebuilt Unit 1, mastery checks, balanced quizzes, and WCAG AA dark mode."
+
+# 3. Auto-increment versionCode, rebuild curriculum + tests + signed AAB, and upload to Internal Testing
+./publish-internal.sh --bump --notes "v1.2.1 — Bug fixes and polish"
+
+# 4. Optional flags: change versionName, choose another track, or upload as draft on a brand-new draft app
+./publish-internal.sh --bump --version-name 1.3.0 --track beta --notes "v1.3.0 beta release"
+./publish-internal.sh --skip-build --status draft --notes "v1.2.0 draft internal release"
+```
+
+---
+
+## 6. Direct Install on Your Android Phone (Right Now)
 
 **Option A — Over USB with `adb`:**
 ```bash
@@ -98,7 +130,7 @@ adb install -r "apps/android/app/build/outputs/apk/release/app-release.apk"
 
 ---
 
-## 6. Rebuilding Signed Releases Locally
+## 7. Rebuilding Signed Releases Locally
 
 ```bash
 cd apps/android
