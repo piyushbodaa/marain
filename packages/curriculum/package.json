@@ -2,6 +2,7 @@
   "name": "@marain/curriculum",
   "version": "1.0.0",
   "private": true,
+  "license": "MIT",
   "type": "module",
   "description": "Shared Marain beginner-friendly AI curriculum, TypeScript schema, build exporter, and validation suite.",
   "exports": {

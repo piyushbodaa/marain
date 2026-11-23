@@ -2,6 +2,7 @@
   "name": "zero2ai-monorepo",
   "version": "1.0.0",
   "private": true,
+  "license": "MIT",
   "description": "Zero2AI — Duolingo x Zerodha Varsity for AI (Shared Curriculum + Android Varsity App + Linux Desktop Studio)",
   "scripts": {
     "build:curriculum": "npm --prefix packages/curriculum run build",

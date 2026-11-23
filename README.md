@@ -137,3 +137,10 @@ cd packages/curriculum
 npm run build   # Generates dist/curriculum.json
 npm test        # Validates 7 modules, >=28 chapters, quizzes, >=40 glossary terms, and 6 lab links
 ```
+
+---
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
